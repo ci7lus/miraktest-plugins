@@ -1,0 +1,41 @@
+{
+  "name": "ts",
+  "version": "1.0.0",
+  "description": "My project template for TypeScript.",
+  "author": "ci7lus <7887955+ci7lus@users.noreply.github.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "package.json",
+    "dist/**/*"
+  ],
+  "scripts": {
+    "dev": "nodemon",
+    "build": "tsc",
+    "lint:prettier": "prettier --check './src/**/*.{js,ts,tsx}'",
+    "format:prettier": "prettier --write './src/**/*.{js,ts,tsx}'",
+    "lint:eslint": "eslint --max-warnings 0 --cache './src/**/*.{js,ts,tsx}'",
+    "format:eslint": "eslint './src/**/*.{js,ts,tsx}' --cache --fix"
+  },
+  "devDependencies": {
+    "@ci7lus/eslint-config": "^1.0.1",
+    "husky": "^7.0.1",
+    "lint-staged": "^11.1.2",
+    "nodemon": "^2.0.12",
+    "prettier": "^2.3.2",
+    "ts-node": "^10.2.0",
+    "typescript": "^4.3.5"
+  },
+  "peerDependencies": {
+    "eslint": "^7.32.0"
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx}": "eslint --max-warnings 0 --cache",
+    "*.{js,ts,tsx,md}": "prettier"
+  }
+}
