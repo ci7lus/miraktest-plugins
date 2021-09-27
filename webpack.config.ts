@@ -19,6 +19,12 @@ const entries: {
     filepath: "./src/miraktest-drpc.plugin.tsx",
     target: "electron-main",
   },
+  {
+    filepath: "./src/miraktest-saya.plugin.tsx",
+  },
+  {
+    filepath: "./src/miraktest-zenza.plugin.tsx",
+  },
 ]
 
 const config: webpack.Configuration[] = entries.map(({ filepath, target }) => {

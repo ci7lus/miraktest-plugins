@@ -38416,6 +38416,7 @@ export declare type PluginInRendererArgs = {
     openWindow: (args: OpenWindowArg) => Promise<number>
   }
   atoms: {
+    globalContentPlayerIdsSelector: Recoil.RecoilValueReadOnly<number[]>
     globalContentPlayerPlayingContentFamily: (
       n: number
     ) => Recoil.RecoilState<ContentPlayerPlayingContent | null>
@@ -38471,11 +38472,6 @@ export declare type AtomFamily<A = any, T = any> = {
   arg: A
 }
 export declare type DefineAtom = Atom | AtomFamily
-export declare type InternalDefineAtom =
-  | (Atom & {
-      key: string
-    })
-  | AtomFamily
 export declare type PluginMeta = {
   id: string
   name: string

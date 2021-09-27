@@ -47,8 +47,10 @@
     "axios": "^0.21.1",
     "discord-rpc": "^4.0.1",
     "react": "^17.0.2",
+    "react-feather": "^2.0.9",
     "react-use": "^17.2.4",
-    "recoil": "^0.3.1"
+    "recoil": "^0.3.1",
+    "reconnecting-websocket": "^4.4.0"
   },
   "peerDependencies": {
     "bufferutil": "^4.0.4",
