@@ -21,6 +21,7 @@
     "@ci7lus/eslint-config": "^1.0.1",
     "@purtuga/esm-webpack-plugin": "^1.5.0",
     "@tailwindcss/custom-forms": "^0.2.1",
+    "@types/discord-rpc": "^4.0.0",
     "@types/node": "^16.4.10",
     "@types/postcss-import": "^12.0.1",
     "@types/webpack": "^4",
@@ -44,11 +45,14 @@
     "@types/react": "^17.0.15",
     "@types/react-dom": "^17.0.9",
     "axios": "^0.21.1",
+    "discord-rpc": "^4.0.1",
     "react": "^17.0.2",
     "react-use": "^17.2.4",
     "recoil": "^0.3.1"
   },
   "peerDependencies": {
-    "eslint": "*"
+    "bufferutil": "^4.0.4",
+    "eslint": "*",
+    "utf-8-validate": "^5.0.6"
   }
 }

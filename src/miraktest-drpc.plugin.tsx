@@ -1,0 +1,204 @@
+import { Presence } from "discord-rpc"
+import { InitPlugin } from "./@types/plugin"
+import { getServiceLogoForPresence } from "./rpc/presence"
+import { RPC } from "./rpc/rpcLoader"
+import tailwind from "./tailwind.scss"
+
+const _id = "io.github.ci7lus.miraktest-plugins.discord-rpc"
+const prefix = "plugins.ci7lus.discord-rpc"
+const meta = {
+  id: _id,
+  name: "Discord RPC",
+  author: "ci7lus",
+  version: "0.0.1",
+  description: "表示中の番組を Discord に共有します",
+}
+
+const activityEventId = `${_id}.setActivity`
+
+const main: InitPlugin = {
+  main: async ({ packages }) => {
+    let rpc: RPC.Client | undefined
+    return {
+      ...meta,
+      setup: async () => {
+        const clientId = "828277784396824596"
+        try {
+          const _rpc = new RPC.Client({ transport: "ipc" })
+          RPC.register(clientId)
+          await _rpc.login({ clientId })
+          packages.Electron.ipcMain.handle(activityEventId, (_ev, args) => {
+            if (args !== null) {
+              _rpc.setActivity(args)
+            } else {
+              _rpc.clearActivity()
+            }
+          })
+          rpc = _rpc
+        } catch (error) {
+          console.error(error)
+        }
+      },
+      destroy: () => {
+        rpc?.destroy()
+      },
+    }
+  },
+  renderer: ({ appInfo, packages, atoms }) => {
+    const React = packages.React
+    const { useState, useEffect } = React
+    const { atom, useRecoilState, useRecoilValue } = packages.Recoil
+    const remote = packages.Electron
+    const remoteWindow = remote.getCurrentWindow()
+
+    const isEnabledAtom = atom({
+      key: `${prefix}.isEnabled`,
+      default: true,
+    })
+
+    return {
+      ...meta,
+      exposedAtoms: [],
+      sharedAtoms: [
+        {
+          type: "atom",
+          atom: isEnabledAtom,
+          key: isEnabledAtom.key,
+        },
+      ],
+      storedAtoms: [
+        {
+          type: "atom",
+          atom: isEnabledAtom,
+          key: isEnabledAtom.key,
+        },
+      ],
+      setup: () => {
+        return
+      },
+      components: [
+        {
+          id: `${prefix}.player`,
+          position: "onPlayer",
+          label: meta.name,
+          component: () => {
+            const activeWindowId = useRecoilValue(atoms.activeContentPlayerId)
+            const playingContent = useRecoilValue(
+              atoms.contentPlayerPlayingContentFamily(remoteWindow.id)
+            )
+            const isEnabled = useRecoilValue(isEnabledAtom)
+            useEffect(() => {
+              if (!isEnabled) {
+                packages.IpcRenderer.invoke(activityEventId, null)
+                return
+              }
+              if (
+                remoteWindow.id !== activeWindowId ||
+                !playingContent?.service
+              ) {
+                return
+              }
+              const service = playingContent.service
+              const program = playingContent.program
+              const version = `${appInfo.name} ${appInfo.version}`
+              const logo = getServiceLogoForPresence(service)
+              const largeImageKey = logo || "miraktest_icon"
+              const smallImageKey = logo ? "miraktest_icon" : undefined
+              const largeImageText = logo ? service.name : version
+              const smallImageText = logo ? version : undefined
+              if (program) {
+                const shiftedExtended =
+                  program.extended &&
+                  Object.entries(program.extended).shift()?.join(" ")
+                const description =
+                  program.description?.trim() || shiftedExtended
+                const isDisplayDescription =
+                  logo && description && 2 <= description.length
+                const details = isDisplayDescription
+                  ? program.name
+                  : service.name
+                const state =
+                  isDisplayDescription && description
+                    ? 128 < description.length
+                      ? description.slice(0, 127) + "…"
+                      : description
+                    : program.name
+                const activity: Presence = {
+                  largeImageKey,
+                  largeImageText,
+                  smallImageKey,
+                  smallImageText,
+                  details,
+                  state,
+                  startTimestamp: program.startAt / 1000,
+                  endTimestamp: (program.startAt + program.duration) / 1000,
+                  instance: false,
+                }
+                packages.IpcRenderer.invoke(activityEventId, activity)
+              } else {
+                const activity: Presence = {
+                  largeImageKey,
+                  largeImageText,
+                  smallImageKey,
+                  smallImageText,
+                  details: service.name,
+                  instance: false,
+                }
+                packages.IpcRenderer.invoke(activityEventId, activity)
+              }
+            }, [activeWindowId, playingContent, isEnabled])
+            return <></>
+          },
+        },
+        {
+          id: `${prefix}.settings`,
+          position: "onSetting",
+          label: meta.name,
+          component: () => {
+            const [isEnabled, setIsEnabled] = useRecoilState(isEnabledAtom)
+            const [isRichPresenceEnabled, setIsRichPresenceEnabled] =
+              useState(isEnabled)
+            return (
+              <>
+                <style>{tailwind}</style>
+                <div className="p-4">
+                  <p className="text-lg">Discord RPC設定</p>
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault()
+                      setIsEnabled(isRichPresenceEnabled)
+                    }}
+                  >
+                    <label className="block mt-4">
+                      <span>有効</span>
+                      <input
+                        type="checkbox"
+                        className="block mt-2 form-checkbox"
+                        checked={isRichPresenceEnabled || false}
+                        onChange={() =>
+                          setIsRichPresenceEnabled((enabled) => !enabled)
+                        }
+                      />
+                    </label>
+                    <button
+                      type="submit"
+                      className="bg-gray-100 text-gray-800 p-2 px-2 my-4 rounded-md focus:outline-none cursor-pointer active:bg-gray-200"
+                    >
+                      更新
+                    </button>
+                  </form>
+                </div>
+              </>
+            )
+          },
+        },
+      ],
+      destroy: () => {
+        return
+      },
+      windows: {},
+    }
+  },
+}
+
+export default main

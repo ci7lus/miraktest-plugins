@@ -18,6 +18,7 @@ const main: InitPlugin = {
     const { useEffect } = React
     const { atom, useRecoilValue, useRecoilState } = packages.Recoil
     const remote = packages.Electron
+    const remoteWindow = remote.getCurrentWindow()
 
     const currentTime = atom<string | null>({
       key: `${prefix}.currentTime`,
@@ -37,24 +38,25 @@ const main: InitPlugin = {
           id: `${prefix}.onPlayerTimeDisplay`,
           position: "onPlayer",
           component: () => {
-            console.warn("onPlayerTimeDisplayの描画")
+            useEffect(() => {
+              console.warn("onPlayerTimeDisplayの描画")
+            }, [])
             const time = useRecoilValue(currentTime)
-            const windowId = remote.getCurrentWindow().id
             const activeContentPlayerId = useRecoilValue(
               atoms.activeContentPlayerId
             )
             const playingContent = useRecoilValue(
-              atoms.contentPlayerPlayingContentFamily(windowId)
+              atoms.contentPlayerPlayingContentFamily(remoteWindow.id)
             )
             useEffect(() => {
-              console.info("time updated:", time, "on", windowId)
+              console.info("time updated:", time, "on", remoteWindow.id)
             }, [time])
             useEffect(() => {
               console.info(
-                activeContentPlayerId === windowId
+                activeContentPlayerId === remoteWindow.id
                   ? "このウィンドウはアクティブです:"
                   : "このウィンドウはアクティブではありません:",
-                windowId,
+                remoteWindow.id,
                 activeContentPlayerId
               )
             }, [activeContentPlayerId])

@@ -15,6 +15,10 @@ const entries: {
   {
     filepath: "./src/miraktest-sample.plugin.tsx",
   },
+  {
+    filepath: "./src/miraktest-drpc.plugin.tsx",
+    target: "electron-main",
+  },
 ]
 
 const config: webpack.Configuration[] = entries.map(({ filepath, target }) => {
@@ -42,7 +46,7 @@ const config: webpack.Configuration[] = entries.map(({ filepath, target }) => {
           loader: "esbuild-loader",
           options: {
             loader: "tsx",
-            target: "esnext",
+            target: "es2018",
           },
         },
         {
@@ -95,7 +99,7 @@ const config: webpack.Configuration[] = entries.map(({ filepath, target }) => {
     plugins: [new esm()],
     optimization: {
       splitChunks: false,
-      minimizer: [new ESBuildMinifyPlugin({ target: "esnext" })],
+      minimizer: [new ESBuildMinifyPlugin({ target: "es2018" })],
     },
   }
 })
