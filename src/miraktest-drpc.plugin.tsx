@@ -82,9 +82,11 @@ const main: InitPlugin = {
           position: "onPlayer",
           label: meta.name,
           component: () => {
-            const activeWindowId = useRecoilValue(atoms.activeContentPlayerId)
+            const activeWindowId = useRecoilValue(
+              atoms.globalActiveContentPlayerIdSelector
+            )
             const playingContent = useRecoilValue(
-              atoms.contentPlayerPlayingContentFamily(remoteWindow.id)
+              atoms.contentPlayerPlayingContentAtom
             )
             const isEnabled = useRecoilValue(isEnabledAtom)
             useEffect(() => {

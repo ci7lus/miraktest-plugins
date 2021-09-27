@@ -43,10 +43,10 @@ const main: InitPlugin = {
             }, [])
             const time = useRecoilValue(currentTime)
             const activeContentPlayerId = useRecoilValue(
-              atoms.activeContentPlayerId
+              atoms.globalActiveContentPlayerIdSelector
             )
             const playingContent = useRecoilValue(
-              atoms.contentPlayerPlayingContentFamily(remoteWindow.id)
+              atoms.contentPlayerPlayingContentAtom
             )
             useEffect(() => {
               console.info("time updated:", time, "on", remoteWindow.id)
