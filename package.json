@@ -30,6 +30,8 @@
     "css-loader": "^5",
     "esbuild": "^0.13.2",
     "esbuild-loader": "^2.15.1",
+    "husky": "^7.0.2",
+    "lint-staged": "^11.1.2",
     "postcss": "^8.3.8",
     "postcss-import": "^14.0.2",
     "postcss-loader": "^4",
@@ -58,5 +60,9 @@
     "bufferutil": "^4.0.4",
     "eslint": "*",
     "utf-8-validate": "^5.0.6"
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx}": "eslint --max-warnings 0 --cache",
+    "*.{js,ts,tsx,md}": "prettier"
   }
 }
