@@ -17,7 +17,7 @@ const _id = "io.github.ci7lus.miraktest-plugins.zenza"
 const prefix = "plugins.ci7lus.zenza"
 const meta = {
   id: _id,
-  name: "ZenzaCommentPlayer",
+  name: "Zenza",
   author: "ci7lus",
   version: "0.0.1",
   description:

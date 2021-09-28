@@ -118,6 +118,7 @@ const config: webpack.Configuration[] = entries.map(({ name, dir, target }) => {
         licenseTextOverrides: {
           "@zenza/components": "MIT License 2021 segabito",
           ZenzaWatch: "MIT License 2021 segabito",
+          "discord-rpc": "MIT License snek <me@gus.host>",
         },
       }) as never,
     ],
