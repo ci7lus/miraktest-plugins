@@ -2,8 +2,9 @@ import { Plus, X } from "react-feather"
 import type { RecoilState } from "recoil"
 import ReconnectingWebSocket from "reconnecting-websocket"
 import { AtomFamily, InitPlugin } from "./@types/plugin"
+import { SayaSetting, SayaCommentPayload } from "./dplayer/types"
 import tailwind from "./tailwind.scss"
-import { trimCommentForFlow } from "./zenza/comment"
+import { trimCommentForFlow } from "./utils/comment"
 import { NicoCommentChat } from "./zenza/types"
 
 /**
@@ -23,24 +24,6 @@ const meta = {
     "Sayaからコメントを取得するプラグイン (io.github.ci7lus.miraktest-plugins.zenzawatchが必要です)",
 }
 const commentWindowId = `${_id}.sayaCommentWindow`
-
-type SayaSetting = {
-  baseUrl?: string
-  replaces: [string, string][]
-}
-
-type SayaCommentPayload = {
-  sourceUrl: string | null
-  source: string
-  no: number
-  time: number
-  timeMs: number
-  author: string
-  text: string
-  color: string
-  type: "right"
-  commands: []
-}
 
 const main: InitPlugin = {
   renderer: ({ packages, functions, atoms }) => {
@@ -63,7 +46,8 @@ const main: InitPlugin = {
       },
     })
 
-    let commentAtom: RecoilState<NicoCommentChat> | null = null
+    let zenzaCommentAtom: RecoilState<NicoCommentChat> | null = null
+    let dplayerCommentAtom: RecoilState<SayaCommentPayload> | null = null
 
     const commentFamilyKey = `${prefix}.rawComment`
     const rawCommentFamily = atomFamily<SayaCommentPayload | null, number>({
@@ -96,14 +80,29 @@ const main: InitPlugin = {
         const zenza = plugins.find(
           (plugin) => plugin.id === "io.github.ci7lus.miraktest-plugins.zenza"
         )
-        if (!zenza) return
-        const family = zenza.exposedAtoms.find(
-          (atom): atom is AtomFamily<number, NicoCommentChat> =>
-            atom.type === "family" &&
-            atom.key === "plugins.ci7lus.zenza.comment"
+        if (zenza) {
+          const family = zenza.exposedAtoms.find(
+            (atom): atom is AtomFamily<number, NicoCommentChat> =>
+              atom.type === "family" &&
+              atom.key === "plugins.ci7lus.zenza.comment"
+          )
+          if (family) {
+            zenzaCommentAtom = family.atom(remoteWindow.id)
+          }
+        }
+        const dplayer = plugins.find(
+          (plugin) => plugin.id === "io.github.ci7lus.miraktest-plugins.dplayer"
         )
-        if (!family) return
-        commentAtom = family.atom(remoteWindow.id)
+        if (dplayer) {
+          const family = dplayer.exposedAtoms.find(
+            (atom): atom is AtomFamily<number, SayaCommentPayload> =>
+              atom.type === "family" &&
+              atom.key === "plugins.ci7lus.dplayer.comment"
+          )
+          if (family) {
+            dplayerCommentAtom = family.atom(remoteWindow.id)
+          }
+        }
       },
       components: [
         {
@@ -115,14 +114,17 @@ const main: InitPlugin = {
             }, [])
             const sayaSetting = useRecoilValue(sayaSettingAtom)
             const service = useRecoilValue(atoms.contentPlayerServiceSelector)
-            const setComment = commentAtom
-              ? useSetRecoilState(commentAtom)
+            const setZenzaComment = zenzaCommentAtom
+              ? useSetRecoilState(zenzaCommentAtom)
+              : null
+            const setDplayerComment = dplayerCommentAtom
+              ? useSetRecoilState(dplayerCommentAtom)
               : null
             const setRawComment = useSetRecoilState(
               rawCommentFamily(remoteWindow.id)
             )
             useEffect(() => {
-              if (!setComment) {
+              if (!setZenzaComment && !setDplayerComment) {
                 console.warn("コメント送信先の取得に失敗しています")
                 return
               }
@@ -163,14 +165,19 @@ const main: InitPlugin = {
                   setRawComment(payload)
                   const commentText = trimCommentForFlow(payload.text)
                   if (commentText.trim().length === 0) return
-                  setComment({
-                    no: payload.no,
-                    date: payload.time,
-                    date_usec: payload.timeMs,
-                    user_id: payload.author || undefined,
-                    mail: payload.type,
-                    content: commentText,
-                  })
+                  if (setZenzaComment) {
+                    setZenzaComment({
+                      no: payload.no,
+                      date: payload.time,
+                      date_usec: payload.timeMs,
+                      user_id: payload.author || undefined,
+                      mail: payload.type,
+                      content: commentText,
+                    })
+                  }
+                  if (setDplayerComment) {
+                    setDplayerComment({ ...payload, text: commentText })
+                  }
                 })
                 ws.addEventListener("open", () => {
                   console.info("Sayaへ接続しました")

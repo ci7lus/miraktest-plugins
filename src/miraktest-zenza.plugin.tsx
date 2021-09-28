@@ -155,7 +155,6 @@ const main: InitPlugin = {
             const [currentTime, setCurrentTime] = useState(0)
             useEffect(() => {
               console.warn("onPlayerの描画（Zenza）")
-              console.warn("windowPrimaryId", remoteWindow.id)
               const timer = setInterval(
                 () => setCurrentTime((n) => n + 1),
                 1000

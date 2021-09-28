@@ -25,6 +25,9 @@ const entries: {
   {
     filepath: "./src/miraktest-zenza.plugin.tsx",
   },
+  {
+    filepath: "./src/miraktest-dplayer.plugin.tsx",
+  },
 ]
 
 const config: webpack.Configuration[] = entries.map(({ filepath, target }) => {
@@ -77,7 +80,7 @@ const config: webpack.Configuration[] = entries.map(({ filepath, target }) => {
                         purge: {
                           enabled: true,
                           mode: "all",
-                          content: [filepath],
+                          content: [filepath, "./src/dplayer/style.scss"],
                           whitelist: [],
                           whitelistPatterns: [],
                         },
