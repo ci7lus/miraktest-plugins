@@ -6,6 +6,10 @@ on:
       - "**"
     tags-ignore:
       - "**"
+    paths-ignore:
+      - .gitignore
+      - LICENSE
+      - "**.md"
   pull_request:
 
 jobs:
