@@ -31,6 +31,7 @@
     "esbuild": "^0.13.2",
     "esbuild-loader": "^2.15.1",
     "husky": "^7.0.2",
+    "license-webpack-plugin": "^2.3.21",
     "lint-staged": "^11.1.2",
     "postcss": "^8.3.8",
     "postcss-import": "^14.0.2",

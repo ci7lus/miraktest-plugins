@@ -4,6 +4,7 @@ import path from "path"
 // @ts-ignore
 import esm from "@purtuga/esm-webpack-plugin"
 import { ESBuildMinifyPlugin } from "esbuild-loader"
+import { LicenseWebpackPlugin } from "license-webpack-plugin"
 import webpack from "webpack"
 
 const isProduction = false
@@ -105,7 +106,21 @@ const config: webpack.Configuration[] = entries.map(({ name, dir, target }) => {
     resolve: {
       extensions: [".ts", ".tsx", ".js", ".json"],
     },
-    plugins: [new esm()],
+    plugins: [
+      new esm(),
+      new LicenseWebpackPlugin({
+        addBanner: true,
+        renderBanner: (_, modules) => {
+          return `/* ${name}\n${modules.map(
+            (module) => `\n${module.name}\n${module.licenseText}\n`
+          )} */\n`
+        },
+        licenseTextOverrides: {
+          "@zenza/components": "MIT License 2021 segabito",
+          ZenzaWatch: "MIT License 2021 segabito",
+        },
+      }) as never,
+    ],
     optimization: {
       splitChunks: false,
       minimizer: [new ESBuildMinifyPlugin({ target: "es2018" })],
