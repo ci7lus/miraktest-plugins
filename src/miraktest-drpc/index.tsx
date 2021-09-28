@@ -1,8 +1,8 @@
 import { Presence } from "discord-rpc"
-import { InitPlugin } from "./@types/plugin"
-import { getServiceLogoForPresence } from "./rpc/presence"
-import { RPC } from "./rpc/rpcLoader"
-import tailwind from "./tailwind.scss"
+import { InitPlugin } from "../@types/plugin"
+import tailwind from "../tailwind.scss"
+import { getServiceLogoForPresence } from "./presence"
+import { RPC } from "./rpcLoader"
 
 const _id = "io.github.ci7lus.miraktest-plugins.discord-rpc"
 const prefix = "plugins.ci7lus.discord-rpc"

@@ -1,9 +1,8 @@
-// eslint-disable-next-line import/no-unresolved
-import { InitPlugin } from "./@types/plugin"
-import { DPlayer } from "./dplayer/dplayerLoader"
-import style from "./dplayer/style.scss"
-import { SayaCommentPayload } from "./dplayer/types"
-import tailwind from "./tailwind.scss"
+import { InitPlugin } from "../@types/plugin"
+import tailwind from "../tailwind.scss"
+import { DPlayer } from "./dplayerLoader"
+import style from "./style.scss"
+import { SayaCommentPayload } from "./types"
 
 /**
  * MirakTest DPlayer Plugin
@@ -18,7 +17,7 @@ const meta = {
   id: _id,
   name: "DPlayer",
   author: "ci7lus",
-  version: "1.0.0",
+  version: "0.0.1",
   description:
     "映像の上にDPlayerを表示するプラグインです。別途コメントソースが必要です。",
 }

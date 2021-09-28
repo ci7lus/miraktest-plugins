@@ -1,7 +1,7 @@
-import { InitPlugin } from "./@types/plugin"
-import tailwind from "./tailwind.scss"
-import { NicoCommentChat, NicoCommentList } from "./zenza/types"
-import { NicoCommentPlayer } from "./zenza/zenzaLoader"
+import { InitPlugin } from "../@types/plugin"
+import tailwind from "../tailwind.scss"
+import { NicoCommentChat, NicoCommentList } from "./types"
+import { NicoCommentPlayer } from "./zenzaLoader"
 
 /**
  * MirakTest Zenza Plugin
@@ -19,7 +19,7 @@ const meta = {
   id: _id,
   name: "ZenzaCommentPlayer",
   author: "ci7lus",
-  version: "1.0.0",
+  version: "0.0.1",
   description:
     "映像の上にSayaコメントレンダラーを表示するプラグインです。別途コメントソースが必要です。",
 }

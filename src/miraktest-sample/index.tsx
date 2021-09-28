@@ -1,5 +1,5 @@
-import { InitPlugin } from "./@types/plugin"
-import tailwind from "./tailwind.scss"
+import { InitPlugin } from "../@types/plugin"
+import tailwind from "../tailwind.scss"
 
 const _id = "io.github.ci7lus.miraktest-plugins.sample"
 const prefix = "plugins.ci7lus.sample"
@@ -7,7 +7,7 @@ const meta = {
   id: _id,
   name: "SamplePlugin",
   author: "ci7lus",
-  version: "1.0.0",
+  version: "0.0.1",
   description: " 読み込み確認用プラグイン",
 }
 const sampleWindowId = `${_id}.sampleWindow`

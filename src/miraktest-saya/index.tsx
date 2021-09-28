@@ -1,15 +1,15 @@
 import { Plus, X } from "react-feather"
 import type { RecoilState } from "recoil"
 import ReconnectingWebSocket from "reconnecting-websocket"
-import { AtomFamily, InitPlugin } from "./@types/plugin"
-import { SayaSetting, SayaCommentPayload } from "./dplayer/types"
-import tailwind from "./tailwind.scss"
-import { trimCommentForFlow } from "./utils/comment"
-import { NicoCommentChat } from "./zenza/types"
+import { AtomFamily, InitPlugin } from "../@types/plugin"
+import { SayaSetting, SayaCommentPayload } from "../miraktest-dplayer/types"
+import { NicoCommentChat } from "../miraktest-zenza/types"
+import tailwind from "../tailwind.scss"
+import { trimCommentForFlow } from "./comment"
 
 /**
  * MirakTest Saya Plugin
- * Sayaからコメントを取得し、ZenzaWatchに流し込むプラグイン
+ * Sayaからコメントを取得し、コメントレンダラに流し込むプラグイン
  * https://github.com/SlashNephy/saya
  */
 
@@ -17,11 +17,11 @@ const _id = "io.github.ci7lus.miraktest-plugins.saya"
 const prefix = "plugins.ci7lus.saya"
 const meta = {
   id: _id,
-  name: "Saya (Zenza)",
+  name: "Saya",
   author: "ci7lus",
-  version: "1.0.0",
+  version: "0.0.1",
   description:
-    "Sayaからコメントを取得するプラグイン (io.github.ci7lus.miraktest-plugins.zenzawatchが必要です)",
+    "Sayaからコメントを取得するプラグインです。ZenzaかDPlayerプラグインが必要です。",
 }
 const commentWindowId = `${_id}.sayaCommentWindow`
 

@@ -9,37 +9,37 @@ import webpack from "webpack"
 const isProduction = false
 
 const entries: {
-  filepath: string
+  name: string
+  dir: string
   target?: webpack.Configuration["target"]
 }[] = [
   {
-    filepath: "./src/miraktest-sample.plugin.tsx",
+    name: "miraktest-sample",
+    dir: "./src/miraktest-sample",
   },
   {
-    filepath: "./src/miraktest-drpc.plugin.tsx",
+    name: "miraktest-drpc",
+    dir: "./src/miraktest-drpc",
     target: "electron-main",
   },
   {
-    filepath: "./src/miraktest-saya.plugin.tsx",
+    name: "miraktest-saya",
+    dir: "./src/miraktest-saya",
   },
+  { name: "miraktest-zenza", dir: "./src/miraktest-zenza" },
   {
-    filepath: "./src/miraktest-zenza.plugin.tsx",
-  },
-  {
-    filepath: "./src/miraktest-dplayer.plugin.tsx",
+    name: "miraktest-dplayer",
+    dir: "./src/miraktest-dplayer",
   },
 ]
 
-const config: webpack.Configuration[] = entries.map(({ filepath, target }) => {
-  const splited = filepath.split("/").pop()?.split(".")
-  if (!splited) throw new Error("splited")
-  splited.pop()
-  const nameFromPath = splited.join(".")
-  const hash = crypto.createHash("sha1").update(filepath).digest("hex")
+const config: webpack.Configuration[] = entries.map(({ name, dir, target }) => {
+  //const pluginDir = filepath
+  const hash = crypto.createHash("sha1").update(dir).digest("hex")
   return {
     target,
     entry: {
-      [nameFromPath]: filepath,
+      [name + ".plugin"]: dir,
     },
     mode: isProduction ? "production" : "development",
     output: {
@@ -80,7 +80,7 @@ const config: webpack.Configuration[] = entries.map(({ filepath, target }) => {
                         purge: {
                           enabled: true,
                           mode: "all",
-                          content: [filepath, "./src/dplayer/style.scss"],
+                          content: [path.join(dir, "*.{ts,tsx,js,css,scss}")],
                           whitelist: [],
                           whitelistPatterns: [],
                         },
