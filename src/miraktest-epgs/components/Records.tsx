@@ -21,7 +21,7 @@ export const Records: React.VFC<{
   return (
     <div className="w-full h-full flex flex-col">
       <div className="w-full bg-gray-800 text-gray-200">
-        <div className="w-full py-2 mx-auto container px-2 flex items-center justify-between">
+        <div className="w-full py-2 pl-4 pr-2 flex items-center justify-between">
           <h2 className="font-semibold text-lg">録画番組</h2>
           <form
             className="flex items-center justify-center space-x-2 w-1/3"
