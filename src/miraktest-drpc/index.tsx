@@ -87,6 +87,11 @@ const main: InitPlugin = {
             const playingContent = useRecoilValue(
               atoms.contentPlayerPlayingContentAtom
             )
+            const isSeekable = useRecoilValue(
+              atoms.contentPlayerIsSeekableSelector
+            )
+            const time = useRecoilValue(atoms.contentPlayerPlayingTimeSelector)
+            const isPlaying = useRecoilValue(atoms.contentPlayerIsPlayingAtom)
             const isEnabled = useRecoilValue(isEnabledAtom)
             useEffect(() => {
               if (!isEnabled) {
@@ -108,22 +113,34 @@ const main: InitPlugin = {
               const largeImageText = logo ? service.name : version
               const smallImageText = logo ? version : undefined
               if (program) {
+                const programName = `${isSeekable ? "録画：" : ""}${
+                  program.name
+                }`
                 const shiftedExtended =
-                  program.extended &&
-                  Object.entries(program.extended).shift()?.join(" ")
+                  program.extended && Object.values(program.extended).shift()
                 const description =
                   program.description?.trim() || shiftedExtended
                 const isDisplayDescription =
                   logo && description && 2 <= description.length
                 const details = isDisplayDescription
-                  ? program.name
+                  ? programName
                   : service.name
                 const state =
                   isDisplayDescription && description
                     ? 128 < description.length
                       ? description.slice(0, 127) + "…"
                       : description
-                    : program.name
+                    : programName
+                let startTimestamp: number
+                let endTimestamp: number | undefined = undefined
+                if (isSeekable) {
+                  startTimestamp = Math.ceil(
+                    (new Date().getTime() - time) / 1000
+                  )
+                } else {
+                  startTimestamp = program.startAt / 1000
+                  endTimestamp = (program.startAt + program.duration) / 1000
+                }
                 const activity: Presence = {
                   largeImageKey,
                   largeImageText,
@@ -131,8 +148,8 @@ const main: InitPlugin = {
                   smallImageText,
                   details,
                   state,
-                  startTimestamp: program.startAt / 1000,
-                  endTimestamp: (program.startAt + program.duration) / 1000,
+                  startTimestamp,
+                  endTimestamp,
                   instance: false,
                 }
                 packages.IpcRenderer.invoke(activityEventId, activity)
@@ -147,7 +164,13 @@ const main: InitPlugin = {
                 }
                 packages.IpcRenderer.invoke(activityEventId, activity)
               }
-            }, [activeWindowId, playingContent, isEnabled])
+            }, [
+              activeWindowId,
+              playingContent,
+              isEnabled,
+              isSeekable,
+              isPlaying,
+            ])
             return <></>
           },
         },
