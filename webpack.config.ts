@@ -32,6 +32,10 @@ const entries: {
     name: "miraktest-dplayer",
     dir: "./src/miraktest-dplayer",
   },
+  {
+    name: "miraktest-epgs",
+    dir: "./src/miraktest-epgs",
+  },
 ]
 
 const config: webpack.Configuration[] = entries.map(({ name, dir, target }) => {
@@ -81,7 +85,9 @@ const config: webpack.Configuration[] = entries.map(({ name, dir, target }) => {
                         purge: {
                           enabled: true,
                           mode: "all",
-                          content: [path.join(dir, "*.{ts,tsx,js,css,scss}")],
+                          content: [
+                            path.join(dir, "**/*.{ts,tsx,js,css,scss}"),
+                          ],
                           whitelist: [],
                           whitelistPatterns: [],
                         },
@@ -125,6 +131,11 @@ const config: webpack.Configuration[] = entries.map(({ name, dir, target }) => {
     optimization: {
       splitChunks: false,
       minimizer: [new ESBuildMinifyPlugin({ target: "es2018" })],
+    },
+    // ホストがグローバルに露出しているRecoil/Reactを用いる
+    externals: {
+      react: "root React",
+      recoil: "root Recoil",
     },
   }
 })

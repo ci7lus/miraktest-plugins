@@ -1,0 +1,10 @@
+.dummy {
+  color: red;
+}
+/* 一番上のルールがうまく解釈されない？謎 */
+
+.programDescription {
+  a {
+    @apply text-blue-600;
+  }
+}
