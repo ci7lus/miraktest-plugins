@@ -98,22 +98,17 @@ const main: InitPlugin = {
         return
       },
       contextMenu: {
-        label: meta.name,
-        submenu: [
-          {
-            label: "録画一覧",
-            click: () => {
-              functions.openWindow({
-                name: recordsWindowId,
-                isSingletone: true,
-                args: {
-                  width: 800,
-                  height: 600,
-                },
-              })
+        label: "EPGStation 録画一覧",
+        click: () => {
+          functions.openWindow({
+            name: recordsWindowId,
+            isSingletone: true,
+            args: {
+              width: 800,
+              height: 600,
             },
-          },
-        ],
+          })
+        },
       },
       windows: {
         [recordsWindowId]: () => {
@@ -160,6 +155,30 @@ const main: InitPlugin = {
               </div>
             </>
           )
+        },
+      },
+    }
+  },
+  main: ({ functions }) => {
+    return {
+      ...meta,
+      setup: () => {
+        return
+      },
+      destroy: () => {
+        return
+      },
+      appMenu: {
+        label: "EPGStation 録画一覧",
+        click: () => {
+          functions.openWindow({
+            name: recordsWindowId,
+            isSingletone: true,
+            args: {
+              width: 800,
+              height: 600,
+            },
+          })
         },
       },
     }

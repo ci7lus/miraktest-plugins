@@ -305,22 +305,17 @@ const main: InitPlugin = {
         return
       },
       contextMenu: {
-        label: meta.name,
-        submenu: [
-          {
-            label: "コメント一覧",
-            click: () => {
-              functions.openWindow({
-                name: commentWindowId,
-                isSingletone: true,
-                args: {
-                  width: 300,
-                  height: 720,
-                },
-              })
+        label: "Saya コメント一覧",
+        click: () => {
+          functions.openWindow({
+            name: commentWindowId,
+            isSingletone: true,
+            args: {
+              width: 300,
+              height: 720,
             },
-          },
-        ],
+          })
+        },
       },
       windows: {
         [commentWindowId]: () => {
@@ -386,6 +381,30 @@ const main: InitPlugin = {
               </div>
             </>
           )
+        },
+      },
+    }
+  },
+  main: ({ functions }) => {
+    return {
+      ...meta,
+      setup: () => {
+        return
+      },
+      destroy: () => {
+        return
+      },
+      appMenu: {
+        label: "Saya コメント一覧",
+        click: () => {
+          functions.openWindow({
+            name: commentWindowId,
+            isSingletone: true,
+            args: {
+              width: 800,
+              height: 600,
+            },
+          })
         },
       },
     }
