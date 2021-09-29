@@ -1,12 +1,6 @@
 import React, { useEffect, useState, useRef } from "react"
 import { useDebounce } from "react-use"
-import {
-  atom,
-  useRecoilValue,
-  useRecoilState,
-  atomFamily,
-  useSetRecoilState,
-} from "recoil"
+import { atom, useRecoilValue, useRecoilState } from "recoil"
 import { InitPlugin } from "../@types/plugin"
 import tailwind from "../tailwind.scss"
 import { NicoCommentChat, NicoCommentList } from "./types"
@@ -34,15 +28,12 @@ const meta = {
 }
 
 const main: InitPlugin = {
-  renderer: async ({ packages }) => {
-    const remote = packages.Electron
-    const remoteWindow = remote.getCurrentWindow()
-
+  renderer: async () => {
     const allCommentsAtom = atom<NicoCommentList | null>({
       key: `${prefix}.allComments`,
       default: null,
     })
-    const commentAtom = atomFamily<NicoCommentChat | null, number>({
+    const commentAtom = atom<NicoCommentChat | null>({
       key: `${prefix}.comment`,
       default: null,
     })
@@ -132,12 +123,11 @@ const main: InitPlugin = {
       ...meta,
       exposedAtoms: [
         { type: "atom", atom: allCommentsAtom },
-        { type: "family", atom: commentAtom, key: `${prefix}.comment`, arg: 0 },
+        { type: "atom", atom: commentAtom },
       ],
       sharedAtoms: [
         { type: "atom", atom: allCommentsAtom },
         { type: "atom", atom: opacityAtom },
-        { type: "family", atom: commentAtom, key: `${prefix}.comment`, arg: 0 },
       ],
       storedAtoms: [{ type: "atom", atom: opacityAtom }],
       setup() {
@@ -149,7 +139,7 @@ const main: InitPlugin = {
           position: "onPlayer",
           component: () => {
             const comments = useRecoilValue(allCommentsAtom)
-            const comment = useRecoilValue(commentAtom(remoteWindow.id))
+            const comment = useRecoilValue(commentAtom)
             const opacity = useRecoilValue(opacityAtom)
             const [currentTime, setCurrentTime] = useState(0)
             useEffect(() => {
@@ -182,13 +172,6 @@ const main: InitPlugin = {
           position: "onSetting",
           label: meta.name,
           component: () => {
-            const setAllComments = useSetRecoilState(allCommentsAtom)
-            const [allCommentForm, setAllCommentForm] = useState("")
-            const [targetWindowNumber, setTargetWindowNumber] = useState(1)
-            const setComment = useSetRecoilState(
-              commentAtom(targetWindowNumber)
-            )
-            const [commentForm, setCommentForm] = useState("")
             const [opacity, setOpacity] = useRecoilState(opacityAtom)
             const [rangeOpacity, setRangeOpacity] = useState(opacity * 10)
             useDebounce(
@@ -219,74 +202,6 @@ const main: InitPlugin = {
                         }}
                       />
                     </label>
-                  </form>
-                  <p className="text-lg mt-8">デバッグ</p>
-                  <form onSubmit={(e) => e.preventDefault()}>
-                    <label className="block mt-2">
-                      <span>ターゲットウィンドウ番号</span>
-                      <input
-                        type="number"
-                        className="block mt-2 form-input rounded-md w-full text-gray-900"
-                        value={targetWindowNumber}
-                        onChange={(e) => {
-                          const p = parseInt(e.currentTarget.value)
-                          if (Number.isNaN(p)) return
-                          setTargetWindowNumber(p)
-                        }}
-                      />
-                    </label>
-                  </form>
-                  <form
-                    onSubmit={(e) => {
-                      e.preventDefault()
-                      setAllComments(JSON.parse(allCommentForm))
-                    }}
-                  >
-                    <label className="block mt-2">
-                      <span>全コメントセット</span>
-                      <input
-                        type="text"
-                        className="block mt-2 form-input rounded-md w-full text-gray-900"
-                        value={allCommentForm}
-                        onChange={(e) => {
-                          setAllCommentForm(e.currentTarget.value)
-                        }}
-                      />
-                    </label>
-                    <button
-                      type="submit"
-                      className="bg-gray-100 text-gray-800 p-2 px-2 my-4 rounded-md focus:outline-none cursor-pointer active:bg-gray-200"
-                    >
-                      更新
-                    </button>
-                  </form>
-                  <form
-                    onSubmit={(e) => {
-                      e.preventDefault()
-                      setComment({
-                        content: commentForm,
-                        mail: "184",
-                        date: new Date().getTime() / 1000,
-                      })
-                    }}
-                  >
-                    <label className="block">
-                      <span>コメント単発追加</span>
-                      <input
-                        type="text"
-                        className="block mt-2 form-input rounded-md w-full text-gray-900"
-                        value={commentForm}
-                        onChange={(e) => {
-                          setCommentForm(e.currentTarget.value)
-                        }}
-                      />
-                    </label>
-                    <button
-                      type="submit"
-                      className="bg-gray-100 text-gray-800 p-2 px-2 my-4 rounded-md focus:outline-none cursor-pointer active:bg-gray-200"
-                    >
-                      表示
-                    </button>
                   </form>
                 </div>
               </>

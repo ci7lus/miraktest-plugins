@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState, useRef } from "react"
 import { useDebounce } from "react-use"
-import { atom, useRecoilValue, useRecoilState, atomFamily } from "recoil"
+import { atom, useRecoilValue, useRecoilState } from "recoil"
 import { InitPlugin } from "../@types/plugin"
 import tailwind from "../tailwind.scss"
 import { DPlayer } from "./dplayerLoader"
@@ -26,11 +26,8 @@ const meta = {
 }
 
 const main: InitPlugin = {
-  renderer: async ({ packages }) => {
-    const remote = packages.Electron
-    const remoteWindow = remote.getCurrentWindow()
-
-    const commentAtom = atomFamily<SayaCommentPayload | null, number>({
+  renderer: async () => {
+    const commentAtom = atom<SayaCommentPayload | null>({
       key: `${prefix}.comment`,
       default: null,
     })
@@ -136,13 +133,8 @@ const main: InitPlugin = {
 
     return {
       ...meta,
-      exposedAtoms: [
-        { type: "family", atom: commentAtom, key: `${prefix}.comment`, arg: 0 },
-      ],
-      sharedAtoms: [
-        { type: "atom", atom: opacityAtom },
-        { type: "family", atom: commentAtom, key: `${prefix}.comment`, arg: 0 },
-      ],
+      exposedAtoms: [{ type: "atom", atom: commentAtom }],
+      sharedAtoms: [{ type: "atom", atom: opacityAtom }],
       storedAtoms: [{ type: "atom", atom: opacityAtom }],
       setup() {
         return
@@ -152,7 +144,7 @@ const main: InitPlugin = {
           id: `${prefix}.dplayerCommentPlayer`,
           position: "onPlayer",
           component: () => {
-            const comment = useRecoilValue(commentAtom(remoteWindow.id))
+            const comment = useRecoilValue(commentAtom)
             return <DPlayerWrapper comment={comment} />
           },
         },

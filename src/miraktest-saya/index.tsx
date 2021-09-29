@@ -9,7 +9,7 @@ import {
   useSetRecoilState,
 } from "recoil"
 import ReconnectingWebSocket from "reconnecting-websocket"
-import { AtomFamily, InitPlugin } from "../@types/plugin"
+import { Atom, InitPlugin } from "../@types/plugin"
 import { SayaSetting, SayaCommentPayload } from "../miraktest-dplayer/types"
 import { NicoCommentChat } from "../miraktest-zenza/types"
 import tailwind from "../tailwind.scss"
@@ -34,7 +34,7 @@ const meta = {
 const commentWindowId = `${_id}.sayaCommentWindow`
 
 const main: InitPlugin = {
-  renderer: ({ appInfo, packages, functions, atoms }) => {
+  renderer: ({ appInfo, packages, atoms }) => {
     const remote = packages.Electron
     const remoteWindow = remote.getCurrentWindow()
 
@@ -58,16 +58,12 @@ const main: InitPlugin = {
       ...meta,
       exposedAtoms: [],
       sharedAtoms: [
-        {
-          type: "atom",
-          atom: sayaSettingAtom,
-        },
-        {
+        /*{
           type: "family",
           atom: rawCommentFamily,
           key: commentFamilyKey,
           arg: 0,
-        },
+        },*/
       ],
       storedAtoms: [
         {
@@ -81,12 +77,12 @@ const main: InitPlugin = {
         )
         if (zenza) {
           const family = zenza.exposedAtoms.find(
-            (atom): atom is AtomFamily<number, NicoCommentChat> =>
-              atom.type === "family" &&
-              atom.key === "plugins.ci7lus.zenza.comment"
+            (atom): atom is Atom<NicoCommentChat> =>
+              atom.type === "atom" &&
+              atom.atom.key === "plugins.ci7lus.zenza.comment"
           )
           if (family) {
-            zenzaCommentAtom = family.atom(remoteWindow.id)
+            zenzaCommentAtom = family.atom
           }
         }
         const dplayer = plugins.find(
@@ -94,12 +90,12 @@ const main: InitPlugin = {
         )
         if (dplayer) {
           const family = dplayer.exposedAtoms.find(
-            (atom): atom is AtomFamily<number, SayaCommentPayload> =>
-              atom.type === "family" &&
-              atom.key === "plugins.ci7lus.dplayer.comment"
+            (atom): atom is Atom<SayaCommentPayload> =>
+              atom.type === "atom" &&
+              atom.atom.key === "plugins.ci7lus.dplayer.comment"
           )
           if (family) {
-            dplayerCommentAtom = family.atom(remoteWindow.id)
+            dplayerCommentAtom = family.atom
           }
         }
       },
@@ -304,7 +300,7 @@ const main: InitPlugin = {
       destroy() {
         return
       },
-      contextMenu: {
+      /*contextMenu: {
         label: "Saya コメント一覧",
         click: () => {
           functions.openWindow({
@@ -316,7 +312,7 @@ const main: InitPlugin = {
             },
           })
         },
-      },
+      },*/
       windows: {
         [commentWindowId]: () => {
           const [windowId, setWindowId] = useState(1)
@@ -385,7 +381,7 @@ const main: InitPlugin = {
       },
     }
   },
-  main: ({ functions }) => {
+  main: (/*{ functions }*/) => {
     return {
       ...meta,
       setup: () => {
@@ -394,7 +390,7 @@ const main: InitPlugin = {
       destroy: () => {
         return
       },
-      appMenu: {
+      /*appMenu: {
         label: "Saya コメント一覧",
         click: () => {
           functions.openWindow({
@@ -406,7 +402,7 @@ const main: InitPlugin = {
             },
           })
         },
-      },
+      },*/
     }
   },
 }
