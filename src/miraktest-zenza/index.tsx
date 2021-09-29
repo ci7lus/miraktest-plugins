@@ -1,3 +1,12 @@
+import React, { useEffect, useState, useRef } from "react"
+import { useDebounce } from "react-use"
+import {
+  atom,
+  useRecoilValue,
+  useRecoilState,
+  atomFamily,
+  useSetRecoilState,
+} from "recoil"
 import { InitPlugin } from "../@types/plugin"
 import tailwind from "../tailwind.scss"
 import { NicoCommentChat, NicoCommentList } from "./types"
@@ -26,16 +35,6 @@ const meta = {
 
 const main: InitPlugin = {
   renderer: async ({ packages }) => {
-    const React = packages.React
-    const { useEffect, useState, useRef } = React
-    const {
-      atom,
-      useRecoilValue,
-      useRecoilState,
-      useSetRecoilState,
-      atomFamily,
-    } = packages.Recoil
-    const { useDebounce } = packages.ReactUse
     const remote = packages.Electron
     const remoteWindow = remote.getCurrentWindow()
 

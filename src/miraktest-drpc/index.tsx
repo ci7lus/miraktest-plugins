@@ -1,4 +1,6 @@
 import { Presence } from "discord-rpc"
+import React, { useEffect, useState } from "react"
+import { atom, useRecoilValue, useRecoilState } from "recoil"
 import { InitPlugin } from "../@types/plugin"
 import tailwind from "../tailwind.scss"
 import { getServiceLogoForPresence } from "./presence"
@@ -45,9 +47,6 @@ const main: InitPlugin = {
     }
   },
   renderer: ({ appInfo, packages, atoms }) => {
-    const React = packages.React
-    const { useState, useEffect } = React
-    const { atom, useRecoilState, useRecoilValue } = packages.Recoil
     const remote = packages.Electron
     const remoteWindow = remote.getCurrentWindow()
 

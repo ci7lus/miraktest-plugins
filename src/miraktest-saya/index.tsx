@@ -1,5 +1,13 @@
+import React, { useEffect, useState } from "react"
 import { Plus, X } from "react-feather"
 import type { RecoilState } from "recoil"
+import {
+  atom,
+  atomFamily,
+  useRecoilValue,
+  useRecoilState,
+  useSetRecoilState,
+} from "recoil"
 import ReconnectingWebSocket from "reconnecting-websocket"
 import { AtomFamily, InitPlugin } from "../@types/plugin"
 import { SayaSetting, SayaCommentPayload } from "../miraktest-dplayer/types"
@@ -26,16 +34,7 @@ const meta = {
 const commentWindowId = `${_id}.sayaCommentWindow`
 
 const main: InitPlugin = {
-  renderer: ({ packages, functions, atoms }) => {
-    const React = packages.React
-    const { useEffect, useState } = React
-    const {
-      atom,
-      atomFamily,
-      useRecoilValue,
-      useRecoilState,
-      useSetRecoilState,
-    } = packages.Recoil
+  renderer: ({ appInfo, packages, functions, atoms }) => {
     const remote = packages.Electron
     const remoteWindow = remote.getCurrentWindow()
 
@@ -348,7 +347,7 @@ const main: InitPlugin = {
             atoms.globalContentPlayerPlayingContentFamily(windowId)
           )
           useEffect(() => {
-            remoteWindow.setTitle("Saya コメントウィンドウ")
+            remoteWindow.setTitle(`Saya コメント - ${appInfo.name}`)
           }, [])
           return (
             <>

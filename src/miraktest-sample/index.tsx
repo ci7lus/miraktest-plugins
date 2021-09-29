@@ -1,3 +1,5 @@
+import React, { useEffect } from "react"
+import { atom, useRecoilValue, useRecoilState } from "recoil"
 import { InitPlugin } from "../@types/plugin"
 import tailwind from "../tailwind.scss"
 
@@ -14,9 +16,6 @@ const sampleWindowId = `${_id}.sampleWindow`
 
 const main: InitPlugin = {
   renderer: ({ packages, functions, atoms }) => {
-    const React = packages.React
-    const { useEffect } = React
-    const { atom, useRecoilValue, useRecoilState } = packages.Recoil
     const remote = packages.Electron
     const remoteWindow = remote.getCurrentWindow()
 

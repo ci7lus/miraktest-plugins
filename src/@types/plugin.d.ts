@@ -255,7 +255,7 @@ Mirakurun:                                  Apache License
 /// <reference types="react" />
 /// <reference types="scheduler" />
 
-import Axios from "axios"
+import { useToast } from "react-toastify"
 import * as Recoil from "recoil"
 
 type GlobalEvent = Event & {
@@ -38524,15 +38524,14 @@ export declare type InitPlugin = {
 export declare type PluginInRendererArgs = {
   appInfo: AppInfo
   packages: {
-    React: typeof React
-    Recoil: typeof Recoil
     Electron: typeof remote
-    Axios: typeof Axios
-    ReactUse: typeof ReactUse
     IpcRenderer: Electron.IpcRenderer
   }
   functions: {
     openWindow: (args: OpenWindowArg) => Promise<number>
+  }
+  hooks: {
+    useToast: typeof useToast
   }
   atoms: {
     globalContentPlayerIdsSelector: Recoil.RecoilValueReadOnly<number[]>

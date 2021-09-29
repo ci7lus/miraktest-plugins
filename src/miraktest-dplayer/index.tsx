@@ -1,3 +1,6 @@
+import React, { memo, useEffect, useState, useRef } from "react"
+import { useDebounce } from "react-use"
+import { atom, useRecoilValue, useRecoilState, atomFamily } from "recoil"
 import { InitPlugin } from "../@types/plugin"
 import tailwind from "../tailwind.scss"
 import { DPlayer } from "./dplayerLoader"
@@ -24,10 +27,6 @@ const meta = {
 
 const main: InitPlugin = {
   renderer: async ({ packages }) => {
-    const React = packages.React
-    const { memo, useEffect, useState, useRef } = React
-    const { atom, useRecoilValue, useRecoilState, atomFamily } = packages.Recoil
-    const { useDebounce } = packages.ReactUse
     const remote = packages.Electron
     const remoteWindow = remote.getCurrentWindow()
 

@@ -24,6 +24,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+.dummy {
+  color: red;
+}
+/* 一番上のルールがうまく解釈されない？謎 */
+
 @-webkit-keyframes my-face {
   2% {
     transform: translateY(1.5px) rotate(1.5deg);
