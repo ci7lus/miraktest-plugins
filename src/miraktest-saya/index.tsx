@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { Plus, X } from "react-feather"
 import type { RecoilState } from "recoil"
 import {
@@ -12,6 +12,7 @@ import ReconnectingWebSocket from "reconnecting-websocket"
 import { Atom, InitPlugin } from "../@types/plugin"
 import { SayaSetting, SayaCommentPayload } from "../miraktest-dplayer/types"
 import { NicoCommentChat } from "../miraktest-zenza/types"
+import { useRefFromState } from "../shared/utils"
 import tailwind from "../tailwind.scss"
 import { trimCommentForFlow } from "./comment"
 
@@ -64,6 +65,10 @@ const main: InitPlugin = {
           key: commentFamilyKey,
           arg: 0,
         },*/
+        {
+          type: "atom",
+          atom: sayaSettingAtom,
+        },
       ],
       storedAtoms: [
         {
@@ -109,6 +114,13 @@ const main: InitPlugin = {
             }, [])
             const sayaSetting = useRecoilValue(sayaSettingAtom)
             const service = useRecoilValue(atoms.contentPlayerServiceSelector)
+            const program = useRecoilValue(atoms.contentPlayerProgramSelector)
+            const isSeekable = useRecoilValue(
+              atoms.contentPlayerIsSeekableSelector
+            )
+            const isPlaying = useRecoilValue(atoms.contentPlayerIsPlayingAtom)
+            const time = useRecoilValue(atoms.contentPlayerPlayingTimeSelector)
+            const timeRef = useRefFromState(time)
             const setZenzaComment = zenzaCommentAtom
               ? useSetRecoilState(zenzaCommentAtom)
               : null
@@ -118,6 +130,18 @@ const main: InitPlugin = {
             const setRawComment = useSetRecoilState(
               rawCommentFamily(remoteWindow.id)
             )
+            const wsRef = useRef<ReconnectingWebSocket | null>(null)
+            const send = (ws: ReconnectingWebSocket, payload: object) => {
+              ws.send(JSON.stringify(payload))
+              console.info("Send to Saya:", payload)
+            }
+            const syncPosition = (ws: ReconnectingWebSocket) => {
+              const seconds = Math.ceil(timeRef.current / 1000)
+              send(ws, {
+                action: "Sync",
+                seconds,
+              })
+            }
             useEffect(() => {
               if (!setZenzaComment && !setDplayerComment) {
                 console.warn("コメント送信先の取得に失敗しています")
@@ -141,19 +165,35 @@ const main: InitPlugin = {
                   wsUrl.protocol = "ws:"
                 }
 
-                if (!service.channel) throw new Error("service.channel")
+                let channelType = service.channel?.type as string
 
-                let channelType = service.channel.type as string
-                const repl = (sayaSetting.replaces || []).find(
-                  ([before]) => before === channelType
-                )
-                if (repl) {
-                  channelType = repl[1]
+                if (channelType) {
+                  const repl = (sayaSetting.replaces || []).find(
+                    ([before]) => before === channelType
+                  )
+                  if (repl) {
+                    channelType = repl[1]
+                  }
                 }
 
-                ws = new ReconnectingWebSocket(
-                  `${wsUrl.href}/comments/${channelType}_${service.serviceId}/live`
-                )
+                const isTimeshift = isSeekable && program?.startAt
+
+                if (isTimeshift) {
+                  console.info("タイムシフトを行います:", program)
+                  const endAt = program.startAt + program.duration
+                  ws = new ReconnectingWebSocket(
+                    `${wsUrl.href}/comments/${channelType}_${
+                      service.serviceId
+                    }/timeshift?${new URLSearchParams({
+                      startAt: (program.startAt / 1000).toString(),
+                      endAt: (endAt / 1000).toString(),
+                    }).toString()}`
+                  )
+                } else {
+                  ws = new ReconnectingWebSocket(
+                    `${wsUrl.href}/comments/${channelType}_${service.serviceId}/live`
+                  )
+                }
                 ws.addEventListener("message", (e) => {
                   const payload: SayaCommentPayload = JSON.parse(e.data)
                   if (payload.text.startsWith("RT @")) return
@@ -176,7 +216,15 @@ const main: InitPlugin = {
                 })
                 ws.addEventListener("open", () => {
                   console.info("Sayaへ接続しました")
+                  if (isTimeshift) {
+                    syncPosition(ws)
+                    send(ws, { action: "Ready" })
+                  }
                 })
+                ws.addEventListener("close", () => {
+                  wsRef.current = null
+                })
+                wsRef.current = ws
               } catch {
                 console.info("Sayaへの接続に失敗しました")
               }
@@ -184,7 +232,18 @@ const main: InitPlugin = {
               return () => {
                 ws?.close()
               }
-            }, [service, sayaSetting])
+            }, [service, program, isSeekable, sayaSetting])
+            useEffect(() => {
+              const ws = wsRef.current
+              if (!ws) return
+              if (!isSeekable) return
+              if (isPlaying) {
+                syncPosition(ws)
+                send(ws, { action: "Resume" })
+              } else {
+                send(ws, { action: "Pause" })
+              }
+            }, [isPlaying])
             return <></>
           },
         },
