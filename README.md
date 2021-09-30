@@ -27,7 +27,7 @@ js ファイルを定期的に [Releases](https://github.com/ci7lus/miraktest-pl
 - [DPlayer](./src/miraktest-dplayer)<br />
   (v1 標準機能代替) Saya プラグインと連携し、コメントを表示します。
 - [Zenza](./src/miraktest-zenza)<br />
-  Saya プラグインと連携し、コメントを表示します。
+  ~~Saya プラグインと連携し、コメントを表示します。~~ **現在動きません**
 - [EPGStation](./src/miraktest-epgs)<br />
   EPGStation と連携し、録画番組を再生します。
 
