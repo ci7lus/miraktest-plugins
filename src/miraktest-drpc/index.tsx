@@ -94,7 +94,7 @@ const main: InitPlugin = {
             const isPlaying = useRecoilValue(atoms.contentPlayerIsPlayingAtom)
             const isEnabled = useRecoilValue(isEnabledAtom)
             useEffect(() => {
-              if (!isEnabled) {
+              if (!isEnabled || !isPlaying) {
                 packages.IpcRenderer.invoke(activityEventId, null)
                 return
               }
