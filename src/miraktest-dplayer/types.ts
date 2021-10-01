@@ -1,9 +1,4 @@
-export type SayaSetting = {
-  baseUrl?: string
-  replaces: [string, string][]
-}
-
-export type SayaCommentPayload = {
+export type DPlayerCommentPayload = {
   sourceUrl: string | null
   source: string
   no: number

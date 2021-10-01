@@ -10,11 +10,12 @@ import {
 } from "recoil"
 import ReconnectingWebSocket from "reconnecting-websocket"
 import { Atom, InitPlugin } from "../@types/plugin"
-import { SayaSetting, SayaCommentPayload } from "../miraktest-dplayer/types"
+import { DPlayerCommentPayload } from "../miraktest-dplayer/types"
 import { NicoCommentChat } from "../miraktest-zenza/types"
 import { useRefFromState } from "../shared/utils"
 import tailwind from "../tailwind.scss"
 import { trimCommentForFlow } from "./comment"
+import { SayaSetting } from "./types"
 
 /**
  * MirakTest Saya Plugin
@@ -47,10 +48,10 @@ const main: InitPlugin = {
     })
 
     let zenzaCommentAtom: RecoilState<NicoCommentChat> | null = null
-    let dplayerCommentAtom: RecoilState<SayaCommentPayload> | null = null
+    let dplayerCommentAtom: RecoilState<DPlayerCommentPayload> | null = null
 
     const commentFamilyKey = `${prefix}.rawComment`
-    const rawCommentFamily = atomFamily<SayaCommentPayload | null, number>({
+    const rawCommentFamily = atomFamily<DPlayerCommentPayload | null, number>({
       key: commentFamilyKey,
       default: null,
     })
@@ -95,7 +96,7 @@ const main: InitPlugin = {
         )
         if (dplayer) {
           const family = dplayer.exposedAtoms.find(
-            (atom): atom is Atom<SayaCommentPayload> =>
+            (atom): atom is Atom<DPlayerCommentPayload> =>
               atom.type === "atom" &&
               atom.atom.key === "plugins.ci7lus.dplayer.comment"
           )
@@ -195,7 +196,7 @@ const main: InitPlugin = {
                   )
                 }
                 ws.addEventListener("message", (e) => {
-                  const payload: SayaCommentPayload = JSON.parse(e.data)
+                  const payload: DPlayerCommentPayload = JSON.parse(e.data)
                   if (payload.text.startsWith("RT @")) return
                   setRawComment(payload)
                   const commentText = trimCommentForFlow(payload.text)
@@ -376,7 +377,7 @@ const main: InitPlugin = {
         [commentWindowId]: () => {
           const [windowId, setWindowId] = useState(1)
           const playerIds = useRecoilValue(atoms.globalContentPlayerIdsSelector)
-          const [comments, setComments] = useState<SayaCommentPayload[]>([])
+          const [comments, setComments] = useState<DPlayerCommentPayload[]>([])
           const comment = useRecoilValue(rawCommentFamily(windowId))
           useEffect(() => {
             if (!comment) return

@@ -5,7 +5,7 @@ import { InitPlugin } from "../@types/plugin"
 import tailwind from "../tailwind.scss"
 import { DPlayer } from "./dplayerLoader"
 import style from "./style.scss"
-import { SayaCommentPayload } from "./types"
+import { DPlayerCommentPayload } from "./types"
 
 /**
  * MirakTest DPlayer Plugin
@@ -27,7 +27,7 @@ const meta = {
 
 const main: InitPlugin = {
   renderer: async () => {
-    const commentAtom = atom<SayaCommentPayload | null>({
+    const commentAtom = atom<DPlayerCommentPayload | null>({
       key: `${prefix}.comment`,
       default: null,
     })
@@ -37,7 +37,7 @@ const main: InitPlugin = {
     })
 
     const DPlayerWrapper: React.VFC<{
-      comment: SayaCommentPayload | null
+      comment: DPlayerCommentPayload | null
     }> = memo(({ comment }) => {
       const dplayerElementRef = useRef<HTMLDivElement>(null)
       const player = useRef<DPlayer | null>()
