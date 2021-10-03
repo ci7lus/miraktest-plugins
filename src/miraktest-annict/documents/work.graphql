@@ -61,7 +61,7 @@ fragment Work on Work {
       ...Cast
     }
   }
-  episodes(orderBy: { field: SORT_NUMBER, direction: ASC }, first: 20) {
+  episodes(orderBy: { field: SORT_NUMBER, direction: ASC }, last: 50) {
     nodes {
       ...Episode
     }
@@ -75,6 +75,14 @@ fragment Work on Work {
 
 query Work($annictId: Int!) {
   searchWorks(annictIds: [$annictId], first: 1) {
+    nodes {
+      ...Work
+    }
+  }
+}
+
+query searchWorksByTerm($term: String!, $count: Int, $since: String) {
+  searchWorks(titles: [$term], after: $since, first: $count) {
     nodes {
       ...Work
     }

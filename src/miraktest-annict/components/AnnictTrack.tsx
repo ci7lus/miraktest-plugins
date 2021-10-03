@@ -1,6 +1,6 @@
 import clsx from "clsx"
 import React, { useEffect, useState } from "react"
-import { RefreshCcw } from "react-feather"
+import { Link } from "react-feather"
 import Recoil, { useRecoilState } from "recoil"
 import { ContentPlayerPlayingContent } from "../../@types/plugin"
 import { AnnictRESTAPI, generateGqlClient } from "../annictAPI"
@@ -13,6 +13,7 @@ import {
 import { detectProgramInfo } from "../findWork"
 import { RatingState, StatusState, WorkFragment } from "../gql"
 import { ARM, SayaDefinition } from "../types"
+import { SearchWorkForm } from "./SeachWorkForm"
 
 export const AnnictTrack: React.FC<{
   accessToken: string
@@ -30,6 +31,7 @@ export const AnnictTrack: React.FC<{
   facebookAtom,
 }) => {
   const [timing, setTiming] = useState(0)
+  const [linkedAt, setLinkedAt] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
   const rest = new AnnictRESTAPI(accessToken)
   const [workId, setWorkId] = useState<number | null>(null)
@@ -61,7 +63,7 @@ export const AnnictTrack: React.FC<{
           return
         }
         setWorkId(programInfo.annictId)
-        if (programInfo.episode.id) {
+        if (programInfo.episode?.id) {
           setEpisodeId(programInfo.episode.id)
           setEpisodeInfo(null)
         } else {
@@ -72,7 +74,7 @@ export const AnnictTrack: React.FC<{
         console.error(e)
         setIsLoading(false)
       })
-  }, [accessToken, timing, arm])
+  }, [accessToken, linkedAt, arm])
   const [episodeInfo, setEpisodeInfo] = useState<{
     number: number
     title: string
@@ -108,12 +110,12 @@ export const AnnictTrack: React.FC<{
         const work = result.searchWorks?.nodes?.[0]
         setWork(work || null)
         if (work) {
-          setWatchStatus(work.viewerStatusState || StatusState.NO_STATE)
+          setWatchStatus(work.viewerStatusState ?? StatusState.NO_STATE)
         }
       })
       .catch(console.error)
       .finally(() => setIsLoading(false))
-  }, [workId, timing])
+  }, [workId, linkedAt, timing])
   const [isStatusChanging, setIsStatusChanging] = useState(false)
   useEffect(() => {
     if (!work || work.viewerStatusState === watchStatus) {
@@ -174,25 +176,29 @@ export const AnnictTrack: React.FC<{
           "py-2",
           "bg-gray-800",
           "flex",
-          "justify-between"
+          "justify-between",
+          "items-center"
         )}
       >
         <h1 className={clsx("text-lg")}>視聴記録</h1>
-        <button
-          className={clsx(
-            "focus:outline-none",
-            "rounded-md",
-            "bg-gray-900",
-            "hover:bg-gray-800",
-            "p-1",
-            "cursor-pointer",
-            "transition-colors"
-          )}
-          title="再読み込み"
-          onClick={() => setTiming(performance.now())}
-        >
-          <RefreshCcw size={18} />
-        </button>
+        <div className={clsx("flex", "items-center", "space-x-2")}>
+          <button
+            className={clsx(
+              "focus:outline-none",
+              "rounded-md",
+              "bg-gray-900",
+              "hover:bg-gray-800",
+              "p-1",
+              "cursor-pointer",
+              "transition-colors"
+            )}
+            title="番組情報から取得"
+            onClick={() => setLinkedAt(performance.now())}
+          >
+            <Link size={18} />
+          </button>
+          <SearchWorkForm accessToken={accessToken} setWorkId={setWorkId} />
+        </div>
       </div>
       {work ? (
         <div className={clsx("w-full", "flex", "overflow-auto")}>
@@ -233,7 +239,7 @@ export const AnnictTrack: React.FC<{
                 onChange={(e) => {
                   setWatchStatus(e.target.value as never)
                 }}
-                defaultValue={work.viewerStatusState || undefined}
+                value={watchStatus}
                 disabled={isStatusChanging}
               >
                 {Object.entries(STATUS_LABEL).map(([key, label]) => (
@@ -413,7 +419,9 @@ export const AnnictTrack: React.FC<{
                     "flex",
                     "justify-between",
                     "cursor-pointer",
-                    episode?.viewerDidTrack && "text-gray-600"
+                    episode?.viewerDidTrack && "text-gray-600",
+                    "hover:text-gray-400",
+                    "transition-colors"
                   )}
                 >
                   <span className={clsx("truncate")}>

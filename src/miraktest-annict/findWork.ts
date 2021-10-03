@@ -20,7 +20,7 @@ export const detectProgramInfo = async ({
     number: number
     title: string
     id?: number
-  }
+  } | null
 } | void> => {
   let startTime: dayjs.Dayjs
   let endTime: dayjs.Dayjs

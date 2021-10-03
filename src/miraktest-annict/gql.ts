@@ -1336,6 +1336,122 @@ export type WorkQuery = {
     | undefined
 }
 
+export type searchWorksByTermQueryVariables = Exact<{
+  term: Scalars["String"]
+  count: Maybe<Scalars["Int"]>
+  since: Maybe<Scalars["String"]>
+}>
+
+export type searchWorksByTermQuery = {
+  __typename?: "Query"
+  searchWorks:
+    | {
+        __typename?: "WorkConnection"
+        nodes:
+          | Array<
+              | {
+                  __typename?: "Work"
+                  id: string
+                  annictId: number
+                  title: string
+                  media: Media
+                  twitterUsername: string | null | undefined
+                  twitterHashtag: string | null | undefined
+                  officialSiteUrl: string | null | undefined
+                  seasonName: SeasonName | null | undefined
+                  seasonYear: number | null | undefined
+                  episodesCount: number
+                  noEpisodes: boolean
+                  titleKana: string | null | undefined
+                  viewerStatusState: StatusState | null | undefined
+                  image:
+                    | {
+                        __typename?: "WorkImage"
+                        recommendedImageUrl: string | null | undefined
+                      }
+                    | null
+                    | undefined
+                  casts:
+                    | {
+                        __typename?: "CastConnection"
+                        nodes:
+                          | Array<
+                              | {
+                                  __typename?: "Cast"
+                                  annictId: number
+                                  id: string
+                                  name: string
+                                  character: {
+                                    __typename?: "Character"
+                                    id: string
+                                    annictId: number
+                                    name: string
+                                  }
+                                  person: {
+                                    __typename?: "Person"
+                                    id: string
+                                    annictId: number
+                                    name: string
+                                    nameEn: string
+                                    nameKana: string
+                                  }
+                                }
+                              | null
+                              | undefined
+                            >
+                          | null
+                          | undefined
+                      }
+                    | null
+                    | undefined
+                  episodes:
+                    | {
+                        __typename?: "EpisodeConnection"
+                        nodes:
+                          | Array<
+                              | {
+                                  __typename?: "Episode"
+                                  id: string
+                                  annictId: number
+                                  number: number | null | undefined
+                                  numberText: string | null | undefined
+                                  title: string | null | undefined
+                                  viewerDidTrack: boolean
+                                  viewerRecordsCount: number
+                                }
+                              | null
+                              | undefined
+                            >
+                          | null
+                          | undefined
+                      }
+                    | null
+                    | undefined
+                  seriesList:
+                    | {
+                        __typename?: "SeriesConnection"
+                        nodes:
+                          | Array<
+                              | { __typename?: "Series"; name: string }
+                              | null
+                              | undefined
+                            >
+                          | null
+                          | undefined
+                      }
+                    | null
+                    | undefined
+                }
+              | null
+              | undefined
+            >
+          | null
+          | undefined
+      }
+    | null
+    | undefined
+}
+
 export type updateWorkStatusMutationVariables = Exact<{
   workId: Scalars["ID"]
   state: StatusState
@@ -1438,7 +1554,7 @@ export const WorkFragmentDoc = gql`
         ...Cast
       }
     }
-    episodes(orderBy: { field: SORT_NUMBER, direction: ASC }, first: 20) {
+    episodes(orderBy: { field: SORT_NUMBER, direction: ASC }, last: 50) {
       nodes {
         ...Episode
       }
@@ -1455,6 +1571,16 @@ export const WorkFragmentDoc = gql`
 export const WorkDocument = gql`
   query Work($annictId: Int!) {
     searchWorks(annictIds: [$annictId], first: 1) {
+      nodes {
+        ...Work
+      }
+    }
+  }
+  ${WorkFragmentDoc}
+`
+export const searchWorksByTermDocument = gql`
+  query searchWorksByTerm($term: String!, $count: Int, $since: String) {
+    searchWorks(titles: [$term], after: $since, first: $count) {
       nodes {
         ...Work
       }
@@ -1517,6 +1643,20 @@ export function getSdk(
             ...wrappedRequestHeaders,
           }),
         "Work"
+      )
+    },
+    searchWorksByTerm(
+      variables: searchWorksByTermQueryVariables,
+      requestHeaders?: Dom.RequestInit["headers"]
+    ): Promise<searchWorksByTermQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<searchWorksByTermQuery>(
+            searchWorksByTermDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        "searchWorksByTerm"
       )
     },
     updateWorkStatus(
