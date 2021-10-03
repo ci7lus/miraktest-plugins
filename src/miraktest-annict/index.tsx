@@ -106,6 +106,13 @@ const main: InitPlugin = {
                       value={accessToken || ""}
                       onChange={(e) => setAccessToken(e.target.value)}
                     />
+                    <a
+                      className="text-sm text-blue-400"
+                      href="https://annict.com/settings/apps"
+                      target="_blank"
+                    >
+                      アクセストークンを取得する
+                    </a>
                   </label>
                   <button
                     type="submit"
@@ -227,7 +234,7 @@ const main: InitPlugin = {
         return
       },
       appMenu: {
-        label: "EPGStation 録画一覧",
+        label: "Annict",
         click: () => {
           functions.openWindow({
             name: trackWindowId,
