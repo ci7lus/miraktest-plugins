@@ -30,6 +30,8 @@ js ファイルを定期的に [Releases](https://github.com/ci7lus/miraktest-pl
   ~~Saya プラグインと連携し、コメントを表示します。~~ **現在動きません**
 - [EPGStation](./src/miraktest-epgs)<br />
   EPGStation と連携し、録画番組を再生します。
+- [Annict](./src/miraktest-annict)<br />
+  Annict と連携し、視聴中のアニメを記録します。
 
 ## ビルド
 
@@ -42,6 +44,7 @@ cd zenzawatch
 yarn
 cd ..
 yarn build
+yarn build --env=files=miraktest-annict # miraktest-annictだけをビルドする
 ```
 
 `./dist` の中に js ファイルが生成されます。

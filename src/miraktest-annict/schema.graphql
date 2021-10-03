@@ -1,0 +1,913 @@
+type Activity implements Node {
+  annictId: Int!
+  id: ID!
+  user: User!
+}
+
+enum ActivityAction {
+  CREATE
+}
+
+type ActivityConnection {
+  edges: [ActivityEdge]
+  nodes: [Activity]
+  pageInfo: PageInfo!
+}
+
+type ActivityEdge {
+  action: ActivityAction!
+  annictId: Int!
+  cursor: String!
+  node: ActivityItem
+  user: User!
+}
+
+union ActivityItem = MultipleRecord | Record | Review | Status
+input ActivityOrder {
+  field: ActivityOrderField!
+  direction: OrderDirection!
+}
+
+enum ActivityOrderField {
+  CREATED_AT
+}
+
+type Cast implements Node {
+  annictId: Int!
+  character: Character!
+  id: ID!
+  name: String!
+  nameEn: String!
+  person: Person!
+  sortNumber: Int!
+  work: Work!
+}
+
+type CastConnection {
+  edges: [CastEdge]
+  nodes: [Cast]
+  pageInfo: PageInfo!
+}
+
+type CastEdge {
+  cursor: String!
+  node: Cast
+}
+
+input CastOrder {
+  field: CastOrderField!
+  direction: OrderDirection!
+}
+
+enum CastOrderField {
+  CREATED_AT
+  SORT_NUMBER
+}
+
+type Channel implements Node {
+  annictId: Int!
+  channelGroup: ChannelGroup!
+  id: ID!
+  name: String!
+  programs(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ProgramConnection
+  published: Boolean!
+  scChid: Int!
+}
+
+type ChannelConnection {
+  edges: [ChannelEdge]
+  nodes: [Channel]
+  pageInfo: PageInfo!
+}
+
+type ChannelEdge {
+  cursor: String!
+  node: Channel
+}
+
+type ChannelGroup implements Node {
+  annictId: Int!
+  channels(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ChannelConnection
+  id: ID!
+  name: String!
+  sortNumber: Int!
+}
+
+type Character implements Node {
+  age: String!
+  ageEn: String!
+  annictId: Int!
+  birthday: String!
+  birthdayEn: String!
+  bloodType: String!
+  bloodTypeEn: String!
+  description: String!
+  descriptionEn: String!
+  descriptionSource: String!
+  descriptionSourceEn: String!
+  favoriteCharactersCount: Int!
+  height: String!
+  heightEn: String!
+  id: ID!
+  name: String!
+  nameEn: String!
+  nameKana: String!
+  nationality: String!
+  nationalityEn: String!
+  nickname: String!
+  nicknameEn: String!
+  occupation: String!
+  occupationEn: String!
+  series: Series!
+  weight: String!
+  weightEn: String!
+}
+
+type CharacterConnection {
+  edges: [CharacterEdge]
+  nodes: [Character]
+  pageInfo: PageInfo!
+}
+
+type CharacterEdge {
+  cursor: String!
+  node: Character
+}
+
+input CharacterOrder {
+  field: CharacterOrderField!
+  direction: OrderDirection!
+}
+
+enum CharacterOrderField {
+  CREATED_AT
+  FAVORITE_CHARACTERS_COUNT
+}
+
+input CreateRecordInput {
+  episodeId: ID!
+  comment: String
+  ratingState: RatingState
+  shareTwitter: Boolean
+  shareFacebook: Boolean
+  clientMutationId: String
+}
+
+type CreateRecordPayload {
+  clientMutationId: String
+  record: Record
+}
+
+input CreateReviewInput {
+  workId: ID!
+  title: String
+  body: String!
+  ratingOverallState: RatingState
+  ratingAnimationState: RatingState
+  ratingMusicState: RatingState
+  ratingStoryState: RatingState
+  ratingCharacterState: RatingState
+  shareTwitter: Boolean
+  shareFacebook: Boolean
+  clientMutationId: String
+}
+
+type CreateReviewPayload {
+  clientMutationId: String
+  review: Review
+}
+
+scalar DateTime
+
+input DeleteRecordInput {
+  recordId: ID!
+  clientMutationId: String
+}
+
+type DeleteRecordPayload {
+  clientMutationId: String
+  episode: Episode
+}
+
+input DeleteReviewInput {
+  reviewId: ID!
+  clientMutationId: String
+}
+
+type DeleteReviewPayload {
+  clientMutationId: String
+  work: Work
+}
+
+type Episode implements Node {
+  annictId: Int!
+  id: ID!
+  nextEpisode: Episode
+  number: Int
+  numberText: String
+  prevEpisode: Episode
+  recordCommentsCount: Int!
+  records(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    orderBy: RecordOrder
+    hasComment: Boolean
+  ): RecordConnection
+  recordsCount: Int!
+  satisfactionRate: Float
+  sortNumber: Int!
+  title: String
+  viewerDidTrack: Boolean!
+  viewerRecordsCount: Int!
+  work: Work!
+}
+
+type EpisodeConnection {
+  edges: [EpisodeEdge]
+  nodes: [Episode]
+  pageInfo: PageInfo!
+}
+
+type EpisodeEdge {
+  cursor: String!
+  node: Episode
+}
+
+input EpisodeOrder {
+  field: EpisodeOrderField!
+  direction: OrderDirection!
+}
+
+enum EpisodeOrderField {
+  CREATED_AT
+  SORT_NUMBER
+}
+
+enum Media {
+  TV
+  OVA
+  MOVIE
+  WEB
+  OTHER
+}
+
+type MultipleRecord implements Node {
+  annictId: Int!
+  createdAt: DateTime!
+  id: ID!
+  records(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): RecordConnection
+  user: User!
+  work: Work!
+}
+
+type Mutation {
+  createRecord(input: CreateRecordInput!): CreateRecordPayload
+  createReview(input: CreateReviewInput!): CreateReviewPayload
+  deleteRecord(input: DeleteRecordInput!): DeleteRecordPayload
+  deleteReview(input: DeleteReviewInput!): DeleteReviewPayload
+  updateRecord(input: UpdateRecordInput!): UpdateRecordPayload
+  updateReview(input: UpdateReviewInput!): UpdateReviewPayload
+  updateStatus(input: UpdateStatusInput!): UpdateStatusPayload
+}
+
+interface Node {
+  id: ID!
+}
+
+enum OrderDirection {
+  ASC
+  DESC
+}
+
+type Organization implements Node {
+  annictId: Int!
+  favoriteOrganizationsCount: Int!
+  id: ID!
+  name: String!
+  nameEn: String!
+  nameKana: String!
+  staffsCount: Int!
+  twitterUsername: String!
+  twitterUsernameEn: String!
+  url: String!
+  urlEn: String!
+  wikipediaUrl: String!
+  wikipediaUrlEn: String!
+}
+
+type OrganizationConnection {
+  edges: [OrganizationEdge]
+  nodes: [Organization]
+  pageInfo: PageInfo!
+}
+
+type OrganizationEdge {
+  cursor: String!
+  node: Organization
+}
+
+input OrganizationOrder {
+  field: OrganizationOrderField!
+  direction: OrderDirection!
+}
+
+enum OrganizationOrderField {
+  CREATED_AT
+  FAVORITE_ORGANIZATIONS_COUNT
+}
+
+type PageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+}
+
+type Person implements Node {
+  annictId: Int!
+  birthday: String!
+  bloodType: String!
+  castsCount: Int!
+  favoritePeopleCount: Int!
+  genderText: String!
+  height: String!
+  id: ID!
+  name: String!
+  nameEn: String!
+  nameKana: String!
+  nickname: String!
+  nicknameEn: String!
+  prefecture: Prefecture!
+  staffsCount: Int!
+  twitterUsername: String!
+  twitterUsernameEn: String!
+  url: String!
+  urlEn: String!
+  wikipediaUrl: String!
+  wikipediaUrlEn: String!
+}
+
+type PersonConnection {
+  edges: [PersonEdge]
+  nodes: [Person]
+  pageInfo: PageInfo!
+}
+
+type PersonEdge {
+  cursor: String!
+  node: Person
+}
+
+input PersonOrder {
+  field: PersonOrderField!
+  direction: OrderDirection!
+}
+
+enum PersonOrderField {
+  CREATED_AT
+  FAVORITE_PEOPLE_COUNT
+}
+
+type Prefecture implements Node {
+  annictId: Int!
+  id: ID!
+  name: String!
+}
+
+type Program implements Node {
+  annictId: Int!
+  channel: Channel!
+  episode: Episode!
+  id: ID!
+  rebroadcast: Boolean!
+  scPid: Int
+  startedAt: DateTime!
+  state: ProgramState!
+  work: Work!
+}
+
+type ProgramConnection {
+  edges: [ProgramEdge]
+  nodes: [Program]
+  pageInfo: PageInfo!
+}
+
+type ProgramEdge {
+  cursor: String!
+  node: Program
+}
+
+input ProgramOrder {
+  field: ProgramOrderField!
+  direction: OrderDirection!
+}
+
+enum ProgramOrderField {
+  STARTED_AT
+}
+
+enum ProgramState {
+  PUBLISHED
+  HIDDEN
+}
+
+type Query {
+  node(id: ID!): Node
+  nodes(ids: [ID!]!): [Node]!
+  searchCharacters(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    annictIds: [Int!]
+    names: [String!]
+    orderBy: CharacterOrder
+  ): CharacterConnection
+  searchEpisodes(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    annictIds: [Int!]
+    orderBy: EpisodeOrder
+  ): EpisodeConnection
+  searchOrganizations(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    annictIds: [Int!]
+    names: [String!]
+    orderBy: OrganizationOrder
+  ): OrganizationConnection
+  searchPeople(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    annictIds: [Int!]
+    names: [String!]
+    orderBy: PersonOrder
+  ): PersonConnection
+  searchWorks(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    annictIds: [Int!]
+    seasons: [String!]
+    titles: [String!]
+    orderBy: WorkOrder
+  ): WorkConnection
+  user(username: String!): User
+  viewer: User
+}
+
+enum RatingState {
+  GREAT
+  GOOD
+  AVERAGE
+  BAD
+}
+
+type Record implements Node {
+  annictId: Int!
+  comment: String
+  commentsCount: Int!
+  createdAt: DateTime!
+  episode: Episode!
+  facebookClickCount: Int!
+  id: ID!
+  likesCount: Int!
+  modified: Boolean!
+  rating: Float
+  ratingState: RatingState
+  twitterClickCount: Int!
+  updatedAt: DateTime!
+  user: User!
+  work: Work!
+}
+
+type RecordConnection {
+  edges: [RecordEdge]
+  nodes: [Record]
+  pageInfo: PageInfo!
+}
+
+type RecordEdge {
+  cursor: String!
+  node: Record
+}
+
+input RecordOrder {
+  field: RecordOrderField!
+  direction: OrderDirection!
+}
+
+enum RecordOrderField {
+  CREATED_AT
+  LIKES_COUNT
+}
+
+type Review implements Node {
+  annictId: Int!
+  body: String!
+  createdAt: DateTime!
+  id: ID!
+  impressionsCount: Int!
+  likesCount: Int!
+  modifiedAt: DateTime
+  ratingAnimationState: RatingState
+  ratingCharacterState: RatingState
+  ratingMusicState: RatingState
+  ratingOverallState: RatingState
+  ratingStoryState: RatingState
+  title: String
+  updatedAt: DateTime!
+  user: User!
+  work: Work!
+}
+
+type ReviewConnection {
+  edges: [ReviewEdge]
+  nodes: [Review]
+  pageInfo: PageInfo!
+}
+
+type ReviewEdge {
+  cursor: String!
+  node: Review
+}
+
+input ReviewOrder {
+  field: ReviewOrderField!
+  direction: OrderDirection!
+}
+
+enum ReviewOrderField {
+  CREATED_AT
+  LIKES_COUNT
+}
+
+enum SeasonName {
+  WINTER
+  SPRING
+  SUMMER
+  AUTUMN
+}
+
+type Series implements Node {
+  annictId: Int!
+  id: ID!
+  name: String!
+  nameEn: String!
+  nameRo: String!
+  works(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    orderBy: SeriesWorkOrder
+  ): SeriesWorkConnection
+}
+
+type SeriesConnection {
+  edges: [SeriesEdge]
+  nodes: [Series]
+  pageInfo: PageInfo!
+}
+
+type SeriesEdge {
+  cursor: String!
+  node: Series
+}
+
+type SeriesWorkConnection {
+  edges: [SeriesWorkEdge]
+  nodes: [Work]
+  pageInfo: PageInfo!
+}
+
+type SeriesWorkEdge {
+  cursor: String!
+  node: Work!
+  summary: String
+  summaryEn: String
+}
+
+input SeriesWorkOrder {
+  field: SeriesWorkOrderField!
+  direction: OrderDirection!
+}
+
+enum SeriesWorkOrderField {
+  SEASON
+}
+
+type Staff implements Node {
+  annictId: Int!
+  id: ID!
+  name: String!
+  nameEn: String!
+  resource: StaffResourceItem!
+  roleOther: String!
+  roleOtherEn: String!
+  roleText: String!
+  sortNumber: Int!
+  work: Work!
+}
+
+type StaffConnection {
+  edges: [StaffEdge]
+  nodes: [Staff]
+  pageInfo: PageInfo!
+}
+
+type StaffEdge {
+  cursor: String!
+  node: Staff
+}
+
+input StaffOrder {
+  field: StaffOrderField!
+  direction: OrderDirection!
+}
+
+enum StaffOrderField {
+  CREATED_AT
+  SORT_NUMBER
+}
+
+union StaffResourceItem = Organization | Person
+type Status implements Node {
+  annictId: Int!
+  createdAt: DateTime!
+  id: ID!
+  likesCount: Int!
+  state: StatusState!
+  user: User!
+  work: Work!
+}
+
+enum StatusState {
+  WANNA_WATCH
+  WATCHING
+  WATCHED
+  ON_HOLD
+  STOP_WATCHING
+  NO_STATE
+}
+
+input UpdateRecordInput {
+  recordId: ID!
+  comment: String
+  ratingState: RatingState
+  shareTwitter: Boolean
+  shareFacebook: Boolean
+  clientMutationId: String
+}
+
+type UpdateRecordPayload {
+  clientMutationId: String
+  record: Record
+}
+
+input UpdateReviewInput {
+  reviewId: ID!
+  title: String
+  body: String!
+  ratingOverallState: RatingState!
+  ratingAnimationState: RatingState!
+  ratingMusicState: RatingState!
+  ratingStoryState: RatingState!
+  ratingCharacterState: RatingState!
+  shareTwitter: Boolean
+  shareFacebook: Boolean
+  clientMutationId: String
+}
+
+type UpdateReviewPayload {
+  clientMutationId: String
+  review: Review
+}
+
+input UpdateStatusInput {
+  workId: ID!
+  state: StatusState!
+  clientMutationId: String
+}
+
+type UpdateStatusPayload {
+  clientMutationId: String
+  work: Work
+}
+
+type User implements Node {
+  activities(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    orderBy: ActivityOrder
+  ): ActivityConnection
+  annictId: Int!
+  avatarUrl: String
+  backgroundImageUrl: String
+  createdAt: DateTime!
+  description: String!
+  email: String
+  followers(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): UserConnection
+  followersCount: Int!
+  following(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): UserConnection
+  followingActivities(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    orderBy: ActivityOrder
+  ): ActivityConnection
+  followingsCount: Int!
+  id: ID!
+  name: String!
+  notificationsCount: Int
+  onHoldCount: Int!
+  programs(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    unwatched: Boolean
+    orderBy: ProgramOrder
+  ): ProgramConnection
+  records(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    orderBy: RecordOrder
+    hasComment: Boolean
+  ): RecordConnection
+  recordsCount: Int!
+  stopWatchingCount: Int!
+  url: String
+  username: String!
+  viewerCanFollow: Boolean!
+  viewerIsFollowing: Boolean!
+  wannaWatchCount: Int!
+  watchedCount: Int!
+  watchingCount: Int!
+  works(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    annictIds: [Int!]
+    seasons: [String!]
+    titles: [String!]
+    state: StatusState
+    orderBy: WorkOrder
+  ): WorkConnection
+}
+
+type UserConnection {
+  edges: [UserEdge]
+  nodes: [User]
+  pageInfo: PageInfo!
+}
+
+type UserEdge {
+  cursor: String!
+  node: User
+}
+
+type Work implements Node {
+  annictId: Int!
+  casts(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    orderBy: CastOrder
+  ): CastConnection
+  episodes(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    orderBy: EpisodeOrder
+  ): EpisodeConnection
+  episodesCount: Int!
+  id: ID!
+  image: WorkImage
+  malAnimeId: String
+  media: Media!
+  noEpisodes: Boolean!
+  officialSiteUrl: String
+  officialSiteUrlEn: String
+  programs(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    orderBy: ProgramOrder
+  ): ProgramConnection
+  reviews(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    orderBy: ReviewOrder
+    hasBody: Boolean
+  ): ReviewConnection
+  reviewsCount: Int!
+  satisfactionRate: Float
+  seasonName: SeasonName
+  seasonYear: Int
+  seriesList(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): SeriesConnection
+  staffs(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    orderBy: StaffOrder
+  ): StaffConnection
+  syobocalTid: Int
+  title: String!
+  titleEn: String
+  titleKana: String
+  titleRo: String
+  twitterHashtag: String
+  twitterUsername: String
+  viewerStatusState: StatusState
+  watchersCount: Int!
+  wikipediaUrl: String
+  wikipediaUrlEn: String
+}
+
+type WorkConnection {
+  edges: [WorkEdge]
+  nodes: [Work]
+  pageInfo: PageInfo!
+}
+
+type WorkEdge {
+  cursor: String!
+  node: Work
+}
+
+type WorkImage implements Node {
+  annictId: Int
+  copyright: String
+  facebookOgImageUrl: String
+  id: ID!
+  internalUrl(size: String!): String
+  recommendedImageUrl: String
+  twitterAvatarUrl: String
+  twitterBiggerAvatarUrl: String
+  twitterMiniAvatarUrl: String
+  twitterNormalAvatarUrl: String
+  work: Work
+}
+
+input WorkOrder {
+  field: WorkOrderField!
+  direction: OrderDirection!
+}
+
+enum WorkOrderField {
+  CREATED_AT
+  SEASON
+  WATCHERS_COUNT
+}

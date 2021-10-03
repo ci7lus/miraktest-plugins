@@ -1,0 +1,14 @@
+schema: ./src/miraktest-annict/schema.graphql
+documents: ./src/miraktest-annict/documents/*.graphql
+config:
+  namingConvention: ./src/miraktest-annict/gqlNaming.js
+generates:
+  ./src/miraktest-annict/gql.ts:
+    plugins:
+      - add:
+          content: "/* eslint-disable */"
+      - typescript
+      - typescript-operations
+      - typescript-graphql-request
+    config:
+      avoidOptionals: true

@@ -1,0 +1,111 @@
+# https://github.com/oyuk/Annictim/blob/e00379d9277c1d38561988f21ab7ee0b9c5e4a43/infra/src/main/graphql/com/okysoft/infra/Work.graphql
+
+fragment Character on Character {
+  id
+  annictId
+  name
+}
+
+fragment Cast on Cast {
+  annictId
+  id
+  name
+  character {
+    ...Character
+  }
+  person {
+    id
+    annictId
+    name
+    nameEn
+    nameKana
+  }
+}
+
+fragment Episode on Episode {
+  id
+  annictId
+  number
+  numberText
+  title
+  viewerDidTrack
+  viewerRecordsCount
+}
+
+fragment Staff on Staff {
+  annictId
+  name
+  roleText
+  roleOther
+}
+
+fragment Work on Work {
+  id
+  annictId
+  title
+  media
+  twitterUsername
+  twitterHashtag
+  officialSiteUrl
+  seasonName
+  seasonYear
+  episodesCount
+  noEpisodes
+  titleKana
+  image {
+    recommendedImageUrl
+  }
+  viewerStatusState
+  casts {
+    nodes {
+      ...Cast
+    }
+  }
+  episodes(orderBy: { field: SORT_NUMBER, direction: ASC }, first: 20) {
+    nodes {
+      ...Episode
+    }
+  }
+  seriesList {
+    nodes {
+      name
+    }
+  }
+}
+
+query Work($annictId: Int!) {
+  searchWorks(annictIds: [$annictId], first: 1) {
+    nodes {
+      ...Work
+    }
+  }
+}
+
+mutation updateWorkStatus($workId: ID!, $state: StatusState!) {
+  updateStatus(
+    input: { clientMutationId: "miraktest", workId: $workId, state: $state }
+  ) {
+    clientMutationId
+  }
+}
+
+mutation createRecord(
+  $episodeId: ID!
+  $comment: String
+  $ratingState: RatingState
+  $shareTwitter: Boolean
+  $shareFacebook: Boolean
+) {
+  createRecord(
+    input: {
+      episodeId: $episodeId
+      comment: $comment
+      ratingState: $ratingState
+      shareTwitter: $shareTwitter
+      shareFacebook: $shareFacebook
+      clientMutationId: "miraktest"
+    }
+  ) {
+    clientMutationId
+  }
+}
