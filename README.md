@@ -14,7 +14,7 @@
 
 ## プラグインのダウンロード
 
-js ファイルを定期的に [Releases](https://github.com/ci7lus/miraktest-plugins/releases) に放流します。
+コミット毎に [Releases](https://github.com/ci7lus/miraktest-plugins/releases) に放流されます。
 
 ## プラグイン一覧
 

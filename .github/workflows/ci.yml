@@ -85,3 +85,17 @@ jobs:
         with:
           name: dist
           path: dist
+      - name: Get Time
+        id: time
+        uses: nanzm/get-time-action@v1.1
+        with:
+          timeZone: 9
+          format: "YYYYMMDDHH"
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/*.plugin.js
+          name: ${{ steps.time.outputs.time }}
+          tag_name: ${{ steps.time.outputs.time }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
