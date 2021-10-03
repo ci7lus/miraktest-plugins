@@ -22,7 +22,7 @@ export const SearchWorkForm: React.FC<{
       return
     }
     const sdk = generateGqlClient(accessToken)
-
+    let isSubscribed = true
     sdk
       .searchWorksByTerm({
         term: searchTerm,
@@ -30,9 +30,14 @@ export const SearchWorkForm: React.FC<{
         since: null,
       })
       .then((result) => {
-        setWorks((result.searchWorks?.nodes || []) as QueryWork[])
-        setIsVisible(true)
+        if (isSubscribed) {
+          setWorks((result.searchWorks?.nodes || []) as QueryWork[])
+          setIsVisible(true)
+        }
       })
+    return () => {
+      isSubscribed = false
+    }
   }, [searchTerm])
   useDebounce(
     () => {
