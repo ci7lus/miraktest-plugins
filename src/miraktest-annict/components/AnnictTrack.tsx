@@ -94,7 +94,6 @@ export const AnnictTrack: React.FC<{
       return
     }
     setEpisodeId(found?.annictId)
-    setEpisodeInfo(null)
   }, [episodeInfo, work])
   useEffect(() => {
     if (!workId) {
@@ -115,7 +114,7 @@ export const AnnictTrack: React.FC<{
       })
       .catch(console.error)
       .finally(() => setIsLoading(false))
-  }, [workId, linkedAt, timing])
+  }, [workId, timing])
   const [isStatusChanging, setIsStatusChanging] = useState(false)
   useEffect(() => {
     if (!work || work.viewerStatusState === watchStatus) {

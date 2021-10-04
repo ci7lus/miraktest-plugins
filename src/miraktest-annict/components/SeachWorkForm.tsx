@@ -48,7 +48,7 @@ export const SearchWorkForm: React.FC<{
   )
 
   return (
-    <div className={clsx("relative")}>
+    <div className={clsx("relative")} onMouseLeave={() => setIsVisible(false)}>
       <form
         className="flex items-center justify-center space-x-2"
         onSubmit={(e) => {
@@ -81,38 +81,32 @@ export const SearchWorkForm: React.FC<{
           "transition-opacity",
           !isVisible || works === null
             ? "opacity-0 pointer-events-none"
-            : "opacity-100"
+            : "opacity-100",
+          "bg-gray-700",
+          "overflow-auto",
+          "p-2",
+          "rounded-md"
         )}
-        onMouseLeave={() => setIsVisible(false)}
+        style={{ maxHeight: "66vh" }}
       >
         {works !== null ? (
           0 < works.length ? (
-            <div
-              className={clsx(
-                "w-full",
-                "bg-gray-700",
-                "overflow-auto",
-                "p-2",
-                "rounded-md"
-              )}
-            >
-              {(works || []).map((work) => (
-                <p
-                  key={work.id}
-                  className={clsx(
-                    "truncate",
-                    "cursor-pointer",
-                    "px-2",
-                    "py-1",
-                    "hover:bg-gray-600",
-                    "transition-colors"
-                  )}
-                  onClick={() => setWorkId(work.annictId)}
-                >
-                  {work.title}
-                </p>
-              ))}
-            </div>
+            (works || []).map((work) => (
+              <p
+                key={work.id}
+                className={clsx(
+                  "truncate",
+                  "cursor-pointer",
+                  "px-2",
+                  "py-1",
+                  "hover:bg-gray-600",
+                  "transition-colors"
+                )}
+                onClick={() => setWorkId(work.annictId)}
+              >
+                {work.title}
+              </p>
+            ))
           ) : (
             <div
               className={clsx(
@@ -121,7 +115,6 @@ export const SearchWorkForm: React.FC<{
                 "justify-center",
                 "p-8",
                 "text-gray-400",
-                "bg-gray-700",
                 "w-full",
                 "text-sm"
               )}

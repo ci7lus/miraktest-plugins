@@ -157,7 +157,7 @@ const main: InitPlugin = {
           }, [])
           const [sayaDefinition, setSayaDefinition] =
             useState<SayaDefinition | null>(null)
-          const [arm, setArm] = useState<ARM[]>([])
+          const [arm, setArm] = useState<ARM[] | null>(null)
           useEffect(() => {
             Axios.get<string>(
               "https://raw.githack.com/SlashNephy/saya/dev/docs/definitions.yml",
@@ -182,7 +182,7 @@ const main: InitPlugin = {
             <>
               <style>{tailwind}</style>
               <div className="w-full h-screen bg-gray-900 text-gray-100 flex leading-loose">
-                {setting.accessToken && services && sayaDefinition ? (
+                {setting.accessToken && services && sayaDefinition && arm ? (
                   <AnnictTrack
                     accessToken={setting.accessToken}
                     playingContent={playingContent}
