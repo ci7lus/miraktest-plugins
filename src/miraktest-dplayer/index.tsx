@@ -76,7 +76,7 @@ const main: InitPlugin = {
           autoplay: true,
           screenshot: true,
           video: {
-            url: "https://files.catbox.moe/tvs9xy.mp4",
+            url: "https://user-images.githubusercontent.com/7887955/135782430-ec36baf3-2f12-4629-b89e-0628d1baa91b.mp4",
           },
           danmaku,
           lang: "ja-jp",
