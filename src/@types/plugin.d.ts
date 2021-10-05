@@ -255,7 +255,6 @@ Mirakurun:                                  Apache License
 /// <reference types="react" />
 /// <reference types="scheduler" />
 
-import { useToast } from "react-toastify"
 import * as Recoil from "recoil"
 
 type GlobalEvent = Event & {
@@ -38495,6 +38494,9 @@ export declare type CustomComponent = {
   id: string
   component: React.VFC<{}>
 }
+export declare type OnBackgroundComponent = {
+  position: "onBackground"
+} & CustomComponent
 export declare type OnSplashComponent = {
   position: "onSplash"
 } & CustomComponent
@@ -38512,6 +38514,7 @@ export declare type OnForwardComponent = {
   position: "onForward"
 } & CustomComponent
 export declare type ComponentWithPosition =
+  | OnBackgroundComponent
   | OnSplashComponent
   | OnSettingComponent
   | OnPlayerComponent
@@ -38530,9 +38533,7 @@ export declare type PluginInRendererArgs = {
   functions: {
     openWindow: (args: OpenWindowArg) => Promise<number>
   }
-  hooks: {
-    useToast: typeof useToast
-  }
+  hooks: {}
   atoms: {
     globalContentPlayerIdsSelector: Recoil.RecoilValueReadOnly<number[]>
     globalContentPlayerPlayingContentFamily: (

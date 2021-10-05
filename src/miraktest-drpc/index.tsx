@@ -77,8 +77,8 @@ const main: InitPlugin = {
       },
       components: [
         {
-          id: `${prefix}.player`,
-          position: "onPlayer",
+          id: `${prefix}.background`,
+          position: "onBackground",
           label: meta.name,
           component: () => {
             const activeWindowId = useRecoilValue(
@@ -94,13 +94,18 @@ const main: InitPlugin = {
             const isPlaying = useRecoilValue(atoms.contentPlayerIsPlayingAtom)
             const isEnabled = useRecoilValue(isEnabledAtom)
             useEffect(() => {
-              if (!isEnabled || !isPlaying) {
+              if (
+                !isEnabled ||
+                activeWindowId === null ||
+                (!isPlaying && remoteWindow.id === activeWindowId)
+              ) {
                 packages.IpcRenderer.invoke(activityEventId, null)
                 return
               }
               if (
                 remoteWindow.id !== activeWindowId ||
-                !playingContent?.service
+                !playingContent?.service ||
+                !isPlaying
               ) {
                 return
               }
