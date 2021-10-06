@@ -1,4 +1,5 @@
 import axios from "axios"
+import urljoin from "url-join"
 import type { EPGSProgramRecord, EPGSChannel } from "./types"
 
 export class EPGStationAPI {
@@ -104,6 +105,6 @@ export class EPGStationAPI {
     return data.records
   }
   getVideoUrl({ videoId }: { videoId: number }) {
-    return `${this.baseUrl.href}/api/videos/${videoId}`
+    return urljoin(this.baseUrl.href, `api/videos/${videoId}`)
   }
 }
