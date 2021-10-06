@@ -1,10 +1,9 @@
-import React, { memo, useEffect, useState, useRef } from "react"
+import React, { useState } from "react"
 import { useDebounce } from "react-use"
 import { atom, useRecoilValue, useRecoilState } from "recoil"
 import { InitPlugin } from "../@types/plugin"
 import tailwind from "../tailwind.scss"
-import { DPlayer } from "./dplayerLoader"
-import style from "./style.scss"
+import { DPlayerWrapper } from "./components/DPlayerWrapper"
 import { DPlayerCommentPayload } from "./types"
 
 /**
@@ -35,107 +34,22 @@ const main: InitPlugin = {
       key: `${prefix}.opacity`,
       default: 1,
     })
-
-    const DPlayerWrapper: React.VFC<{
-      comment: DPlayerCommentPayload | null
-    }> = memo(({ comment }) => {
-      const dplayerElementRef = useRef<HTMLDivElement>(null)
-      const player = useRef<DPlayer | null>()
-
-      const danmaku = {
-        id: "mirakutest",
-        user: "mirakutest",
-        api: "",
-        bottom: "10%",
-        unlimited: true,
-      }
-
-      const commentOpacity = useRecoilValue(opacityAtom)
-
-      useEffect(() => {
-        if (!player.current) return
-        player.current.danmaku.opacity(commentOpacity)
-      }, [commentOpacity])
-
-      useEffect(() => {
-        const playerRef = player.current
-        if (!playerRef || !comment || playerRef.video.paused === true) {
-          return
-        }
-        if (comment.source.startsWith("5ch")) {
-          setTimeout(() => playerRef.danmaku.draw(comment), comment.timeMs || 0)
-        } else {
-          playerRef.danmaku.draw(comment)
-        }
-      }, [comment])
-
-      useEffect(() => {
-        const playerInstance = new DPlayer({
-          container: dplayerElementRef.current,
-          live: true,
-          autoplay: true,
-          screenshot: true,
-          video: {
-            url: "https://user-images.githubusercontent.com/7887955/135782430-ec36baf3-2f12-4629-b89e-0628d1baa91b.mp4",
-          },
-          danmaku,
-          lang: "ja-jp",
-          subtitle: {
-            type: "webvtt",
-            fontSize: "20px",
-            color: "#fff",
-            bottom: "40px",
-            // TODO: Typing correctly
-          } as never,
-          apiBackend: {
-            read: (option) => {
-              option.success([{}])
-            },
-            send: (option, item, callback) => {
-              callback()
-            },
-          },
-          contextmenu: [],
-          loop: true,
-          volume: 0,
-          hotkey: false,
-        })
-
-        playerInstance.danmaku.opacity(commentOpacity)
-        playerInstance.danmaku.show()
-
-        playerInstance.on("pause" as DPlayer.DPlayerEvents.pause, () => {
-          playerInstance.play()
-        })
-
-        player.current = playerInstance
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        window.dplayer = playerInstance
-
-        const timer = setInterval(() => {
-          playerInstance.video.currentTime = 0
-        }, 30 * 1000)
-        return () => {
-          player.current?.destroy()
-          player.current = null
-          clearInterval(timer)
-        }
-      }, [])
-
-      return (
-        <>
-          <style>{style}</style>
-          <div ref={dplayerElementRef}></div>
-        </>
-      )
+    const zoomAtom = atom<number>({
+      key: `${prefix}.zoom`,
+      default: 1,
     })
 
     return {
       ...meta,
       exposedAtoms: [{ type: "atom", atom: commentAtom }],
-      sharedAtoms: [{ type: "atom", atom: opacityAtom }],
-      storedAtoms: [{ type: "atom", atom: opacityAtom }],
+      sharedAtoms: [
+        { type: "atom", atom: opacityAtom },
+        { type: "atom", atom: zoomAtom },
+      ],
+      storedAtoms: [
+        { type: "atom", atom: opacityAtom },
+        { type: "atom", atom: zoomAtom },
+      ],
       setup() {
         return
       },
@@ -145,7 +59,11 @@ const main: InitPlugin = {
           position: "onPlayer",
           component: () => {
             const comment = useRecoilValue(commentAtom)
-            return <DPlayerWrapper comment={comment} />
+            const opacity = useRecoilValue(opacityAtom)
+            const zoom = useRecoilValue(zoomAtom)
+            return (
+              <DPlayerWrapper comment={comment} opacity={opacity} zoom={zoom} />
+            )
           },
         },
         {
@@ -154,13 +72,16 @@ const main: InitPlugin = {
           label: meta.name,
           component: () => {
             const [opacity, setOpacity] = useRecoilState(opacityAtom)
+            const [zoom, setZoom] = useRecoilState(zoomAtom)
             const [rangeOpacity, setRangeOpacity] = useState(opacity * 10)
+            const [rangeZoom, setRangeZoom] = useState(zoom * 10)
             useDebounce(
               () => {
                 setOpacity(rangeOpacity / 10)
+                setZoom(rangeZoom / 10)
               },
               100,
-              [rangeOpacity]
+              [rangeOpacity, rangeZoom]
             )
             return (
               <>
@@ -182,6 +103,23 @@ const main: InitPlugin = {
                           setRangeOpacity(p)
                         }}
                       />
+                      <span>{rangeOpacity / 10}</span>
+                    </label>
+                    <label className="block mt-4">
+                      <span>表示倍率</span>
+                      <input
+                        type="range"
+                        className="block mt-2 rounded-md w-full"
+                        min={10}
+                        max={30}
+                        value={rangeZoom}
+                        onChange={(e) => {
+                          const p = parseInt(e.target.value)
+                          if (Number.isNaN(p)) return
+                          setRangeZoom(p)
+                        }}
+                      />
+                      <span>{rangeZoom / 10}</span>
                     </label>
                   </form>
                 </div>
