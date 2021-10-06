@@ -1,5 +1,5 @@
 import clsx from "clsx"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { Search } from "react-feather"
 import { useDebounce } from "react-use"
 import { generateGqlClient } from "../annictAPI"
@@ -46,9 +46,25 @@ export const SearchWorkForm: React.FC<{
     100,
     [localTerm]
   )
+  const ref = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const listener = (event: MouseEvent | TouchEvent) => {
+      const target = event.composedPath().shift()
+      if (!event || !ref.current || ref.current.contains(target as Node)) {
+        return
+      }
+      setIsVisible(false)
+    }
+    document.addEventListener("mousedown", listener)
+    document.addEventListener("touchstart", listener)
+    return () => {
+      document.removeEventListener("mousedown", listener)
+      document.removeEventListener("touchstart", listener)
+    }
+  }, [ref])
 
   return (
-    <div className={clsx("relative")} onMouseLeave={() => setIsVisible(false)}>
+    <div className={clsx("relative")} ref={ref}>
       <form
         className="flex items-center justify-center space-x-2"
         onSubmit={(e) => {
