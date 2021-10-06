@@ -7,3 +7,7 @@ Annict REST API の使用には一部[nukosuke/annict.js](https://github.com/nuk
 ## 動作イメージ
 
 [![Image from Gyazo](https://i.gyazo.com/e8fc95033b68f48f894204b193044e2a.png)](https://gyazo.com/e8fc95033b68f48f894204b193044e2a)
+
+## ダウンロード
+
+<https://github.com/ci7lus/miraktest-plugins/releases>
