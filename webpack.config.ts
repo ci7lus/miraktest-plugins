@@ -29,7 +29,7 @@ const entries: Entry[] = [
     name: "miraktest-saya",
     dir: "./src/miraktest-saya",
   },
-  { name: "miraktest-zenza", dir: "./src/miraktest-zenza" },
+  // { name: "miraktest-zenza", dir: "./src/miraktest-zenza" },
   {
     name: "miraktest-dplayer",
     dir: "./src/miraktest-dplayer",
