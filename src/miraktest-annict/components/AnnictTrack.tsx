@@ -353,6 +353,8 @@ export const AnnictTrack: React.FC<{
                     )}
                     rows={2}
                     placeholder="感想を入力（省略可能）"
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
                   ></textarea>
                   <div className="mb-2">
                     <label className="inline-flex items-center">
