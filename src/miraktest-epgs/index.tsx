@@ -33,6 +33,10 @@ const main: InitPlugin = {
       key: `${prefix}.setting`,
       default: {},
     })
+    const epgsUrlHistoryAtom = atom<string[]>({
+      key: `${prefix}.epgsUrlHistory`,
+      default: [],
+    })
 
     return {
       ...meta,
@@ -48,6 +52,10 @@ const main: InitPlugin = {
           type: "atom",
           atom: settingAtom,
         },
+        {
+          type: "atom",
+          atom: epgsUrlHistoryAtom,
+        },
       ],
       setup() {
         return
@@ -60,6 +68,8 @@ const main: InitPlugin = {
           component: () => {
             const [setting, setSetting] = useRecoilState(settingAtom)
             const [url, setUrl] = useState(setting.baseUrl)
+            const [urlHistory, setUrlHistory] =
+              useRecoilState(epgsUrlHistoryAtom)
             return (
               <>
                 <style>{tailwind}</style>
@@ -67,6 +77,18 @@ const main: InitPlugin = {
                   className="m-4"
                   onSubmit={(e) => {
                     e.preventDefault()
+                    if (url) {
+                      setUrlHistory((prev) =>
+                        prev.find((_url) => _url === url)
+                          ? prev
+                          : [
+                              url,
+                              ...(10 < prev.length
+                                ? [...prev].slice(0, 10)
+                                : prev),
+                            ]
+                      )
+                    }
                     setSetting({
                       baseUrl: url || undefined,
                     })
@@ -74,12 +96,18 @@ const main: InitPlugin = {
                 >
                   <label className="mb-2 block">
                     <span>EPGStation の URL</span>
+                    <datalist id="epgsUrlHistory">
+                      {urlHistory.map((url) => (
+                        <option key={url} value={url} />
+                      ))}
+                    </datalist>
                     <input
                       type="text"
                       placeholder="http://192.168.0.10:8888"
                       className="block mt-2 form-input rounded-md w-full text-gray-900"
                       value={url || ""}
                       onChange={(e) => setUrl(e.target.value)}
+                      list="epgsUrlHistory"
                     />
                   </label>
                   <button
