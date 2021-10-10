@@ -102,17 +102,13 @@ const main: InitPlugin = {
                 packages.IpcRenderer.invoke(activityEventId, null)
                 return
               }
-              if (
-                remoteWindow.id !== activeWindowId ||
-                !playingContent?.service ||
-                !isPlaying
-              ) {
+              if (remoteWindow.id !== activeWindowId || !isPlaying) {
                 return
               }
-              const service = playingContent.service
-              const program = playingContent.program
+              const service = playingContent?.service
+              const program = playingContent?.program
               const version = `${appInfo.name} ${appInfo.version}`
-              const logo = getServiceLogoForPresence(service)
+              const logo = service && getServiceLogoForPresence(service)
               const largeImageKey = logo || "miraktest_icon"
               const smallImageKey = logo ? "miraktest_icon" : undefined
               const largeImageText = logo ? service.name : version
@@ -129,7 +125,7 @@ const main: InitPlugin = {
                   logo && description && 2 <= description.length
                 const details = isDisplayDescription
                   ? programName
-                  : service.name
+                  : service?.name
                 const state =
                   isDisplayDescription && description
                     ? 128 < description.length
@@ -164,7 +160,7 @@ const main: InitPlugin = {
                   largeImageText,
                   smallImageKey,
                   smallImageText,
-                  details: service.name,
+                  details: service?.name,
                   instance: false,
                 }
                 packages.IpcRenderer.invoke(activityEventId, activity)
