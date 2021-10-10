@@ -46,6 +46,10 @@ const main: InitPlugin = {
         replaces: [],
       },
     })
+    const sayaUrlHistoryAtom = atom<string[]>({
+      key: `${prefix}.sayaUrlHistory`,
+      default: [],
+    })
 
     let zenzaCommentAtom: RecoilState<NicoCommentChat> | null = null
     let dplayerCommentAtom: RecoilState<DPlayerCommentPayload> | null = null
@@ -75,6 +79,10 @@ const main: InitPlugin = {
         {
           type: "atom",
           atom: sayaSettingAtom,
+        },
+        {
+          type: "atom",
+          atom: sayaUrlHistoryAtom,
         },
       ],
       setup({ plugins }) {
@@ -259,6 +267,8 @@ const main: InitPlugin = {
             const [replaces, setReplaces] = useState(sayaSetting.replaces)
             const [repl1, setRepl1] = useState("")
             const [repl2, setRepl2] = useState("")
+            const [sayaHistoryUrl, setSayaHistoryUrl] =
+              useRecoilState(sayaUrlHistoryAtom)
             return (
               <>
                 <style>{tailwind}</style>
@@ -266,6 +276,18 @@ const main: InitPlugin = {
                   className="m-4"
                   onSubmit={(e) => {
                     e.preventDefault()
+                    if (url) {
+                      setSayaHistoryUrl((prev) =>
+                        prev.find((_url) => _url === url)
+                          ? prev
+                          : [
+                              url,
+                              ...(10 < prev.length
+                                ? [...prev].slice(0, 10)
+                                : prev),
+                            ]
+                      )
+                    }
                     setSayaSetting({
                       baseUrl: url || undefined,
                       replaces,
@@ -274,12 +296,18 @@ const main: InitPlugin = {
                 >
                   <label className="mb-2 block">
                     <span>Saya の URL</span>
+                    <datalist id="sayaUrlHistory">
+                      {sayaHistoryUrl.map((url) => (
+                        <option key={url} value={url} />
+                      ))}
+                    </datalist>
                     <input
                       type="text"
                       placeholder="https://saya"
                       className="block mt-2 form-input rounded-md w-full text-gray-900"
                       value={url || ""}
                       onChange={(e) => setUrl(e.target.value)}
+                      list="sayaUrlHistory"
                     />
                   </label>
                   <label className="mb-2 block">
@@ -287,7 +315,7 @@ const main: InitPlugin = {
                     <div className="flex flex-wrap space-x-2">
                       {(replaces || []).map(([before, after], idx) => (
                         <div
-                          className="mt-2 p-1 px-2 bg-gray-200 text-gray-800 rounded-md flex space-x-1 items-center justify-center"
+                          className="p-1 px-2 bg-gray-200 text-gray-800 rounded-md flex space-x-1 items-center justify-center"
                           key={idx}
                         >
                           <span>
@@ -313,7 +341,7 @@ const main: InitPlugin = {
                       <option value="CS"></option>
                       <option value="SKY"></option>
                     </datalist>
-                    <div className="flex space-x-2 mt-4">
+                    <div className="flex space-x-2">
                       <input
                         type="text"
                         placeholder="SKY"
