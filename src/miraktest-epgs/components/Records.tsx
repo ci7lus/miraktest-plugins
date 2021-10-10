@@ -12,7 +12,8 @@ export const Records: React.VFC<{
   setPlayingContent: React.Dispatch<
     React.SetStateAction<ContentPlayerPlayingContent | null>
   >
-}> = ({ api, services, setPlayingContent }) => {
+  openContentPlayer: (_: ContentPlayerPlayingContent) => Promise<number>
+}> = ({ api, services, setPlayingContent, openContentPlayer }) => {
   const [searchTerm, setSearchTerm] = useState<string | null>(null)
   const [localTerm, setLocalTerm] = useState<string>("")
 
@@ -63,6 +64,7 @@ export const Records: React.VFC<{
               record={record}
               services={services}
               setPlayingContent={setPlayingContent}
+              openContentPlayer={openContentPlayer}
             />
           </div>
         ) : (

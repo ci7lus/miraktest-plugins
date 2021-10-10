@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { atom, useRecoilValue, useRecoilState, useSetRecoilState } from "recoil"
-import { InitPlugin } from "../@types/plugin"
+import { ContentPlayerPlayingContent, InitPlugin } from "../@types/plugin"
 import tailwind from "../tailwind.scss"
 import { EPGStationAPI } from "./api"
 import { Records } from "./components/Records"
@@ -141,6 +141,13 @@ const main: InitPlugin = {
                     api={api}
                     services={services}
                     setPlayingContent={setPlayingContent}
+                    openContentPlayer={(
+                      playingContent: ContentPlayerPlayingContent
+                    ) => {
+                      return functions.openContentPlayerWindow({
+                        playingContent,
+                      })
+                    }}
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center">

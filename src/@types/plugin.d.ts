@@ -38480,10 +38480,24 @@ export declare type ContentPlayerPlayingContent = {
   program?: Program
   service?: Service
 }
+declare const ROUTES: {
+  readonly ContentPlayer: "ContentPlayer"
+  readonly Settings: "Settings"
+  readonly ProgramTable: "ProgramTable"
+}
 declare type OpenWindowArg = {
   name: string
   isSingletone?: boolean
   args?: BrowserWindowConstructorOptions
+  playingContent?: ContentPlayerPlayingContent
+  isHideUntilLoaded?: boolean
+}
+declare type OpenBuiltinWindowArg = {
+  name: Omit<keyof typeof ROUTES, typeof ROUTES["ContentPlayer"]>
+}
+declare type OpenContentPlayerWindowArgs = {
+  playingContent?: ContentPlayerPlayingContent
+  isHideUntilLoaded?: boolean
 }
 declare type MirakurunCompatibilityTypes = "Mirakurun" | "Mirakc"
 export declare type AppInfo = {
@@ -38532,6 +38546,10 @@ export declare type PluginInRendererArgs = {
   }
   functions: {
     openWindow: (args: OpenWindowArg) => Promise<number>
+    openBuiltinWindow: (args: OpenBuiltinWindowArg) => Promise<void>
+    openContentPlayerWindow: (
+      args: OpenContentPlayerWindowArgs
+    ) => Promise<number>
   }
   hooks: {}
   atoms: {
@@ -38579,6 +38597,8 @@ export declare type PluginInMainArgs = {
   }
   functions: {
     openWindow: (args: OpenWindowArg) => Electron.BrowserWindow
+    openBuiltinWindow: (args: OpenBuiltinWindowArg) => void
+    openContentPlayerWindow: (args: OpenContentPlayerWindowArgs) => void
   }
 }
 export declare type InitPluginInMain = (

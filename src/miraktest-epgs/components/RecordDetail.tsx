@@ -1,5 +1,5 @@
 import dayjs from "dayjs"
-import React, { useEffect } from "react"
+import React, { useCallback, useEffect } from "react"
 import { Play } from "react-feather"
 import { useRecoilState } from "recoil"
 import { ContentPlayerPlayingContent, Service } from "../../@types/plugin"
@@ -20,7 +20,8 @@ export const RecordDetail: React.VFC<{
   setPlayingContent: React.Dispatch<
     React.SetStateAction<ContentPlayerPlayingContent | null>
   >
-}> = ({ api, record, services, setPlayingContent }) => {
+  openContentPlayer: (_: ContentPlayerPlayingContent) => Promise<number>
+}> = ({ api, record, services, setPlayingContent, openContentPlayer }) => {
   const thumbnail = [...record.thumbnails].shift()
   const [thumbnailUrl, setThunbnailUrl] = useRecoilState(
     thumbnailFamily(thumbnail || 0)
@@ -48,6 +49,30 @@ export const RecordDetail: React.VFC<{
       .then((url) => setThunbnailUrl(url))
       .catch(console.warn)
   }, [thumbnailUrl])
+
+  const play = useCallback(
+    (isNewWindow: boolean) => {
+      const playFile = record.videoFiles.find((video) => video.type === "ts")
+      if (!playFile) {
+        console.warn("tsが見つかりませんでした:", record)
+        return
+      }
+      const url = api.getVideoUrl({ videoId: playFile.id })
+      const program = convertProgramRecordToProgram(record, service)
+      const payload = {
+        contentType: "EPGStation",
+        url,
+        service,
+        program,
+      }
+      if (isNewWindow) {
+        openContentPlayer(payload)
+      } else {
+        setPlayingContent(payload)
+      }
+    },
+    [record]
+  )
 
   return (
     <div className="flex flex-col items-start justify-around select-text leading-loose">
@@ -88,31 +113,22 @@ export const RecordDetail: React.VFC<{
               </p>
             ))}
         </div>
-        <div className="w-full p-4 bg-gray-200 rounded-md my-2">
+        <div className="w-full p-2 bg-gray-200 rounded-md my-2 flex space-x-2 overflow-auto flex-wrap">
           <button
             type="button"
-            className="bg-indigo-400 text-gray-100 rounded-md px-4 p-2 flex items-center justify-center space-x-2 focus:outline-none"
-            onClick={() => {
-              const playFile = record.videoFiles.find(
-                (video) => video.type === "ts"
-              )
-              if (!playFile) {
-                console.warn("tsが見つかりませんでした:", record)
-                return
-              }
-              const url = api.getVideoUrl({ videoId: playFile.id })
-              const program = convertProgramRecordToProgram(record, service)
-              const payload = {
-                contentType: "EPGStation",
-                url,
-                service,
-                program,
-              }
-              setPlayingContent(payload)
-            }}
+            className="bg-indigo-400 text-gray-100 rounded-md px-2 p-1 flex items-center justify-center space-x-2 focus:outline-none m-1"
+            onClick={() => play(false)}
           >
-            <Play size={16} />
-            <span>視聴</span>
+            <Play className="flex-shrink-0" size={16} />
+            <span className="flex-shrink-0">視聴</span>
+          </button>
+          <button
+            type="button"
+            className="bg-indigo-400 text-gray-100 rounded-md px-2 p-1 flex items-center justify-center space-x-2 focus:outline-none m-1"
+            onClick={() => play(true)}
+          >
+            <Play className="flex-shrink-0" size={16} />
+            <span className="flex-shrink-0">新しいウィンドウで視聴</span>
           </button>
         </div>
         <div className="w-full bg-gray-200 whitespace-pre-wrap rounded-md p-4 md:my-2 text-sm leading-relaxed programDescription">
