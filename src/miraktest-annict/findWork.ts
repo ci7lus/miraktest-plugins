@@ -42,11 +42,15 @@ export const detectProgramInfo = async ({
       Range: StTime + endTime.format("YYYYMMDD_HHmmss"),
       JOIN: ["SubTitles"],
     })
-    const syobocalProgram = lookup.find(
-      (sprogram) =>
-        program?.startAt ||
-        (dayjs().isAfter(sprogram.StTime) && dayjs().isBefore(sprogram.EdTime))
-    )
+    const syobocalProgram = lookup
+      // LastUpdate降順
+      .reverse()
+      .find(
+        (sprogram) =>
+          program?.startAt ||
+          (dayjs().isAfter(sprogram.StTime) &&
+            dayjs().isBefore(sprogram.EdTime))
+      )
     if (syobocalProgram) {
       /*const arm = await axios.get<{ annict_id?: number }>(
         "https://arm.kawaiioverflow.com/api/ids",
