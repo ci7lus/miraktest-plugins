@@ -1,8 +1,13 @@
 import dayjs from "dayjs"
+import isSameOrAfter from "dayjs/plugin/isSameOrAfter"
+import isSameOrBefore from "dayjs/plugin/isSameOrBefore"
 import { Program } from "../@types/plugin"
 import { AnnictRESTAPI } from "./annictAPI"
 import { SyobocalAPI } from "./syobocalAPI"
 import { ARM, SayaDefinitionChannel } from "./types"
+
+dayjs.extend(isSameOrAfter)
+dayjs.extend(isSameOrBefore)
 
 export const detectProgramInfo = async ({
   rest,
@@ -42,15 +47,17 @@ export const detectProgramInfo = async ({
       Range: StTime + endTime.format("YYYYMMDD_HHmmss"),
       JOIN: ["SubTitles"],
     })
-    const syobocalProgram = lookup
-      // LastUpdate降順
-      .reverse()
-      .find(
-        (sprogram) =>
-          program?.startAt ||
-          (dayjs().isAfter(sprogram.StTime) &&
-            dayjs().isBefore(sprogram.EdTime))
-      )
+    const syobocalProgram = program?.startAt
+      ? lookup.splice(0).pop()
+      : lookup
+          // LastUpdate降順
+          .reverse()
+          .find(
+            (sprogram) =>
+              program?.startAt ||
+              (dayjs().isSameOrAfter(sprogram.StTime) &&
+                dayjs().isSameOrBefore(sprogram.EdTime))
+          )
     if (syobocalProgram) {
       /*const arm = await axios.get<{ annict_id?: number }>(
         "https://arm.kawaiioverflow.com/api/ids",
@@ -83,6 +90,7 @@ export const detectProgramInfo = async ({
     const programs = await rest.getMyPrograms({
       filter_channel_ids: [channel.annictId],
       filter_started_at_gt: startTime.format("YYYY/MM/DD HH:mm"),
+      filter_started_at_lt: endTime.format("YYYY/MM/DD HH:mm"),
       fields: [
         "work.id",
         "work.title",
