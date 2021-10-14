@@ -9,6 +9,7 @@ import {
   useSetRecoilState,
 } from "recoil"
 import ReconnectingWebSocket from "reconnecting-websocket"
+import urlJoin from "url-join"
 import { Atom, InitPlugin } from "../@types/plugin"
 import { DPlayerCommentPayload } from "../miraktest-dplayer/types"
 import { NicoCommentChat } from "../miraktest-zenza/types"
@@ -44,6 +45,8 @@ const main: InitPlugin = {
       key: `${prefix}.sayaSetting`,
       default: {
         replaces: [],
+        isEnabled: true,
+        isTimeshiftEnabled: true,
       },
     })
     const sayaUrlHistoryAtom = atom<string[]>({
@@ -118,9 +121,6 @@ const main: InitPlugin = {
           id: `${prefix}.onPlayer`,
           position: "onPlayer",
           component: () => {
-            useEffect(() => {
-              console.warn("onPlayerTimeDisplayの描画")
-            }, [])
             const sayaSetting = useRecoilValue(sayaSettingAtom)
             const service = useRecoilValue(atoms.contentPlayerServiceSelector)
             const program = useRecoilValue(atoms.contentPlayerProgramSelector)
@@ -164,6 +164,10 @@ const main: InitPlugin = {
                 console.warn("サービスが不明です")
                 return
               }
+              if (sayaSetting.isEnabled === false) {
+                console.info("Sayaが無効化されています")
+                return
+              }
 
               let ws: ReconnectingWebSocket
               try {
@@ -187,20 +191,31 @@ const main: InitPlugin = {
 
                 const isTimeshift = isSeekable && program?.startAt
 
+                if (isTimeshift && sayaSetting.isTimeshiftEnabled === false) {
+                  console.info("タイムシフトが無効化されています")
+                  return
+                }
+
                 if (isTimeshift) {
                   console.info("タイムシフトを行います:", program)
                   const endAt = program.startAt + program.duration
                   ws = new ReconnectingWebSocket(
-                    `${wsUrl.href}/comments/${channelType}_${
-                      service.serviceId
-                    }/timeshift?${new URLSearchParams({
-                      startAt: (program.startAt / 1000).toString(),
-                      endAt: (endAt / 1000).toString(),
-                    }).toString()}`
+                    urlJoin(
+                      wsUrl.href,
+                      `/comments/${channelType}_${
+                        service.serviceId
+                      }/timeshift?${new URLSearchParams({
+                        startAt: (program.startAt / 1000).toString(),
+                        endAt: (endAt / 1000).toString(),
+                      }).toString()}`
+                    )
                   )
                 } else {
                   ws = new ReconnectingWebSocket(
-                    `${wsUrl.href}/comments/${channelType}_${service.serviceId}/live`
+                    urlJoin(
+                      wsUrl.href,
+                      `/comments/${channelType}_${service.serviceId}/live`
+                    )
                   )
                 }
                 ws.addEventListener("message", (e) => {
@@ -265,6 +280,10 @@ const main: InitPlugin = {
               useRecoilState(sayaSettingAtom)
             const [url, setUrl] = useState(sayaSetting.baseUrl)
             const [replaces, setReplaces] = useState(sayaSetting.replaces)
+            const [isEnabled, setIsEnabled] = useState(sayaSetting.isEnabled)
+            const [isTimeshiftEnabled, setIsTimeshiftEnabled] = useState(
+              sayaSetting.isTimeshiftEnabled
+            )
             const [repl1, setRepl1] = useState("")
             const [repl2, setRepl2] = useState("")
             const [sayaHistoryUrl, setSayaHistoryUrl] =
@@ -291,10 +310,32 @@ const main: InitPlugin = {
                     setSayaSetting({
                       baseUrl: url || undefined,
                       replaces,
+                      isEnabled,
+                      isTimeshiftEnabled,
                     })
                   }}
                 >
-                  <label className="mb-2 block">
+                  <label className="block mt-4">
+                    <span>有効</span>
+                    <input
+                      type="checkbox"
+                      className="block mt-2 form-checkbox"
+                      checked={isEnabled || false}
+                      onChange={() => setIsEnabled((enabled) => !enabled)}
+                    />
+                  </label>
+                  <label className="block mt-4">
+                    <span>タイムシフト有効</span>
+                    <input
+                      type="checkbox"
+                      className="block mt-2 form-checkbox"
+                      checked={isTimeshiftEnabled || false}
+                      onChange={() =>
+                        setIsTimeshiftEnabled((enabled) => !enabled)
+                      }
+                    />
+                  </label>
+                  <label className="mt-4 block">
                     <span>Saya の URL</span>
                     <datalist id="sayaUrlHistory">
                       {sayaHistoryUrl.map((url) => (
@@ -310,7 +351,7 @@ const main: InitPlugin = {
                       list="sayaUrlHistory"
                     />
                   </label>
-                  <label className="mb-2 block">
+                  <label className="mt-4 block">
                     <span>放送波置換設定</span>
                     <div className="flex flex-wrap space-x-2">
                       {(replaces || []).map(([before, after], idx) => (
