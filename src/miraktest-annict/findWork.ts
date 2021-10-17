@@ -48,7 +48,10 @@ export const detectProgramInfo = async ({
       JOIN: ["SubTitles"],
     })
     const syobocalProgram = program?.startAt
-      ? lookup.splice(0).pop()
+      ? lookup
+          .splice(0)
+          .filter((sprogram) => startTime.isSame(sprogram.StTime, "minute"))
+          .pop()
       : lookup
           // LastUpdate降順
           .reverse()

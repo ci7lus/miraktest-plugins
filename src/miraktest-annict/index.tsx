@@ -20,7 +20,7 @@ const meta = {
   id: _id,
   name: "Annict",
   author: "ci7lus",
-  version: "0.0.1",
+  version: "0.1.8",
   description: "視聴中の番組をAnnictで記録する",
 }
 const trackWindowId = `${_id}.track`
