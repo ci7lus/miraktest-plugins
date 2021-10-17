@@ -1,13 +1,15 @@
 import React, { memo, useEffect, useRef } from "react"
+import { useRefFromState } from "../../shared/utils"
 import { DPlayer } from "../dplayerLoader"
 import style from "../style.scss"
 import { DPlayerCommentPayload } from "../types"
 
 export const DPlayerWrapper: React.VFC<{
+  isPlaying: boolean
   comment: DPlayerCommentPayload | null
   opacity: number
   zoom: number
-}> = memo(({ comment, opacity, zoom }) => {
+}> = memo(({ isPlaying, comment, opacity, zoom }) => {
   const dplayerElementRef = useRef<HTMLDivElement>(null)
   const player = useRef<DPlayer | null>()
 
@@ -26,6 +28,18 @@ export const DPlayerWrapper: React.VFC<{
 
   useEffect(() => {
     const playerRef = player.current
+    if (!playerRef) {
+      return
+    }
+    if (isPlaying) {
+      playerRef.play()
+    } else {
+      playerRef.pause()
+    }
+  }, [isPlaying])
+
+  useEffect(() => {
+    const playerRef = player.current
     if (!playerRef || !comment || playerRef.video.paused === true) {
       return
     }
@@ -35,6 +49,8 @@ export const DPlayerWrapper: React.VFC<{
       playerRef.danmaku.draw(comment)
     }
   }, [comment])
+
+  const isPlayingRef = useRefFromState(isPlaying)
 
   useEffect(() => {
     const playerInstance = new DPlayer({
@@ -72,7 +88,7 @@ export const DPlayerWrapper: React.VFC<{
     playerInstance.danmaku.show()
 
     playerInstance.on("pause" as DPlayer.DPlayerEvents.pause, () => {
-      playerInstance.play()
+      isPlayingRef.current && playerInstance.play()
     })
 
     player.current = playerInstance

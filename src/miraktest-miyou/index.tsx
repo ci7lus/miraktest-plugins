@@ -134,7 +134,7 @@ const main: InitPlugin = {
                 return
               }
               if (setting.isEnabled === false) {
-                console.info("Sayaが無効化されています")
+                console.info("Miyouが無効化されています")
                 return
               }
               if (!isSeekable || !program?.startAt) {

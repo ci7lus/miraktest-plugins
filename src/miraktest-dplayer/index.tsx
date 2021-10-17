@@ -19,13 +19,13 @@ const meta = {
   id: _id,
   name: "DPlayer",
   author: "ci7lus",
-  version: "0.0.1",
+  version: "0.2.1",
   description:
     "映像の上にDPlayerを表示するプラグインです。別途コメントソースが必要です。",
 }
 
 const main: InitPlugin = {
-  renderer: async () => {
+  renderer: async ({ atoms }) => {
     const commentAtom = atom<DPlayerCommentPayload | null>({
       key: `${prefix}.comment`,
       default: null,
@@ -58,11 +58,17 @@ const main: InitPlugin = {
           id: `${prefix}.dplayerCommentPlayer`,
           position: "onPlayer",
           component: () => {
+            const isPlaying = useRecoilValue(atoms.contentPlayerIsPlayingAtom)
             const comment = useRecoilValue(commentAtom)
             const opacity = useRecoilValue(opacityAtom)
             const zoom = useRecoilValue(zoomAtom)
             return (
-              <DPlayerWrapper comment={comment} opacity={opacity} zoom={zoom} />
+              <DPlayerWrapper
+                isPlaying={isPlaying}
+                comment={comment}
+                opacity={opacity}
+                zoom={zoom}
+              />
             )
           },
         },
