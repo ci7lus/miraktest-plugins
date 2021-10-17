@@ -1,5 +1,5 @@
 export type DPlayerCommentPayload = {
-  sourceUrl: string | null
+  sourceUrl?: string | null
   source: string
   no: number
   time: number
@@ -8,5 +8,5 @@ export type DPlayerCommentPayload = {
   text: string
   color: string
   type: "right"
-  commands: []
+  commands?: string[]
 }

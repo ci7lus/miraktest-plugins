@@ -42,6 +42,10 @@ const entries: Entry[] = [
     name: "miraktest-annict",
     dir: "./src/miraktest-annict",
   },
+  {
+    name: "miraktest-miyou",
+    dir: "./src/miraktest-miyou",
+  },
 ]
 
 const config: (_: Entry[]) => webpack.Configuration[] = (entries: Entry[]) =>

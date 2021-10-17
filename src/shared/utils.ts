@@ -1,4 +1,8 @@
-import { useEffect, useRef } from "react"
+import dayjs from "dayjs"
+import ja from "dayjs/locale/ja"
+import { useEffect, useRef, useState } from "react"
+
+dayjs.locale(ja)
 
 export const useRefFromState = <T>(i: T) => {
   const ref = useRef(i)
@@ -8,3 +12,28 @@ export const useRefFromState = <T>(i: T) => {
 
   return ref
 }
+
+export const useNow = () => {
+  const [now, setNow] = useState(dayjs())
+
+  useEffect(() => {
+    let interval: null | NodeJS.Timeout = null
+    const update = () => setNow(dayjs())
+    let timeout: null | NodeJS.Timeout = setTimeout(() => {
+      update()
+      interval = setInterval(update, 60 * 1000)
+      timeout = null
+    }, (60 - new Date().getSeconds()) * 1000)
+    return () => {
+      timeout && clearTimeout(timeout)
+      interval && clearInterval(interval)
+    }
+  }, [])
+
+  return now
+}
+
+export const wait = (s: number) =>
+  new Promise<void>((res) => {
+    setTimeout(() => res(), s)
+  })

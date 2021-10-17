@@ -32,6 +32,8 @@
   EPGStation と連携し、録画番組を再生します。
 - [Annict](./src/miraktest-annict)<br />
   Annict と連携し、視聴中のアニメを記録します。
+- [Miyou](./src/miraktest-miyou)<br />
+  Miyou から視聴中の録画番組のコメントを取得します。コメントの表示には Zenza か DPlayer プラグインが必要です。
 
 ## ビルド
 
