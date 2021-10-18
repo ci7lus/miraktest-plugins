@@ -225,12 +225,15 @@ const main: InitPlugin = {
               console.info("コメントの取得を開始します", service)
 
               client
-                .get<{
-                  data: {
-                    comments: MiyouComment[]
-                    n_hits: number
-                  }
-                }>("miyou/comments", {
+                .get<
+                  | "null"
+                  | {
+                      data: {
+                        comments: MiyouComment[]
+                        n_hits: number
+                      }
+                    }
+                >("miyou/comments", {
                   headers: {
                     "x-miteyou-auth-token": token,
                   },
@@ -241,9 +244,13 @@ const main: InitPlugin = {
                   },
                 })
                 .then((r) => {
+                  const { data } = r
+                  if (data === "null") {
+                    return
+                  }
                   setComments(
                     (prev) =>
-                      [...prev, ...r.data.data.comments].sort(
+                      [...prev, ...data.data.comments].sort(
                         (a, b) => a.time - b.time
                       ) /*
                     Object.values(
