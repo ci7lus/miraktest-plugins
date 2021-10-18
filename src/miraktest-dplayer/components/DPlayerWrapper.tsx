@@ -6,10 +6,11 @@ import { DPlayerCommentPayload } from "../types"
 
 export const DPlayerWrapper: React.VFC<{
   isPlaying: boolean
+  isSeekable: boolean
   comment: DPlayerCommentPayload | null
   opacity: number
   zoom: number
-}> = memo(({ isPlaying, comment, opacity, zoom }) => {
+}> = memo(({ isPlaying, isSeekable, comment, opacity, zoom }) => {
   const dplayerElementRef = useRef<HTMLDivElement>(null)
   const player = useRef<DPlayer | null>()
 
@@ -33,7 +34,7 @@ export const DPlayerWrapper: React.VFC<{
     }
     if (isPlaying) {
       playerRef.play()
-    } else {
+    } else if (isSeekable) {
       playerRef.pause()
     }
   }, [isPlaying])

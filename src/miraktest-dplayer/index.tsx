@@ -59,12 +59,16 @@ const main: InitPlugin = {
           position: "onPlayer",
           component: () => {
             const isPlaying = useRecoilValue(atoms.contentPlayerIsPlayingAtom)
+            const isSeekable = useRecoilValue(
+              atoms.contentPlayerIsSeekableSelector
+            )
             const comment = useRecoilValue(commentAtom)
             const opacity = useRecoilValue(opacityAtom)
             const zoom = useRecoilValue(zoomAtom)
             return (
               <DPlayerWrapper
                 isPlaying={isPlaying}
+                isSeekable={isSeekable}
                 comment={comment}
                 opacity={opacity}
                 zoom={zoom}
