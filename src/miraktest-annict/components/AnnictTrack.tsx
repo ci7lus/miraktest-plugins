@@ -90,10 +90,9 @@ export const AnnictTrack: React.FC<{
           episodeInfo.number.toString() ||
         episode?.title === episodeInfo.title
     )
-    if (!found) {
-      return
+    if (found && !found.viewerDidTrack) {
+      setEpisodeId(found?.annictId)
     }
-    setEpisodeId(found?.annictId)
   }, [episodeInfo, work])
   useEffect(() => {
     if (!workId) {
@@ -287,14 +286,16 @@ export const AnnictTrack: React.FC<{
                   "p-4",
                   "bg-gray-800",
                   "rounded-md",
-                  "mb-2"
+                  "mb-2",
+                  "transition-height",
+                  "max-h-screen"
                 )}
               >
                 <a
                   href={`https://annict.com/works/${workId}/episodes/${episodeId}`}
                   target="_blank"
                 >
-                  <h2 className={clsx("text-lg", "pb-1")}>
+                  <h2 className={clsx("text-lg", "pb-1", "truncate")}>
                     {episode.numberText ?? episode.number} {episode.title}
                   </h2>
                 </a>
@@ -314,7 +315,10 @@ export const AnnictTrack: React.FC<{
                         shareTwitter: isTwitterEnabled,
                         shareFacebook: isFacebookEnabled,
                       })
-                      .then(() => setTiming(performance.now()))
+                      .then(() => {
+                        setTiming(performance.now())
+                        setEpisodeId(null)
+                      })
                       .finally(() => setIsRecording(false))
                   }}
                 >
@@ -407,13 +411,24 @@ export const AnnictTrack: React.FC<{
                 </form>
               </div>
             ) : (
-              <></>
+              <div
+                className={clsx(
+                  "w-full",
+                  "transition-height",
+                  "h-0",
+                  "max-h-0"
+                )}
+              ></div>
             )}
             <div className={clsx("w-full", "overflow-auto", "px-2")}>
               {work.episodes?.nodes?.map((episode) => (
                 <p
                   onClick={() => {
-                    setEpisodeId(episode?.annictId || null)
+                    setEpisodeId((prev) =>
+                      prev === episode?.annictId
+                        ? null
+                        : episode?.annictId || null
+                    )
                   }}
                   key={episode?.annictId}
                   className={clsx(

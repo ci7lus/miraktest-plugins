@@ -1,5 +1,5 @@
 {
   "extends": "./tsconfig.json",
-  "include": ["src", "./webpack.config.ts"],
+  "include": ["src", "./webpack.config.ts", "./tailwind.config.js"],
   "exclude": ["node_modules"]
 }

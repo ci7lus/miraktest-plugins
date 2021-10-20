@@ -6,6 +6,7 @@ import esm from "@purtuga/esm-webpack-plugin"
 import { ESBuildMinifyPlugin } from "esbuild-loader"
 import { LicenseWebpackPlugin } from "license-webpack-plugin"
 import webpack from "webpack"
+import tailwindConfig from "./tailwind.config"
 
 const isProduction = false
 
@@ -50,8 +51,9 @@ const entries: Entry[] = [
 
 const config: (_: Entry[]) => webpack.Configuration[] = (entries: Entry[]) =>
   entries.map(({ name, dir, target }) => {
-    //const pluginDir = filepath
     const hash = crypto.createHash("sha1").update(dir).digest("hex")
+    const tailwind = { ...tailwindConfig }
+    tailwind.purge.content = [path.join(dir, "**/*.{ts,tsx,js,css,scss}")]
     return {
       target,
       entry: {
@@ -89,30 +91,7 @@ const config: (_: Entry[]) => webpack.Configuration[] = (entries: Entry[]) =>
                 loader: "postcss-loader",
                 options: {
                   postcssOptions: {
-                    plugins: [
-                      [
-                        "tailwindcss",
-                        {
-                          purge: {
-                            enabled: true,
-                            mode: "all",
-                            content: [
-                              path.join(dir, "**/*.{ts,tsx,js,css,scss}"),
-                            ],
-                            whitelist: [],
-                            whitelistPatterns: [],
-                          },
-                          future: {
-                            removeDeprecatedGapUtilities: true,
-                            purgeLayersByDefault: true,
-                          },
-                          darkMode: "media",
-                          plugins: [require("@tailwindcss/custom-forms")],
-                          theme: {},
-                        },
-                      ],
-                      "autoprefixer",
-                    ],
+                    plugins: [["tailwindcss", tailwind], "autoprefixer"],
                   },
                 },
               },
