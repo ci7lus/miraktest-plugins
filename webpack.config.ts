@@ -5,8 +5,11 @@ import path from "path"
 import esm from "@purtuga/esm-webpack-plugin"
 import { ESBuildMinifyPlugin } from "esbuild-loader"
 import { LicenseWebpackPlugin } from "license-webpack-plugin"
+// eslint-disable-next-line import/no-unresolved
+import { TailwindConfig } from "tailwindcss/tailwind-config"
 import webpack from "webpack"
-import tailwindConfig from "./tailwind.config"
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const tailwindConfig = require("./tailwind.config")
 
 const isProduction = false
 
@@ -52,8 +55,10 @@ const entries: Entry[] = [
 const config: (_: Entry[]) => webpack.Configuration[] = (entries: Entry[]) =>
   entries.map(({ name, dir, target }) => {
     const hash = crypto.createHash("sha1").update(dir).digest("hex")
-    const tailwind = { ...tailwindConfig }
-    tailwind.purge.content = [path.join(dir, "**/*.{ts,tsx,js,css,scss}")]
+    const tailwind: TailwindConfig = Object.assign(
+      { ...tailwindConfig },
+      { purge: { content: [path.join(dir, "**/*.{ts,tsx,js,css,scss}")] } }
+    )
     return {
       target,
       entry: {

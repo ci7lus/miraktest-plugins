@@ -4,7 +4,7 @@
 
 module.exports = {
   purge: {
-    enabled:true,
+    enabled: true,
     mode: "all",
     content: [],
     whitelist: [],
