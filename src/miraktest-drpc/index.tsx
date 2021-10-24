@@ -91,6 +91,10 @@ const main: InitPlugin = {
               atoms.contentPlayerIsSeekableSelector
             )
             const time = useRecoilValue(atoms.contentPlayerPlayingTimeSelector)
+            const [timePer60, setTimePer60] = useState(time)
+            useEffect(() => {
+              setTimePer60(Math.floor(time / 60_000))
+            }, [time])
             const isPlaying = useRecoilValue(atoms.contentPlayerIsPlayingAtom)
             const isEnabled = useRecoilValue(isEnabledAtom)
             useEffect(() => {
@@ -171,6 +175,7 @@ const main: InitPlugin = {
               isEnabled,
               isSeekable,
               isPlaying,
+              timePer60,
             ])
             return <></>
           },
