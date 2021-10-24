@@ -10,46 +10,38 @@ import { trimCommentForFlow } from "../miraktest-saya/comment"
 import { NicoCommentChat } from "../miraktest-zenza/types"
 import { useRefFromState, wait } from "../shared/utils"
 import tailwind from "../tailwind.scss"
-import { MiyouComment, MiyouSetting } from "./types"
+import { parseMail } from "./parser"
+import { IdealChat, NicoLogComment, NicoSetting } from "./types"
 
 /**
- * MirakTest Miyou Plugin
- * Miyouからコメントを取得し、コメントレンダラに流し込むプラグイン
- * https://github.com/search-future/miyou.tv/blob/f042a10cc86cbb98eb84a34c0f74072a9776fa5c/src/services/CommentService.ts
- * Impl from https://github.com/SlashNephy/saya/commit/0f400e9839365c60a2daf39848cb31fa39f359b7
+ * MirakTest Nico Plugin
+ * ニコニコ実況からコメントを取得し、コメントレンダラに流し込むプラグイン
+ * Impl copied from ../miraktest-miyou
  */
 
-const _id = "io.github.ci7lus.miraktest-plugins.miyou"
-const prefix = "plugins.ci7lus.miyou"
+const _id = "io.github.ci7lus.miraktest-plugins.nico"
+const prefix = "plugins.ci7lus.nico"
 const meta = {
   id: _id,
-  name: "Miyou",
+  name: "ニコニコ実況",
   author: "ci7lus",
   version: "0.0.1",
   description:
-    "Miyouからコメントを取得するプラグインです。ZenzaかDPlayerプラグインが必要です。",
+    "ニコニコ実況からコメントを取得するプラグインです。ZenzaかDPlayerプラグインが必要です。",
 }
 
 const main: InitPlugin = {
   renderer: ({ atoms }) => {
-    const miyouSettingAtom = atom<MiyouSetting>({
+    const settingAtom = atom<NicoSetting>({
       key: `${prefix}.setting`,
       default: {
-        isEnabled: true,
+        isLiveEnabled: true,
+        isTimeshiftEnabled: true,
       },
-    })
-
-    const tokenAtom = atom<string | null>({
-      key: `${prefix}.token`,
-      default: null,
     })
 
     let zenzaCommentAtom: RecoilState<NicoCommentChat> | null = null
     let dplayerCommentAtom: RecoilState<DPlayerCommentPayload> | null = null
-
-    const client = axios.create({
-      baseURL: "https://miteru.digitiminimi.com/a2sc.php",
-    })
 
     return {
       ...meta,
@@ -57,17 +49,13 @@ const main: InitPlugin = {
       sharedAtoms: [
         {
           type: "atom",
-          atom: miyouSettingAtom,
-        },
-        {
-          type: "atom",
-          atom: tokenAtom,
+          atom: settingAtom,
         },
       ],
       storedAtoms: [
         {
           type: "atom",
-          atom: miyouSettingAtom,
+          atom: settingAtom,
         },
       ],
       setup({ plugins }) {
@@ -103,7 +91,7 @@ const main: InitPlugin = {
           id: `${prefix}.onPlayer`,
           position: "onPlayer",
           component: () => {
-            const setting = useRecoilValue(miyouSettingAtom)
+            const setting = useRecoilValue(settingAtom)
             const service = useRecoilValue(atoms.contentPlayerServiceSelector)
             const program = useRecoilValue(atoms.contentPlayerProgramSelector)
             const isSeekable = useRecoilValue(
@@ -117,48 +105,6 @@ const main: InitPlugin = {
             const setDplayerComment = dplayerCommentAtom
               ? useSetRecoilState(dplayerCommentAtom)
               : null
-            const [token, setToken] = useRecoilState(tokenAtom)
-
-            // miyou token取得
-            useEffect(() => {
-              if (!setZenzaComment && !setDplayerComment) {
-                console.warn("コメント送信先の取得に失敗しています")
-                return
-              }
-              if (!setting.mail || !setting.pass) {
-                console.warn("Miyouの設定が行われていません")
-                return
-              }
-              if (token) {
-                console.info("トークンがすでに取得されています")
-                return
-              }
-              if (setting.isEnabled === false) {
-                console.info("Miyouが無効化されています")
-                return
-              }
-              if (!isSeekable || !program?.startAt) {
-                return
-              }
-
-              const data = new FormData()
-              data.append("email", setting.mail)
-              data.append("password", setting.pass)
-
-              client
-                .post<{}, { data: { token: string } }>(
-                  "auth/moritapo",
-                  data,
-                  {}
-                )
-                .then((r) => {
-                  setToken(r.data.token || null)
-                })
-                .catch((e) => {
-                  console.error(e)
-                  setToken(null)
-                })
-            }, [setting, isSeekable, service])
 
             const [sayaDefinition, setSayaDefinition] =
               useState<SayaDefinition | null>(null)
@@ -177,9 +123,7 @@ const main: InitPlugin = {
                 .catch(console.error)
             }, [])
 
-            const [miyouChannel, setMiyouChannel] = useState<string | null>(
-              null
-            )
+            const [jk, setJk] = useState<number | null>(null)
             useEffect(() => {
               if (!sayaDefinition) {
                 return
@@ -187,10 +131,10 @@ const main: InitPlugin = {
               const chDef = sayaDefinition.channels.find((channel) =>
                 channel.serviceIds.includes(service?.serviceId || 0)
               )
-              setMiyouChannel(chDef?.miyoutvId || null)
+              setJk(chDef?.nicojkId || null)
             }, [sayaDefinition, service])
 
-            const [comments, setComments] = useState<MiyouComment[]>([])
+            const [comments, setComments] = useState<IdealChat[]>([])
             const [log, setLog] = useState<string[]>([])
             const [lastStartAt, setLastStartAt] = useState<number>(0)
 
@@ -215,7 +159,12 @@ const main: InitPlugin = {
 
             useEffect(() => {
               const [start, end] = period
-              if (!token || !miyouChannel || !start || !end) {
+              if (
+                setting.isTimeshiftEnabled !== true ||
+                jk === null ||
+                !start ||
+                !end
+              ) {
                 return
               }
               const cacheKey = period.join(",")
@@ -224,53 +173,46 @@ const main: InitPlugin = {
               }
               console.info("コメントの取得を開始します", service)
 
-              client
+              axios
                 .get<
-                  | "null"
-                  | {
-                      data: {
-                        comments?: MiyouComment[]
-                        n_hits: number
-                      }
-                    }
-                >("miyou/comments", {
-                  headers: {
-                    "x-miteyou-auth-token": token,
-                  },
+                  { packet: { chat: NicoLogComment }[] } | { error: string }
+                >(`https://jikkyo.tsukumijima.net/api/kakolog/jk${jk}`, {
                   params: {
-                    channel: miyouChannel,
-                    start,
-                    end,
+                    format: "json",
+                    starttime: Math.floor(start / 1000),
+                    endtime: Math.floor(end / 1000),
                   },
                 })
                 .then((r) => {
                   const { data } = r
-                  if (data === "null") {
+                  if ("error" in data) {
+                    console.error(data.error)
                     return
                   }
-                  const { comments } = data.data
-                  if (!comments) {
-                    return
-                  }
-                  setComments(
-                    (prev) =>
-                      [...prev, ...comments].sort((a, b) => a.time - b.time) /*
-                    Object.values(
-                      [...prev, ...r.data.data.comments].reduce(
-                        (acc: { [key: string]: MiyouComment }, comment) => ({
-                          ...acc,
-                          [comment.id + comment.time]: comment,
-                        }),
-                        {}
-                      )
-                    ).sort((a, b) => a.time - b.time)*/
+                  setComments((prev) =>
+                    [
+                      ...prev,
+                      ...data.packet.map((packet) => {
+                        const { chat } = packet
+                        const date = parseInt(chat.date)
+                        const date_usec = parseInt(chat.date_usec)
+                        return {
+                          ...packet.chat,
+                          no: parseInt(chat.no),
+                          date,
+                          date_usec,
+                          vpos: parseInt(chat.vpos),
+                          time: date * 1000 + date_usec / 1000,
+                        }
+                      }),
+                    ].sort((a, b) => a.time - b.time)
                   )
                   setLog((prev) => [...prev, cacheKey])
                 })
                 .catch((e) => {
                   console.error(e)
                 })
-            }, [token, miyouChannel, ...period])
+            }, [jk, ...period])
 
             useEffect(() => {
               if (!program?.startAt || !isSeekable || !time) {
@@ -296,36 +238,38 @@ const main: InitPlugin = {
                   }
                   lastTime = time
 
-                  if (comment.time < program.startAt + time - 4_000) {
+                  if (comment.time < program.startAt + time - 2000) {
                     index++
                     continue
                   }
-                  if (program.startAt + timeRef.current - 3000 < comment.time) {
+                  if (program.startAt + timeRef.current - 1000 < comment.time) {
                     await wait(500)
                     continue
                   }
-                  const text = trimCommentForFlow(comment.text)
+                  const text = trimCommentForFlow(comment.content)
                   if (text.length === 0) {
                     continue
                   }
                   if (setZenzaComment) {
                     setZenzaComment({
-                      date: comment.time,
-                      mail: comment.email,
+                      ...comment,
+                      thread: 1,
+                      anonymity: 1,
                       content: text,
                     })
                   }
                   if (setDplayerComment) {
+                    const { color, position } = parseMail(comment.mail)
                     setDplayerComment({
-                      source: `MiyouTV [${comment.title}]`,
-                      sourceUrl: null,
-                      time: comment.time / 1000,
-                      timeMs: Math.random() * 100,
-                      author: `${comment.name} (${comment.id})`,
+                      source: `ニコニコ実況過去ログ [${comment.thread}]`,
+                      sourceUrl: `https://jikkyo.tsukumijima.net/api/kakolog/jk${jk}`,
+                      time: comment.date,
+                      timeMs: comment.date_usec,
+                      author: comment.user_id,
                       text,
-                      no: comment.time,
-                      color: "white",
-                      type: "right",
+                      no: comment.no,
+                      color: color,
+                      type: position,
                       commands: [],
                     })
                   }
@@ -345,10 +289,13 @@ const main: InitPlugin = {
           position: "onSetting",
           label: meta.name,
           component: () => {
-            const [setting, setSetting] = useRecoilState(miyouSettingAtom)
+            const [setting, setSetting] = useRecoilState(settingAtom)
             const [mail, setMail] = useState(setting.mail)
             const [pass, setPass] = useState(setting.pass)
-            const [isEnabled, setIsEnabled] = useState(setting.isEnabled)
+            const [isLiveEnabled] = useState(setting.isLiveEnabled)
+            const [isTimeshiftEnabled, setIsTimeshiftEnabled] = useState(
+              setting.isTimeshiftEnabled
+            )
             const [isHidden, setIsHidden] = useState(true)
 
             return (
@@ -361,7 +308,8 @@ const main: InitPlugin = {
                     setSetting({
                       mail,
                       pass,
-                      isEnabled,
+                      isLiveEnabled,
+                      isTimeshiftEnabled,
                     })
                   }}
                 >
@@ -370,8 +318,10 @@ const main: InitPlugin = {
                     <input
                       type="checkbox"
                       className="block mt-2 form-checkbox"
-                      checked={isEnabled || false}
-                      onChange={() => setIsEnabled((enabled) => !enabled)}
+                      checked={isTimeshiftEnabled || false}
+                      onChange={() =>
+                        setIsTimeshiftEnabled((enabled) => !enabled)
+                      }
                     />
                   </label>
                   <label className="mt-4 block">

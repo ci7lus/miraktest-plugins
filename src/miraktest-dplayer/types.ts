@@ -7,6 +7,6 @@ export type DPlayerCommentPayload = {
   author: string
   text: string
   color: string
-  type: "right"
+  type: string
   commands?: string[]
 }
