@@ -290,13 +290,13 @@ const main: InitPlugin = {
           label: meta.name,
           component: () => {
             const [setting, setSetting] = useRecoilState(settingAtom)
-            const [mail, setMail] = useState(setting.mail)
-            const [pass, setPass] = useState(setting.pass)
+            const [mail /*, setMail*/] = useState(setting.mail)
+            const [pass /*, _setPass*/] = useState(setting.pass)
             const [isLiveEnabled] = useState(setting.isLiveEnabled)
             const [isTimeshiftEnabled, setIsTimeshiftEnabled] = useState(
               setting.isTimeshiftEnabled
             )
-            const [isHidden, setIsHidden] = useState(true)
+            //const [isHidden, setIsHidden] = useState(true)
 
             return (
               <>
@@ -324,7 +324,7 @@ const main: InitPlugin = {
                       }
                     />
                   </label>
-                  <label className="mt-4 block">
+                  {/*<label className="mt-4 block">
                     <span>モリタポのメールアドレス</span>
                     <input
                       type="text"
@@ -345,7 +345,7 @@ const main: InitPlugin = {
                       onFocus={() => setIsHidden(false)}
                       onBlur={() => setIsHidden(true)}
                     />
-                  </label>
+                    </label>*/}
                   <button
                     type="submit"
                     className="bg-gray-100 text-gray-800 p-2 px-2 my-4 rounded-md focus:outline-none cursor-pointer"
