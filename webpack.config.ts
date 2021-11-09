@@ -8,10 +8,9 @@ import { LicenseWebpackPlugin } from "license-webpack-plugin"
 // eslint-disable-next-line import/no-unresolved
 import { TailwindConfig } from "tailwindcss/tailwind-config"
 import webpack from "webpack"
+import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer"
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const tailwindConfig = require("./tailwind.config")
-
-const isProduction = false
 
 type Entry = {
   name: string
@@ -56,24 +55,33 @@ const entries: Entry[] = [
   },
 ]
 
-const config: (_: Entry[]) => webpack.Configuration[] = (entries: Entry[]) =>
+const config: (
+  _: Entry[],
+  isAnalyzeEnabled: boolean
+) => webpack.Configuration[] = (entries: Entry[], isAnalyzeEnabled: boolean) =>
   entries.map(({ name, dir, target }) => {
     const hash = crypto.createHash("sha1").update(dir).digest("hex")
     const tailwind: TailwindConfig = Object.assign(
       { ...tailwindConfig },
-      { purge: { content: [path.join(dir, "**/*.{ts,tsx,js,css,scss}")] } }
+      {
+        purge: {
+          ...tailwindConfig.purge,
+          content: [path.join(dir, "**/*.{ts,tsx,js,css,scss}")],
+        },
+      }
     )
-    return {
+    const config: webpack.Configuration = {
       target,
       entry: {
         [name + ".plugin"]: dir,
       },
-      mode: isProduction ? "production" : "development",
+      mode: "production",
       output: {
         path: path.resolve(__dirname, "dist"),
         library: `P${hash}`,
         libraryTarget: "var",
       },
+      devtool: "cheap-source-map",
       module: {
         rules: [
           {
@@ -137,13 +145,24 @@ const config: (_: Entry[]) => webpack.Configuration[] = (entries: Entry[]) =>
         recoil: "root Recoil",
       },
     }
+    if (isAnalyzeEnabled) {
+      config.plugins?.push(
+        new BundleAnalyzerPlugin({
+          analyzerMode: "static",
+          reportFilename: `${name}.report.html`,
+          openAnalyzer: false,
+        }) as never
+      )
+    }
+    return config
   })
 
-module.exports = (env: { files?: string }) => {
+module.exports = (env: { files?: string; analyze?: string }) => {
+  const isAnalyzeEnabled = env.analyze === "yes"
   const targets = env.files?.split(",") || []
   const entr =
     0 < targets.length
       ? entries.filter((entry) => targets.includes(entry.name))
       : entries
-  return config(entr)
+  return config(entr, isAnalyzeEnabled)
 }

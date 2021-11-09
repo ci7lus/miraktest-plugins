@@ -79,7 +79,7 @@ jobs:
         working-directory: ./zenzawatch
       - name: Build
         run: |
-          yarn build
+          yarn build --env=analyze=yes
         env:
           NODE_OPTIONS: "--max-old-space-size=4096"
       - name: Upload dist
@@ -96,7 +96,7 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          files: dist/*.plugin.js
+          files: dist/*.plugin.*
           name: ${{ steps.time.outputs.time }}
           tag_name: ${{ steps.time.outputs.time }}
         env:
