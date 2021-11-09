@@ -81,7 +81,7 @@ const config: (
         library: `P${hash}`,
         libraryTarget: "var",
       },
-      devtool: "cheap-source-map",
+      devtool: "cheap-eval-source-map",
       module: {
         rules: [
           {
@@ -122,12 +122,6 @@ const config: (
       plugins: [
         new esm(),
         new LicenseWebpackPlugin({
-          addBanner: true,
-          renderBanner: (_, modules) => {
-            return `/* ${name}\n${modules.map(
-              (module) => `\n${module.name}\n${module.licenseText}\n`
-            )} */\n`
-          },
           licenseTextOverrides: {
             "@zenza/components": "MIT License 2021 segabito",
             ZenzaWatch: "MIT License 2021 segabito",
