@@ -10,7 +10,7 @@
   },
   "scripts": {
     "dev": "webpack --color -w",
-    "build": "webpack --color && ts-node ./embedLicenseInBundle.ts",
+    "build": "webpack --color",
     "lint:prettier": "prettier --check './src/**/*.{js,ts,tsx}'",
     "format:prettier": "prettier --write './src/**/*.{js,ts,tsx}'",
     "lint:eslint": "eslint --max-warnings 0 --cache './src/**/*.{js,ts,tsx}'",

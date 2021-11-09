@@ -9,6 +9,7 @@ import { LicenseWebpackPlugin } from "license-webpack-plugin"
 import { TailwindConfig } from "tailwindcss/tailwind-config"
 import webpack from "webpack"
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer"
+import EmbedLicenseInBundlePlugin from "./embedLicenseInBundlePlugin"
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const tailwindConfig = require("./tailwind.config")
 
@@ -128,6 +129,7 @@ const config: (
             "discord-rpc": "MIT License snek <me@gus.host>",
           },
         }) as never,
+        new EmbedLicenseInBundlePlugin(),
       ],
       optimization: {
         splitChunks: false,

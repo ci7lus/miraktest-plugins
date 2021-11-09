@@ -4,7 +4,7 @@
     "src",
     "./webpack.config.ts",
     "./tailwind.config.js",
-    "./embedLicenseInBundle.ts"
+    "./embedLicenseInBundlePlugin.ts"
   ],
   "exclude": ["node_modules"]
 }
