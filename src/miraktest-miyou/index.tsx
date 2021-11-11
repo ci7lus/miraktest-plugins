@@ -5,6 +5,7 @@ import { atom, useRecoilValue, useRecoilState, useSetRecoilState } from "recoil"
 import YAML from "yaml"
 import { Atom, InitPlugin } from "../@types/plugin"
 import { SayaDefinition } from "../miraktest-annict/types"
+import { DPLAYER_COMMENT_EVENT } from "../miraktest-dplayer/constants"
 import { DPlayerCommentPayload } from "../miraktest-dplayer/types"
 import { trimCommentForFlow } from "../miraktest-saya/comment"
 import { NicoCommentChat } from "../miraktest-zenza/types"
@@ -45,7 +46,7 @@ const main: InitPlugin = {
     })
 
     let zenzaCommentAtom: RecoilState<NicoCommentChat> | null = null
-    let dplayerCommentAtom: RecoilState<DPlayerCommentPayload> | null = null
+    let isDplayerFound = false
 
     const client = axios.create({
       baseURL: "https://miteru.digitiminimi.com/a2sc.php",
@@ -84,19 +85,9 @@ const main: InitPlugin = {
             zenzaCommentAtom = family.atom
           }
         }
-        const dplayer = plugins.find(
+        isDplayerFound = !!plugins.find(
           (plugin) => plugin.id === "io.github.ci7lus.miraktest-plugins.dplayer"
         )
-        if (dplayer) {
-          const family = dplayer.exposedAtoms.find(
-            (atom): atom is Atom<DPlayerCommentPayload> =>
-              atom.type === "atom" &&
-              atom.atom.key === "plugins.ci7lus.dplayer.comment"
-          )
-          if (family) {
-            dplayerCommentAtom = family.atom
-          }
-        }
       },
       components: [
         {
@@ -114,14 +105,11 @@ const main: InitPlugin = {
             const setZenzaComment = zenzaCommentAtom
               ? useSetRecoilState(zenzaCommentAtom)
               : null
-            const setDplayerComment = dplayerCommentAtom
-              ? useSetRecoilState(dplayerCommentAtom)
-              : null
             const [token, setToken] = useRecoilState(tokenAtom)
 
             // miyou token取得
             useEffect(() => {
-              if (!setZenzaComment && !setDplayerComment) {
+              if (!setZenzaComment && !isDplayerFound) {
                 console.warn("コメント送信先の取得に失敗しています")
                 return
               }
@@ -315,19 +303,23 @@ const main: InitPlugin = {
                       content: text,
                     })
                   }
-                  if (setDplayerComment) {
-                    setDplayerComment({
-                      source: `MiyouTV [${comment.title}]`,
-                      sourceUrl: null,
-                      time: comment.time / 1000,
-                      timeMs: Math.random() * 100,
-                      author: `${comment.name} (${comment.id})`,
-                      text,
-                      no: comment.time,
-                      color: "white",
-                      type: "right",
-                      commands: [],
+                  if (isDplayerFound) {
+                    const event = new CustomEvent(DPLAYER_COMMENT_EVENT, {
+                      bubbles: false,
+                      detail: {
+                        source: `MiyouTV [${comment.title}]`,
+                        sourceUrl: null,
+                        time: comment.time / 1000,
+                        timeMs: Math.random() * 100,
+                        author: `${comment.name} (${comment.id})`,
+                        text,
+                        no: comment.time,
+                        color: "white",
+                        type: "right",
+                        commands: [],
+                      } as DPlayerCommentPayload,
                     })
+                    window.dispatchEvent(event)
                   }
                   index++
                 }

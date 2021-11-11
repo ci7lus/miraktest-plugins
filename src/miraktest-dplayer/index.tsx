@@ -4,7 +4,7 @@ import { atom, useRecoilValue, useRecoilState } from "recoil"
 import { InitPlugin } from "../@types/plugin"
 import tailwind from "../tailwind.scss"
 import { DPlayerWrapper } from "./components/DPlayerWrapper"
-import { DPlayerCommentPayload } from "./types"
+import { META, PREFIX } from "./constants"
 
 /**
  * MirakTest DPlayer Plugin
@@ -13,35 +13,20 @@ import { DPlayerCommentPayload } from "./types"
  * DPlayer Danmakuを出力するコメントソースのプラグインが別途必要です
  */
 
-const _id = "io.github.ci7lus.miraktest-plugins.dplayer"
-const prefix = "plugins.ci7lus.dplayer"
-const meta = {
-  id: _id,
-  name: "DPlayer",
-  author: "ci7lus",
-  version: "0.2.1",
-  description:
-    "映像の上にDPlayerを表示するプラグインです。別途コメントソースが必要です。",
-}
-
 const main: InitPlugin = {
   renderer: async ({ atoms }) => {
-    const commentAtom = atom<DPlayerCommentPayload | null>({
-      key: `${prefix}.comment`,
-      default: null,
-    })
     const opacityAtom = atom<number>({
-      key: `${prefix}.opacity`,
+      key: `${PREFIX}.opacity`,
       default: 1,
     })
     const zoomAtom = atom<number>({
-      key: `${prefix}.zoom`,
+      key: `${PREFIX}.zoom`,
       default: 1,
     })
 
     return {
-      ...meta,
-      exposedAtoms: [{ type: "atom", atom: commentAtom }],
+      ...META,
+      exposedAtoms: [],
       sharedAtoms: [
         { type: "atom", atom: opacityAtom },
         { type: "atom", atom: zoomAtom },
@@ -55,21 +40,19 @@ const main: InitPlugin = {
       },
       components: [
         {
-          id: `${prefix}.dplayerCommentPlayer`,
+          id: `${PREFIX}.dplayerCommentPlayer`,
           position: "onPlayer",
           component: () => {
             const isPlaying = useRecoilValue(atoms.contentPlayerIsPlayingAtom)
             const isSeekable = useRecoilValue(
               atoms.contentPlayerIsSeekableSelector
             )
-            const comment = useRecoilValue(commentAtom)
             const opacity = useRecoilValue(opacityAtom)
             const zoom = useRecoilValue(zoomAtom)
             return (
               <DPlayerWrapper
                 isPlaying={isPlaying}
                 isSeekable={isSeekable}
-                comment={comment}
                 opacity={opacity}
                 zoom={zoom}
               />
@@ -77,9 +60,9 @@ const main: InitPlugin = {
           },
         },
         {
-          id: `${prefix}.settings`,
+          id: `${PREFIX}.settings`,
           position: "onSetting",
-          label: meta.name,
+          label: META.name,
           component: () => {
             const [opacity, setOpacity] = useRecoilState(opacityAtom)
             const [zoom, setZoom] = useRecoilState(zoomAtom)

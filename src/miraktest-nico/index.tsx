@@ -5,6 +5,7 @@ import { atom, useRecoilValue, useRecoilState, useSetRecoilState } from "recoil"
 import YAML from "yaml"
 import { Atom, InitPlugin } from "../@types/plugin"
 import { SayaDefinition } from "../miraktest-annict/types"
+import { DPLAYER_COMMENT_EVENT } from "../miraktest-dplayer/constants"
 import { DPlayerCommentPayload } from "../miraktest-dplayer/types"
 import { trimCommentForFlow } from "../miraktest-saya/comment"
 import { NicoCommentChat } from "../miraktest-zenza/types"
@@ -41,7 +42,7 @@ const main: InitPlugin = {
     })
 
     let zenzaCommentAtom: RecoilState<NicoCommentChat> | null = null
-    let dplayerCommentAtom: RecoilState<DPlayerCommentPayload> | null = null
+    let isDplayerFound = false
 
     return {
       ...meta,
@@ -72,19 +73,9 @@ const main: InitPlugin = {
             zenzaCommentAtom = family.atom
           }
         }
-        const dplayer = plugins.find(
+        isDplayerFound = !!plugins.find(
           (plugin) => plugin.id === "io.github.ci7lus.miraktest-plugins.dplayer"
         )
-        if (dplayer) {
-          const family = dplayer.exposedAtoms.find(
-            (atom): atom is Atom<DPlayerCommentPayload> =>
-              atom.type === "atom" &&
-              atom.atom.key === "plugins.ci7lus.dplayer.comment"
-          )
-          if (family) {
-            dplayerCommentAtom = family.atom
-          }
-        }
       },
       components: [
         {
@@ -102,13 +93,14 @@ const main: InitPlugin = {
             const setZenzaComment = zenzaCommentAtom
               ? useSetRecoilState(zenzaCommentAtom)
               : null
-            const setDplayerComment = dplayerCommentAtom
-              ? useSetRecoilState(dplayerCommentAtom)
-              : null
 
             const [sayaDefinition, setSayaDefinition] =
               useState<SayaDefinition | null>(null)
             useEffect(() => {
+              if (!setZenzaComment && !isDplayerFound) {
+                console.warn("コメント送信先の取得に失敗しています")
+                return
+              }
               axios
                 .get<string>(
                   "https://raw.githack.com/SlashNephy/saya/dev/docs/definitions.yml",
@@ -125,6 +117,9 @@ const main: InitPlugin = {
 
             const [jk, setJk] = useState<number | null>(null)
             useEffect(() => {
+              if (!setZenzaComment && !isDplayerFound) {
+                return
+              }
               if (!sayaDefinition) {
                 return
               }
@@ -258,20 +253,24 @@ const main: InitPlugin = {
                       content: text,
                     })
                   }
-                  if (setDplayerComment) {
+                  if (isDplayerFound) {
                     const { color, position } = parseMail(comment.mail)
-                    setDplayerComment({
-                      source: `ニコニコ実況過去ログ [${comment.thread}]`,
-                      sourceUrl: `https://jikkyo.tsukumijima.net/api/kakolog/jk${jk}`,
-                      time: comment.date,
-                      timeMs: comment.date_usec,
-                      author: comment.user_id,
-                      text,
-                      no: comment.no,
-                      color: color,
-                      type: position,
-                      commands: [],
+                    const event = new CustomEvent(DPLAYER_COMMENT_EVENT, {
+                      bubbles: false,
+                      detail: {
+                        source: `ニコニコ実況過去ログ [${comment.thread}]`,
+                        sourceUrl: `https://jikkyo.tsukumijima.net/api/kakolog/jk${jk}`,
+                        time: comment.date,
+                        timeMs: comment.date_usec,
+                        author: comment.user_id,
+                        text,
+                        no: comment.no,
+                        color: color,
+                        type: position,
+                        commands: [],
+                      } as DPlayerCommentPayload,
                     })
+                    window.dispatchEvent(event)
                   }
                   index++
                 }

@@ -1,5 +1,6 @@
 import React, { memo, useEffect, useRef } from "react"
 import { useRefFromState } from "../../shared/utils"
+import { DPLAYER_COMMENT_EVENT } from "../constants"
 import { DPlayer } from "../dplayerLoader"
 import style from "../style.scss"
 import { DPlayerCommentPayload } from "../types"
@@ -7,10 +8,9 @@ import { DPlayerCommentPayload } from "../types"
 export const DPlayerWrapper: React.VFC<{
   isPlaying: boolean
   isSeekable: boolean
-  comment: DPlayerCommentPayload | null
   opacity: number
   zoom: number
-}> = memo(({ isPlaying, isSeekable, comment, opacity, zoom }) => {
+}> = memo(({ isPlaying, isSeekable, opacity, zoom }) => {
   const dplayerElementRef = useRef<HTMLDivElement>(null)
   const player = useRef<DPlayer | null>()
 
@@ -40,16 +40,19 @@ export const DPlayerWrapper: React.VFC<{
   }, [isPlaying])
 
   useEffect(() => {
-    const playerRef = player.current
-    if (!playerRef || !comment || playerRef.video.paused === true) {
-      return
+    const handler = (event: CustomEvent) => {
+      const comment = event.detail as DPlayerCommentPayload
+      if (!player.current) return
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      player.current.danmaku.draw(comment as any)
     }
-    if (comment.source.startsWith("5ch")) {
-      setTimeout(() => playerRef.danmaku.draw(comment), comment.timeMs || 0)
-    } else {
-      playerRef.danmaku.draw(comment)
-    }
-  }, [comment])
+    window.addEventListener(DPLAYER_COMMENT_EVENT, handler as EventListener)
+    return () =>
+      window.removeEventListener(
+        DPLAYER_COMMENT_EVENT,
+        handler as EventListener
+      )
+  }, [])
 
   const isPlayingRef = useRefFromState(isPlaying)
 

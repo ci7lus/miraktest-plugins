@@ -11,6 +11,7 @@ import {
 import ReconnectingWebSocket from "reconnecting-websocket"
 import urlJoin from "url-join"
 import { Atom, InitPlugin } from "../@types/plugin"
+import { DPLAYER_COMMENT_EVENT } from "../miraktest-dplayer/constants"
 import { DPlayerCommentPayload } from "../miraktest-dplayer/types"
 import { NicoCommentChat } from "../miraktest-zenza/types"
 import { useRefFromState } from "../shared/utils"
@@ -55,7 +56,7 @@ const main: InitPlugin = {
     })
 
     let zenzaCommentAtom: RecoilState<NicoCommentChat> | null = null
-    let dplayerCommentAtom: RecoilState<DPlayerCommentPayload> | null = null
+    let isDplayerFound = false
 
     const commentFamilyKey = `${prefix}.rawComment`
     const rawCommentFamily = atomFamily<DPlayerCommentPayload | null, number>({
@@ -102,19 +103,9 @@ const main: InitPlugin = {
             zenzaCommentAtom = family.atom
           }
         }
-        const dplayer = plugins.find(
+        isDplayerFound = !!plugins.find(
           (plugin) => plugin.id === "io.github.ci7lus.miraktest-plugins.dplayer"
         )
-        if (dplayer) {
-          const family = dplayer.exposedAtoms.find(
-            (atom): atom is Atom<DPlayerCommentPayload> =>
-              atom.type === "atom" &&
-              atom.atom.key === "plugins.ci7lus.dplayer.comment"
-          )
-          if (family) {
-            dplayerCommentAtom = family.atom
-          }
-        }
       },
       components: [
         {
@@ -133,9 +124,6 @@ const main: InitPlugin = {
             const setZenzaComment = zenzaCommentAtom
               ? useSetRecoilState(zenzaCommentAtom)
               : null
-            const setDplayerComment = dplayerCommentAtom
-              ? useSetRecoilState(dplayerCommentAtom)
-              : null
             const setRawComment = useSetRecoilState(
               rawCommentFamily(remoteWindow.id)
             )
@@ -152,7 +140,7 @@ const main: InitPlugin = {
               })
             }
             useEffect(() => {
-              if (!setZenzaComment && !setDplayerComment) {
+              if (!setZenzaComment && !isDplayerFound) {
                 console.warn("コメント送信先の取得に失敗しています")
                 return
               }
@@ -234,8 +222,12 @@ const main: InitPlugin = {
                       content: commentText,
                     })
                   }
-                  if (setDplayerComment) {
-                    setDplayerComment({ ...payload, text: commentText })
+                  if (isDplayerFound) {
+                    const event = new CustomEvent(DPLAYER_COMMENT_EVENT, {
+                      bubbles: false,
+                      detail: { ...payload, text: commentText },
+                    })
+                    window.dispatchEvent(event)
                   }
                 })
                 ws.addEventListener("open", () => {
