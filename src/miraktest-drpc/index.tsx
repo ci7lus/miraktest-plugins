@@ -2,6 +2,7 @@ import { Presence } from "discord-rpc"
 import React, { useEffect, useState } from "react"
 import { atom, useRecoilValue, useRecoilState } from "recoil"
 import { InitPlugin } from "../@types/plugin"
+import { wait } from "../shared/utils"
 import tailwind from "../tailwind.scss"
 import { getServiceLogoForPresence } from "./presence"
 import { RPC } from "./rpcLoader"
@@ -12,7 +13,7 @@ const meta = {
   id: _id,
   name: "Discord RPC",
   author: "ci7lus",
-  version: "0.0.1",
+  version: "0.0.2",
   description: "表示中の番組を Discord に共有します",
 }
 
@@ -21,27 +22,52 @@ const activityEventId = `${_id}.setActivity`
 const main: InitPlugin = {
   main: async ({ packages }) => {
     let rpc: RPC.Client | undefined
+    let isAlive = true
     return {
       ...meta,
       setup: async () => {
         const clientId = "828277784396824596"
-        try {
-          const _rpc = new RPC.Client({ transport: "ipc" })
-          RPC.register(clientId)
-          await _rpc.login({ clientId })
-          packages.Electron.ipcMain.handle(activityEventId, (_ev, args) => {
-            if (args !== null) {
-              _rpc.setActivity(args)
+        while (isAlive) {
+          try {
+            const _rpc = new RPC.Client({ transport: "ipc" })
+            RPC.register(clientId)
+            await _rpc.login({ clientId })
+            packages.Electron.ipcMain.removeHandler(activityEventId)
+            packages.Electron.ipcMain.handle(activityEventId, (_ev, args) => {
+              if (args !== null) {
+                _rpc.setActivity(args)
+              } else {
+                _rpc.clearActivity()
+              }
+            })
+
+            rpc = _rpc
+            await Promise.all([
+              wait(1000 * 60),
+              new Promise<void>((res) => {
+                _rpc.addListener("disconnected", () => {
+                  console.info(`[${meta.name}] disconnected`)
+                  _rpc.removeAllListeners()
+                  res()
+                })
+              }),
+            ])
+          } catch (error) {
+            if (error instanceof Error) {
+              console.error(`[${meta.name}] ${error.message}`)
             } else {
-              _rpc.clearActivity()
+              console.error(error)
             }
-          })
-          rpc = _rpc
-        } catch (error) {
-          console.error(error)
+            packages.Electron.ipcMain.removeHandler(activityEventId)
+            packages.Electron.ipcMain.handle(activityEventId, () => {
+              return
+            })
+            await wait(1000 * 60)
+          }
         }
       },
       destroy: () => {
+        isAlive = false
         rpc?.destroy()
       },
     }
