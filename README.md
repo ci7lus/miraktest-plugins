@@ -36,6 +36,8 @@
   Miyou から視聴中の録画番組のコメントを取得します。コメントの表示には Zenza か DPlayer プラグインが必要です。
 - [Nico](./src/miraktest-nico)<br />
   ニコニコ実況（過去ログ API）から視聴中の録画番組のコメントを取得します。コメントの表示には Zenza か DPlayer プラグインが必要です。
+- [Gyazo](./src/miraktest-gyazo)<br />
+  スクリーンショットを Gyazo にアップロードします。
 
 ## ビルド
 

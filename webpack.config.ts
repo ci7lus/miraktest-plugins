@@ -54,6 +54,10 @@ const entries: Entry[] = [
     name: "miraktest-nico",
     dir: "./src/miraktest-nico",
   },
+  {
+    name: "miraktest-gyazo",
+    dir: "./src/miraktest-gyazo",
+  },
 ]
 
 const config: (

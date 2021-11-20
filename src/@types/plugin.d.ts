@@ -10673,6 +10673,14 @@ declare namespace Electron {
   class WebContents extends NodeEventEmitter {
     // Docs: https://electronjs.org/docs/api/web-contents
     /**
+     * | undefined - A WebContents instance with the given TargetID, or `undefined` if
+     * there is no WebContents associated with the given TargetID.
+     *
+     * When communicating with the Chrome DevTools Protocol, it can be useful to lookup
+     * a WebContents instance based on its assigned TargetID.
+     */
+    static fromDevToolsTargetId(targetId: string): WebContents
+    /**
      * | undefined - A WebContents instance with the given ID, or `undefined` if there
      * is no WebContents associated with the given ID.
      */
@@ -29075,6 +29083,14 @@ interface UploadRawData {
 declare class WebContents extends NodeEventEmitter {
   // Docs: https://electronjs.org/docs/api/web-contents
   /**
+   * | undefined - A WebContents instance with the given TargetID, or `undefined` if
+   * there is no WebContents associated with the given TargetID.
+   *
+   * When communicating with the Chrome DevTools Protocol, it can be useful to lookup
+   * a WebContents instance based on its assigned TargetID.
+   */
+  static fromDevToolsTargetId(targetId: string): WebContents
+  /**
    * | undefined - A WebContents instance with the given ID, or `undefined` if there
    * is no WebContents associated with the given ID.
    */
@@ -38571,11 +38587,14 @@ export declare type PluginInRendererArgs = {
     contentPlayerIsSeekableSelector: Recoil.RecoilValueReadOnly<boolean>
     contentPlayerPlayingPositionSelector: Recoil.RecoilValueReadOnly<number>
     contentPlayerPlayingTimeSelector: Recoil.RecoilValueReadOnly<number>
+    contentPlayerTotSelector: Recoil.RecoilValueReadOnly<number>
     contentPlayerAribSubtitleDataSelector: Recoil.RecoilValueReadOnly<number>
     contentPlayerTsFirstPcrSelector: Recoil.RecoilValueReadOnly<number>
     contentPlayerPositionUpdateTriggerAtom: Recoil.RecoilState<number>
-    contentPlayerRelativeMoveTriggerAtom: Recoil.RecoilState<number>
     contentPlayerScreenshotTriggerAtom: Recoil.RecoilState<number>
+    contentPlayerScreenshotUrlSelector: Recoil.RecoilValueReadOnly<
+      string | null
+    >
     mirakurunCompatibilitySelector: Recoil.RecoilValueReadOnly<MirakurunCompatibilityTypes | null>
     mirakurunVersionSelector: Recoil.RecoilValueReadOnly<string | null>
     mirakurunServicesSelector: Recoil.RecoilValueReadOnly<Service[] | null>
