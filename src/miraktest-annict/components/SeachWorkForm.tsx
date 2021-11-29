@@ -43,7 +43,7 @@ export const SearchWorkForm: React.FC<{
     () => {
       setSearchTerm(localTerm || null)
     },
-    100,
+    750,
     [localTerm]
   )
   const ref = useRef<HTMLDivElement>(null)
