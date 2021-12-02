@@ -14,11 +14,13 @@ export const detectProgramInfo = async ({
   channel,
   program,
   arm,
+  time,
 }: {
   rest: AnnictRESTAPI
   channel: SayaDefinitionChannel
   program?: Program
   arm: ARM[]
+  time: number
 }): Promise<{
   annictId: number
   episode: {
@@ -27,40 +29,20 @@ export const detectProgramInfo = async ({
     id?: number
   } | null
 } | void> => {
-  let startTime: dayjs.Dayjs
-  let endTime: dayjs.Dayjs
-  if (program?.startAt) {
-    startTime = dayjs(program.startAt)
-    endTime = dayjs(program.startAt + program.duration)
-  } else {
-    // 番組情報がない場合前後4時間を探索する
-    startTime = dayjs().subtract(2, "hours").startOf("hour")
-    endTime = dayjs().add(2, "hours").startOf("hour")
-  }
+  const now = dayjs()
+  const targetDate =
+    program && dayjs(program.startAt + program.duration).isBefore(now)
+      ? dayjs(program.startAt + time + 1000)
+      : now
 
   // しょぼいカレンダー
   if (channel.syobocalId) {
-    const StTime = startTime.format("YYYYMMDD_HHmmss-")
     const lookup = await SyobocalAPI.ProgLookup({
       ChID: channel.syobocalId.toString(),
-      StTime,
-      Range: StTime + endTime.format("YYYYMMDD_HHmmss"),
+      Range: targetDate.format("YYYYMMDD_HHmmss-YYYYMMDD_HHmmss"),
       JOIN: ["SubTitles"],
     })
-    const syobocalProgram = program?.startAt
-      ? lookup
-          .splice(0)
-          .filter((sprogram) => startTime.isSame(sprogram.StTime, "minute"))
-          .pop()
-      : lookup
-          // LastUpdate降順
-          .reverse()
-          .find(
-            (sprogram) =>
-              program?.startAt ||
-              (dayjs().isSameOrAfter(sprogram.StTime) &&
-                dayjs().isSameOrBefore(sprogram.EdTime))
-          )
+    const syobocalProgram = lookup.pop()
     if (syobocalProgram) {
       /*const arm = await axios.get<{ annict_id?: number }>(
         "https://arm.kawaiioverflow.com/api/ids",
@@ -86,6 +68,17 @@ export const detectProgramInfo = async ({
     } else {
       console.warn("番組が見つかりませんでした")
     }
+  }
+
+  let startTime: dayjs.Dayjs
+  let endTime: dayjs.Dayjs
+  if (program?.startAt) {
+    startTime = dayjs(program.startAt)
+    endTime = dayjs(program.startAt + program.duration)
+  } else {
+    startTime = targetDate.clone()
+    startTime.minute(startTime.minute() < 30 ? 0 : 30)
+    endTime = startTime.clone().add(30, "minute")
   }
 
   // Annict

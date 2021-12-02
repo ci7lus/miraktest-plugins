@@ -18,6 +18,7 @@ import { SearchWorkForm } from "./SeachWorkForm"
 export const AnnictTrack: React.FC<{
   accessToken: string
   playingContent: ContentPlayerPlayingContent | null
+  time: number
   sayaDefinition: SayaDefinition
   arm: ARM[]
   twitterAtom: Recoil.RecoilState<boolean>
@@ -25,6 +26,7 @@ export const AnnictTrack: React.FC<{
 }> = ({
   accessToken,
   playingContent,
+  time,
   sayaDefinition,
   arm,
   twitterAtom,
@@ -55,7 +57,7 @@ export const AnnictTrack: React.FC<{
     }
     setIsLoading(true)
 
-    detectProgramInfo({ rest, channel: sayaChannel, program, arm })
+    detectProgramInfo({ rest, channel: sayaChannel, program, time, arm })
       .then((programInfo) => {
         setIsLoading(false)
         if (!programInfo) {

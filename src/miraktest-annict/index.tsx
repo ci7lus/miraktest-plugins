@@ -1,6 +1,7 @@
 import Axios from "axios"
 import React, { useEffect, useState } from "react"
-import { atom, useRecoilValue, useRecoilState } from "recoil"
+import { useThrottleFn } from "react-use"
+import { atom, useRecoilValue, useRecoilState, useSetRecoilState } from "recoil"
 import YAML from "yaml"
 import { InitPlugin } from "../@types/plugin"
 import tailwind from "../tailwind.scss"
@@ -29,6 +30,7 @@ const main: InitPlugin = {
   renderer: ({ appInfo, packages, functions, atoms }) => {
     const remote = packages.Electron
     const remoteWindow = remote.getCurrentWindow()
+    const windowId = remoteWindow.id
 
     const settingAtom = atom<AnnictSetting>({
       key: `${prefix}.setting`,
@@ -41,6 +43,10 @@ const main: InitPlugin = {
     const facebookAtom = atom<boolean>({
       key: `${prefix}.facebook`,
       default: false,
+    })
+    const timeAtom = atom<number>({
+      key: `${prefix}.time`,
+      default: 0,
     })
 
     return {
@@ -58,6 +64,10 @@ const main: InitPlugin = {
         {
           type: "atom",
           atom: facebookAtom,
+        },
+        {
+          type: "atom",
+          atom: timeAtom,
         },
       ],
       storedAtoms: [
@@ -125,6 +135,30 @@ const main: InitPlugin = {
             )
           },
         },
+        {
+          id: `${prefix}.time`,
+          position: "onBackground",
+          component: () => {
+            const time = useRecoilValue(atoms.contentPlayerPlayingTimeSelector)
+            const isSeekable = useRecoilValue(
+              atoms.contentPlayerIsSeekableSelector
+            )
+            const setTime = useSetRecoilState(timeAtom)
+            const activeId = useRecoilValue(
+              atoms.globalActiveContentPlayerIdSelector
+            )
+            useThrottleFn(
+              () => {
+                if (windowId === activeId && isSeekable) {
+                  setTime(time)
+                }
+              },
+              1000,
+              [time, activeId, isSeekable] as never
+            )
+            return <></>
+          },
+        },
       ],
       destroy() {
         return
@@ -151,6 +185,7 @@ const main: InitPlugin = {
           const playingContent = useRecoilValue(
             atoms.globalContentPlayerPlayingContentFamily(activeId ?? 0)
           )
+          const time = useRecoilValue(timeAtom)
           const services = useRecoilValue(atoms.mirakurunServicesSelector)
           useEffect(() => {
             remoteWindow.setTitle(`Annict - ${appInfo.name}`)
@@ -186,6 +221,7 @@ const main: InitPlugin = {
                   <AnnictTrack
                     accessToken={setting.accessToken}
                     playingContent={playingContent}
+                    time={time}
                     sayaDefinition={sayaDefinition}
                     arm={arm}
                     twitterAtom={twitterAtom}

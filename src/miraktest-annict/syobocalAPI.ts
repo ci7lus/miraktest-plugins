@@ -48,7 +48,7 @@ export class SyobocalAPI {
   static async ProgLookup(params: {
     TID?: string
     ChID?: string
-    StTime: string
+    StTime?: string
     Range: string
     JOIN?: "SubTitles"[]
   }) {
