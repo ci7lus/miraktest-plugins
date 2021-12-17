@@ -256,7 +256,463 @@ Mirakurun:                                  Apache License
 /// <reference types="scheduler" />
 
 import * as Recoil from "recoil"
+import { SerializableParam } from "recoil"
+import * as $ from "zod"
 
+/**
+ *
+ * @export
+ * @interface Channel
+ */
+export interface Channel {
+  /**
+   *
+   * @type {ChannelType}
+   * @memberof Channel
+   */
+  type: ChannelType
+  /**
+   *
+   * @type {string}
+   * @memberof Channel
+   */
+  channel: string
+  /**
+   *
+   * @type {string}
+   * @memberof Channel
+   */
+  name?: string
+  /**
+   *
+   * @type {string}
+   * @memberof Channel
+   */
+  satellite?: string
+  /**
+   *
+   * @type {number}
+   * @memberof Channel
+   */
+  space?: number
+  /**
+   *
+   * @type {number}
+   * @memberof Channel
+   */
+  freq?: number
+  /**
+   *
+   * @type {string}
+   * @memberof Channel
+   */
+  polarity?: ChannelPolarityEnum
+  /**
+   *
+   * @type {number}
+   * @memberof Channel
+   */
+  tsmfRelTs?: number
+  /**
+   *
+   * @type {Array<Service>}
+   * @memberof Channel
+   */
+  services?: Array<Service>
+}
+declare enum ChannelPolarityEnum {
+  H = "H",
+  V = "V",
+}
+declare enum ChannelType {
+  Gr = "GR",
+  Bs = "BS",
+  Cs = "CS",
+  Sky = "SKY",
+}
+/**
+ *
+ * @export
+ * @interface Program
+ */
+export interface Program {
+  /**
+   *
+   * @type {number}
+   * @memberof Program
+   */
+  id: number
+  /**
+   *
+   * @type {number}
+   * @memberof Program
+   */
+  eventId: number
+  /**
+   *
+   * @type {number}
+   * @memberof Program
+   */
+  serviceId: number
+  /**
+   *
+   * @type {number}
+   * @memberof Program
+   */
+  networkId: number
+  /**
+   *
+   * @type {number}
+   * @memberof Program
+   */
+  startAt: number
+  /**
+   *
+   * @type {number}
+   * @memberof Program
+   */
+  duration: number
+  /**
+   *
+   * @type {boolean}
+   * @memberof Program
+   */
+  isFree: boolean
+  /**
+   *
+   * @type {string}
+   * @memberof Program
+   */
+  name?: string
+  /**
+   *
+   * @type {string}
+   * @memberof Program
+   */
+  description?: string
+  /**
+   *
+   * @type {Array<ProgramGenre>}
+   * @memberof Program
+   */
+  genres?: Array<ProgramGenre>
+  /**
+   *
+   * @type {ProgramVideo}
+   * @memberof Program
+   */
+  video?: ProgramVideo
+  /**
+   *
+   * @type {Array<ProgramAudios>}
+   * @memberof Program
+   */
+  audios?: Array<ProgramAudios>
+  /**
+   *
+   * @type {object}
+   * @memberof Program
+   */
+  extended?: object
+  /**
+   *
+   * @type {Array<RelatedItem>}
+   * @memberof Program
+   */
+  relatedItems?: Array<RelatedItem>
+  /**
+   *
+   * @type {ProgramSeries}
+   * @memberof Program
+   */
+  series?: ProgramSeries
+}
+declare enum ProgramAudioSamplingRate {
+  NUMBER_16000 = 16000,
+  NUMBER_22050 = 22050,
+  NUMBER_24000 = 24000,
+  NUMBER_32000 = 32000,
+  NUMBER_44100 = 44100,
+  NUMBER_48000 = 48000,
+}
+interface ProgramAudios {
+  /**
+   *
+   * @type {number}
+   * @memberof ProgramAudios
+   */
+  componentType?: number
+  /**
+   *
+   * @type {number}
+   * @memberof ProgramAudios
+   */
+  componentTag?: number
+  /**
+   *
+   * @type {boolean}
+   * @memberof ProgramAudios
+   */
+  isMain?: boolean
+  /**
+   *
+   * @type {ProgramAudioSamplingRate}
+   * @memberof ProgramAudios
+   */
+  samplingRate?: ProgramAudioSamplingRate
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof ProgramAudios
+   */
+  langs?: Array<ProgramAudiosLangsEnum>
+}
+declare enum ProgramAudiosLangsEnum {
+  Jpn = "jpn",
+  Eng = "eng",
+  Deu = "deu",
+  Fra = "fra",
+  Ita = "ita",
+  Rus = "rus",
+  Zho = "zho",
+  Kor = "kor",
+  Spa = "spa",
+  Etc = "etc",
+}
+interface ProgramGenre {
+  /**
+   *
+   * @type {number}
+   * @memberof ProgramGenre
+   */
+  lv1?: number
+  /**
+   *
+   * @type {number}
+   * @memberof ProgramGenre
+   */
+  lv2?: number
+  /**
+   *
+   * @type {number}
+   * @memberof ProgramGenre
+   */
+  un1?: number
+  /**
+   *
+   * @type {number}
+   * @memberof ProgramGenre
+   */
+  un2?: number
+}
+interface ProgramSeries {
+  /**
+   *
+   * @type {number}
+   * @memberof ProgramSeries
+   */
+  id?: number
+  /**
+   *
+   * @type {number}
+   * @memberof ProgramSeries
+   */
+  repeat?: number
+  /**
+   *
+   * @type {number}
+   * @memberof ProgramSeries
+   */
+  pattern?: number
+  /**
+   *
+   * @type {number}
+   * @memberof ProgramSeries
+   */
+  expiresAt?: number
+  /**
+   *
+   * @type {number}
+   * @memberof ProgramSeries
+   */
+  episode?: number
+  /**
+   *
+   * @type {number}
+   * @memberof ProgramSeries
+   */
+  lastEpisode?: number
+  /**
+   *
+   * @type {string}
+   * @memberof ProgramSeries
+   */
+  name?: string
+}
+interface ProgramVideo {
+  /**
+   *
+   * @type {ProgramVideoType}
+   * @memberof ProgramVideo
+   */
+  type?: ProgramVideoType
+  /**
+   *
+   * @type {ProgramVideoResolution}
+   * @memberof ProgramVideo
+   */
+  resolution?: ProgramVideoResolution
+  /**
+   *
+   * @type {number}
+   * @memberof ProgramVideo
+   */
+  streamContent?: number
+  /**
+   *
+   * @type {number}
+   * @memberof ProgramVideo
+   */
+  componentType?: number
+}
+declare enum ProgramVideoResolution {
+  _240p = "240p",
+  _480i = "480i",
+  _480p = "480p",
+  _720p = "720p",
+  _1080i = "1080i",
+  _1080p = "1080p",
+  _2160p = "2160p",
+  _4320p = "4320p",
+}
+declare enum ProgramVideoType {
+  Mpeg2 = "mpeg2",
+  H264 = "h.264",
+  H265 = "h.265",
+}
+interface RelatedItem {
+  /**
+   *
+   * @type {string}
+   * @memberof RelatedItem
+   */
+  type?: RelatedItemTypeEnum
+  /**
+   *
+   * @type {number}
+   * @memberof RelatedItem
+   */
+  networkId?: number
+  /**
+   *
+   * @type {number}
+   * @memberof RelatedItem
+   */
+  serviceId?: number
+  /**
+   *
+   * @type {number}
+   * @memberof RelatedItem
+   */
+  eventId?: number
+}
+declare enum RelatedItemTypeEnum {
+  Shared = "shared",
+  Relay = "relay",
+  Movement = "movement",
+}
+/**
+ *
+ * @export
+ * @interface Service
+ */
+export interface Service {
+  /**
+   *
+   * @type {number}
+   * @memberof Service
+   */
+  id: number
+  /**
+   *
+   * @type {number}
+   * @memberof Service
+   */
+  serviceId: number
+  /**
+   *
+   * @type {number}
+   * @memberof Service
+   */
+  networkId: number
+  /**
+   *
+   * @type {TransportStreamId}
+   * @memberof Service
+   */
+  transportStreamId?: number
+  /**
+   *
+   * @type {string}
+   * @memberof Service
+   */
+  name: string
+  /**
+   *
+   * @type {number}
+   * @memberof Service
+   */
+  type: number
+  /**
+   *
+   * @type {number}
+   * @memberof Service
+   */
+  logoId?: number
+  /**
+   *
+   * @type {boolean}
+   * @memberof Service
+   */
+  hasLogoData?: boolean
+  /**
+   *
+   * @type {number}
+   * @memberof Service
+   */
+  remoteControlKeyId?: number
+  /**
+   *
+   * @type {boolean}
+   * @memberof Service
+   */
+  epgReady?: boolean
+  /**
+   *
+   * @type {number}
+   * @memberof Service
+   */
+  epgUpdatedAt?: number
+  /**
+   *
+   * @type {Channel}
+   * @memberof Service
+   */
+  channel?: Channel
+  /**
+   *
+   * @type {string}
+   * @memberof Service
+   */
+  logoData?: string
+}
+declare type ContentPlayerContentType = "Mirakurun" | (string & {})
+export declare type ContentPlayerPlayingContent = {
+  contentType: ContentPlayerContentType
+  url: string
+  program?: Program
+  service?: Service
+}
 type GlobalEvent = Event & {
   returnValue: any
 }
@@ -38054,452 +38510,53 @@ declare namespace NodeJS {
     readonly chrome: string
   }
 }
-/**
- *
- * @export
- * @interface Channel
- */
-export interface Channel {
-  /**
-   *
-   * @type {ChannelType}
-   * @memberof Channel
-   */
-  type: ChannelType
-  /**
-   *
-   * @type {string}
-   * @memberof Channel
-   */
-  channel: string
-  /**
-   *
-   * @type {string}
-   * @memberof Channel
-   */
-  name?: string
-  /**
-   *
-   * @type {string}
-   * @memberof Channel
-   */
-  satellite?: string
-  /**
-   *
-   * @type {number}
-   * @memberof Channel
-   */
-  space?: number
-  /**
-   *
-   * @type {number}
-   * @memberof Channel
-   */
-  freq?: number
-  /**
-   *
-   * @type {string}
-   * @memberof Channel
-   */
-  polarity?: ChannelPolarityEnum
-  /**
-   *
-   * @type {number}
-   * @memberof Channel
-   */
-  tsmfRelTs?: number
-  /**
-   *
-   * @type {Array<Service>}
-   * @memberof Channel
-   */
-  services?: Array<Service>
-}
-declare enum ChannelPolarityEnum {
-  H = "H",
-  V = "V",
-}
-declare enum ChannelType {
-  Gr = "GR",
-  Bs = "BS",
-  Cs = "CS",
-  Sky = "SKY",
-}
-/**
- *
- * @export
- * @interface Program
- */
-export interface Program {
-  /**
-   *
-   * @type {number}
-   * @memberof Program
-   */
-  id: number
-  /**
-   *
-   * @type {number}
-   * @memberof Program
-   */
-  eventId: number
-  /**
-   *
-   * @type {number}
-   * @memberof Program
-   */
-  serviceId: number
-  /**
-   *
-   * @type {number}
-   * @memberof Program
-   */
-  networkId: number
-  /**
-   *
-   * @type {number}
-   * @memberof Program
-   */
-  startAt: number
-  /**
-   *
-   * @type {number}
-   * @memberof Program
-   */
-  duration: number
-  /**
-   *
-   * @type {boolean}
-   * @memberof Program
-   */
-  isFree: boolean
-  /**
-   *
-   * @type {string}
-   * @memberof Program
-   */
-  name?: string
-  /**
-   *
-   * @type {string}
-   * @memberof Program
-   */
-  description?: string
-  /**
-   *
-   * @type {Array<ProgramGenre>}
-   * @memberof Program
-   */
-  genres?: Array<ProgramGenre>
-  /**
-   *
-   * @type {ProgramVideo}
-   * @memberof Program
-   */
-  video?: ProgramVideo
-  /**
-   *
-   * @type {Array<ProgramAudios>}
-   * @memberof Program
-   */
-  audios?: Array<ProgramAudios>
-  /**
-   *
-   * @type {object}
-   * @memberof Program
-   */
-  extended?: object
-  /**
-   *
-   * @type {Array<RelatedItem>}
-   * @memberof Program
-   */
-  relatedItems?: Array<RelatedItem>
-  /**
-   *
-   * @type {ProgramSeries}
-   * @memberof Program
-   */
-  series?: ProgramSeries
-}
-declare enum ProgramAudioSamplingRate {
-  NUMBER_16000 = 16000,
-  NUMBER_22050 = 22050,
-  NUMBER_24000 = 24000,
-  NUMBER_32000 = 32000,
-  NUMBER_44100 = 44100,
-  NUMBER_48000 = 48000,
-}
-interface ProgramAudios {
-  /**
-   *
-   * @type {number}
-   * @memberof ProgramAudios
-   */
-  componentType?: number
-  /**
-   *
-   * @type {number}
-   * @memberof ProgramAudios
-   */
-  componentTag?: number
-  /**
-   *
-   * @type {boolean}
-   * @memberof ProgramAudios
-   */
-  isMain?: boolean
-  /**
-   *
-   * @type {ProgramAudioSamplingRate}
-   * @memberof ProgramAudios
-   */
-  samplingRate?: ProgramAudioSamplingRate
-  /**
-   *
-   * @type {Array<string>}
-   * @memberof ProgramAudios
-   */
-  langs?: Array<ProgramAudiosLangsEnum>
-}
-declare enum ProgramAudiosLangsEnum {
-  Jpn = "jpn",
-  Eng = "eng",
-  Deu = "deu",
-  Fra = "fra",
-  Ita = "ita",
-  Rus = "rus",
-  Zho = "zho",
-  Kor = "kor",
-  Spa = "spa",
-  Etc = "etc",
-}
-interface ProgramGenre {
-  /**
-   *
-   * @type {number}
-   * @memberof ProgramGenre
-   */
-  lv1?: number
-  /**
-   *
-   * @type {number}
-   * @memberof ProgramGenre
-   */
-  lv2?: number
-  /**
-   *
-   * @type {number}
-   * @memberof ProgramGenre
-   */
-  un1?: number
-  /**
-   *
-   * @type {number}
-   * @memberof ProgramGenre
-   */
-  un2?: number
-}
-interface ProgramSeries {
-  /**
-   *
-   * @type {number}
-   * @memberof ProgramSeries
-   */
-  id?: number
-  /**
-   *
-   * @type {number}
-   * @memberof ProgramSeries
-   */
-  repeat?: number
-  /**
-   *
-   * @type {number}
-   * @memberof ProgramSeries
-   */
-  pattern?: number
-  /**
-   *
-   * @type {number}
-   * @memberof ProgramSeries
-   */
-  expiresAt?: number
-  /**
-   *
-   * @type {number}
-   * @memberof ProgramSeries
-   */
-  episode?: number
-  /**
-   *
-   * @type {number}
-   * @memberof ProgramSeries
-   */
-  lastEpisode?: number
-  /**
-   *
-   * @type {string}
-   * @memberof ProgramSeries
-   */
-  name?: string
-}
-interface ProgramVideo {
-  /**
-   *
-   * @type {ProgramVideoType}
-   * @memberof ProgramVideo
-   */
-  type?: ProgramVideoType
-  /**
-   *
-   * @type {ProgramVideoResolution}
-   * @memberof ProgramVideo
-   */
-  resolution?: ProgramVideoResolution
-  /**
-   *
-   * @type {number}
-   * @memberof ProgramVideo
-   */
-  streamContent?: number
-  /**
-   *
-   * @type {number}
-   * @memberof ProgramVideo
-   */
-  componentType?: number
-}
-declare enum ProgramVideoResolution {
-  _240p = "240p",
-  _480i = "480i",
-  _480p = "480p",
-  _720p = "720p",
-  _1080i = "1080i",
-  _1080p = "1080p",
-  _2160p = "2160p",
-  _4320p = "4320p",
-}
-declare enum ProgramVideoType {
-  Mpeg2 = "mpeg2",
-  H264 = "h.264",
-  H265 = "h.265",
-}
-interface RelatedItem {
-  /**
-   *
-   * @type {string}
-   * @memberof RelatedItem
-   */
-  type?: RelatedItemTypeEnum
-  /**
-   *
-   * @type {number}
-   * @memberof RelatedItem
-   */
-  networkId?: number
-  /**
-   *
-   * @type {number}
-   * @memberof RelatedItem
-   */
-  serviceId?: number
-  /**
-   *
-   * @type {number}
-   * @memberof RelatedItem
-   */
-  eventId?: number
-}
-declare enum RelatedItemTypeEnum {
-  Shared = "shared",
-  Relay = "relay",
-  Movement = "movement",
-}
-/**
- *
- * @export
- * @interface Service
- */
-export interface Service {
-  /**
-   *
-   * @type {number}
-   * @memberof Service
-   */
-  id: number
-  /**
-   *
-   * @type {number}
-   * @memberof Service
-   */
-  serviceId: number
-  /**
-   *
-   * @type {number}
-   * @memberof Service
-   */
-  networkId: number
-  /**
-   *
-   * @type {string}
-   * @memberof Service
-   */
-  name: string
-  /**
-   *
-   * @type {number}
-   * @memberof Service
-   */
-  type: number
-  /**
-   *
-   * @type {number}
-   * @memberof Service
-   */
-  logoId?: number
-  /**
-   *
-   * @type {boolean}
-   * @memberof Service
-   */
-  hasLogoData?: boolean
-  /**
-   *
-   * @type {number}
-   * @memberof Service
-   */
-  remoteControlKeyId?: number
-  /**
-   *
-   * @type {boolean}
-   * @memberof Service
-   */
-  epgReady?: boolean
-  /**
-   *
-   * @type {number}
-   * @memberof Service
-   */
-  epgUpdatedAt?: number
-  /**
-   *
-   * @type {Channel}
-   * @memberof Service
-   */
-  channel?: Channel
-}
-declare type ContentPlayerContentType = "Mirakurun" | (string & {})
-export declare type ContentPlayerPlayingContent = {
-  contentType: ContentPlayerContentType
-  url: string
-  program?: Program
-  service?: Service
-}
 declare const ROUTES: {
   readonly ContentPlayer: "ContentPlayer"
   readonly Settings: "Settings"
   readonly ProgramTable: "ProgramTable"
+}
+declare const querySchema: $.ZodObject<
+  {
+    startAt: $.ZodOptional<$.ZodNumber>
+    endAt: $.ZodOptional<$.ZodNumber>
+    startAtLessThan: $.ZodOptional<$.ZodNumber>
+    endAtMoreThan: $.ZodOptional<$.ZodNumber>
+    serviceId: $.ZodOptional<$.ZodNumber>
+    networkId: $.ZodOptional<$.ZodNumber>
+  },
+  "strip",
+  $.ZodTypeAny,
+  {
+    networkId?: number | undefined
+    serviceId?: number | undefined
+    startAt?: number | undefined
+    endAt?: number | undefined
+    startAtLessThan?: number | undefined
+    endAtMoreThan?: number | undefined
+  },
+  {
+    networkId?: number | undefined
+    serviceId?: number | undefined
+    startAt?: number | undefined
+    endAt?: number | undefined
+    startAtLessThan?: number | undefined
+    endAtMoreThan?: number | undefined
+  }
+>
+declare type QuerySchema = $.infer<typeof querySchema>
+declare type ObjectLiteral<T = unknown> = {
+  [key: string]: T
+}
+declare type PluginDatum = {
+  filePath: string
+  fileName: string
+  content: string
+}
+declare type InitialData = {
+  states: ObjectLiteral
+  pluginData: PluginDatum[]
+  fonts: string[]
+  windowId: number
 }
 declare type OpenWindowArg = {
   name: string
@@ -38514,6 +38571,96 @@ declare type OpenBuiltinWindowArg = {
 declare type OpenContentPlayerWindowArgs = {
   playingContent?: ContentPlayerPlayingContent
   isHideUntilLoaded?: boolean
+}
+declare type SerializableKV = {
+  key: string
+  value: SerializableParam
+}
+declare type EPGManagerRegisterArg = {
+  url: string
+  userAgent?: string
+}
+declare type Preload = {
+  webchimera: {
+    setup: (args: string[]) => void
+    isOk: () => boolean
+    onTimeChanged: (listener: (time: number) => void) => void
+    onLogMessage: (listener: (level: string, message: string) => void) => void
+    onFrameReady: (
+      listener: (
+        frame: Uint8Array,
+        width: number,
+        height: number,
+        uOffset: number,
+        vOffset: number
+      ) => void
+    ) => void
+    onMediaChanged: (listener: () => void) => void
+    onEncounteredError: (listener: () => void) => void
+    onStopped: (listener: () => void) => void
+    onEndReached: (listener: () => void) => void
+    onPaused: (listener: () => void) => void
+    onPlaying: (listener: () => void) => void
+    onSeekableChanged: (listener: (isSeekable: boolean) => void) => void
+    onPositionChanged: (listener: (position: number) => void) => void
+    destroy: () => void
+    setVolume: (volume: number) => void
+    play: (url: string) => void
+    togglePause: () => void
+    stop: () => void
+    hasVout: () => boolean
+    isPlaying: () => boolean
+    getSubtitleTrack: () => number
+    setSubtitleTrack: (track: number) => void
+    getAudioChannel: () => number
+    setAudioChannel: (channel: number) => void
+    setAudioTrack: (track: number) => void
+    setPosition: (position: number) => void
+    getAudioTracks: () => string[]
+  }
+  requestInitialData: () => Promise<InitialData>
+  recoilStateUpdate: (_: SerializableKV) => Promise<void>
+  onRecoilStateUpdate: (listener: (arg: SerializableKV) => void) => () => void
+  updateIsPlayingState: (isPlaying: boolean) => Promise<void>
+  store: {
+    set: <T = unknown>(key: string, value: T) => void
+    get: <T = unknown>(key: string) => T
+  }
+  setContextMenu: (
+    buildFromTemplate: (
+      _: typeof Electron.Menu.buildFromTemplate
+    ) => (e: Electron.Event, params: Electron.ContextMenuParams) => void
+  ) => void
+  public: {
+    setWindowAspect: (aspect: number) => void
+    isDirectoryExists: (path: string) => Promise<boolean>
+    writeFile: (path: string, buffer: ArrayBuffer) => Promise<void>
+    writeArrayBufferToClipboard: (buffer: ArrayBuffer) => void
+    requestDialog: (
+      arg: Electron.OpenDialogOptions
+    ) => Promise<Electron.OpenDialogReturnValue>
+    requestShellOpenPath: (path: string) => void
+    toggleAlwaysOnTop: () => void
+    requestAppPath: (name: string) => Promise<string>
+    requestCursorScreenPoint: () => Promise<Electron.Rectangle>
+    toggleFullScreen: () => void
+    showNotification: (
+      arg: Electron.NotificationConstructorOptions,
+      path?: string
+    ) => void
+    showWindow: () => void
+    setWindowTitle: (title: string) => void
+    setWindowPosition: (x: number, y: number) => void
+    requestWindowContentBounds: () => Promise<Electron.Rectangle | undefined>
+    setWindowContentBounds: (rect: Partial<Electron.Rectangle>) => void
+    requestOpenWindow: (_: OpenWindowArg) => Promise<number>
+    epgManager: {
+      register: (_: EPGManagerRegisterArg) => Promise<void>
+      unregister: (url: string) => Promise<void>
+      query: (arg: QuerySchema) => Promise<Program[]>
+    }
+    invoke: (channel: string, ...args: unknown[]) => Promise<unknown>
+  }
 }
 declare type MirakurunCompatibilityTypes = "Mirakurun" | "Mirakc"
 export declare type AppInfo = {
@@ -38556,10 +38703,8 @@ export declare type InitPlugin = {
 }
 export declare type PluginInRendererArgs = {
   appInfo: AppInfo
-  packages: {
-    Electron: typeof remote
-    IpcRenderer: Electron.IpcRenderer
-  }
+  rpc: Preload["public"]
+  windowId: number
   functions: {
     openWindow: (args: OpenWindowArg) => Promise<number>
     openBuiltinWindow: (args: OpenBuiltinWindowArg) => Promise<void>
@@ -38598,7 +38743,6 @@ export declare type PluginInRendererArgs = {
     mirakurunCompatibilitySelector: Recoil.RecoilValueReadOnly<MirakurunCompatibilityTypes | null>
     mirakurunVersionSelector: Recoil.RecoilValueReadOnly<string | null>
     mirakurunServicesSelector: Recoil.RecoilValueReadOnly<Service[] | null>
-    mirakurunProgramsSelector: Recoil.RecoilValueReadOnly<Program[] | null>
   }
 }
 export declare type InitPluginInRenderer = (
@@ -38657,7 +38801,6 @@ export declare type PluginDefineInRenderer = PluginMeta & {
   windows: {
     [key: string]: React.VFC<{}>
   }
-  contextMenu?: Electron.MenuItemConstructorOptions
   _experimental_feature__service?: {
     contentType: string
     restoreByKey: (
@@ -38675,6 +38818,7 @@ export declare type PluginDefineInMain = PluginMeta & {
     plugins: PluginDefineInMain[]
   }) => void | Promise<void>
   appMenu?: Electron.MenuItemConstructorOptions
+  contextMenu?: Electron.MenuItemConstructorOptions
 }
 
 export {}

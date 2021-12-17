@@ -21,17 +21,13 @@ const meta = {
   id: _id,
   name: "Annict",
   author: "ci7lus",
-  version: "0.1.8",
+  version: "0.2.0",
   description: "視聴中の番組をAnnictで記録する",
 }
 const trackWindowId = `${_id}.track`
 
 const main: InitPlugin = {
-  renderer: ({ appInfo, packages, functions, atoms }) => {
-    const remote = packages.Electron
-    const remoteWindow = remote.getCurrentWindow()
-    const windowId = remoteWindow.id
-
+  renderer: ({ appInfo, rpc, windowId, atoms }) => {
     const settingAtom = atom<AnnictSetting>({
       key: `${prefix}.setting`,
       default: {},
@@ -163,19 +159,6 @@ const main: InitPlugin = {
       destroy() {
         return
       },
-      contextMenu: {
-        label: "Annict",
-        click: () => {
-          functions.openWindow({
-            name: trackWindowId,
-            isSingletone: true,
-            args: {
-              width: 600,
-              height: 400,
-            },
-          })
-        },
-      },
       windows: {
         [trackWindowId]: () => {
           const setting = useRecoilValue(settingAtom)
@@ -188,7 +171,7 @@ const main: InitPlugin = {
           const time = useRecoilValue(timeAtom)
           const services = useRecoilValue(atoms.mirakurunServicesSelector)
           useEffect(() => {
-            remoteWindow.setTitle(`Annict - ${appInfo.name}`)
+            rpc.setWindowTitle(`Annict - ${appInfo.name}`)
           }, [])
           const [sayaDefinition, setSayaDefinition] =
             useState<SayaDefinition | null>(null)
@@ -270,14 +253,27 @@ const main: InitPlugin = {
         return
       },
       appMenu: {
-        label: "Annict",
+        label: "Annictに記録する",
         click: () => {
           functions.openWindow({
             name: trackWindowId,
             isSingletone: true,
             args: {
-              width: 800,
-              height: 600,
+              width: 600,
+              height: 400,
+            },
+          })
+        },
+      },
+      contextMenu: {
+        label: "Annictに記録する",
+        click: () => {
+          functions.openWindow({
+            name: trackWindowId,
+            isSingletone: true,
+            args: {
+              width: 600,
+              height: 400,
             },
           })
         },

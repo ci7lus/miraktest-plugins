@@ -1,7 +1,7 @@
 import axios from "axios"
-import { GraphQLClient } from "graphql-request"
 import { MeProgramsGetRequestQuery } from "./annict.js/types/me/programs"
 import { getSdk } from "./gql"
+import { GraphQLClient } from "./graphqlRequestLoader"
 
 export class AnnictRESTAPI {
   constructor(public accessToken: string) {}

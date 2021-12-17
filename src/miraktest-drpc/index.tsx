@@ -13,7 +13,7 @@ const meta = {
   id: _id,
   name: "Discord RPC",
   author: "ci7lus",
-  version: "0.0.2",
+  version: "0.1.0",
   description: "表示中の番組を Discord に共有します",
 }
 
@@ -75,10 +75,7 @@ const main: InitPlugin = {
       },
     }
   },
-  renderer: ({ appInfo, packages, atoms }) => {
-    const remote = packages.Electron
-    const remoteWindow = remote.getCurrentWindow()
-
+  renderer: ({ appInfo, atoms, windowId, rpc }) => {
     const isEnabledAtom = atom({
       key: `${prefix}.isEnabled`,
       default: true,
@@ -130,12 +127,12 @@ const main: InitPlugin = {
               if (
                 !isEnabled ||
                 activeWindowId === null ||
-                (!isPlaying && remoteWindow.id === activeWindowId)
+                (!isPlaying && windowId === activeWindowId)
               ) {
-                packages.IpcRenderer.invoke(activityEventId, null)
+                rpc.invoke(activityEventId, null)
                 return
               }
-              if (remoteWindow.id !== activeWindowId || !isPlaying) {
+              if (windowId !== activeWindowId || !isPlaying) {
                 return
               }
               const service = playingContent?.service
@@ -186,7 +183,7 @@ const main: InitPlugin = {
                   endTimestamp,
                   instance: false,
                 }
-                packages.IpcRenderer.invoke(activityEventId, activity)
+                rpc.invoke(activityEventId, activity)
               } else {
                 const activity: Presence = {
                   largeImageKey,
@@ -196,7 +193,7 @@ const main: InitPlugin = {
                   details: service?.name,
                   instance: false,
                 }
-                packages.IpcRenderer.invoke(activityEventId, activity)
+                rpc.invoke(activityEventId, activity)
               }
             }, [
               activeWindowId,

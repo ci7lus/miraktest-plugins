@@ -31,17 +31,14 @@ const meta = {
   id: _id,
   name: "Saya",
   author: "ci7lus",
-  version: "0.0.1",
+  version: "0.1.0",
   description:
     "Sayaからコメントを取得するプラグインです。ZenzaかDPlayerプラグインが必要です。",
 }
 const commentWindowId = `${_id}.sayaCommentWindow`
 
 const main: InitPlugin = {
-  renderer: ({ appInfo, packages, atoms }) => {
-    const remote = packages.Electron
-    const remoteWindow = remote.getCurrentWindow()
-
+  renderer: ({ appInfo, rpc, atoms, windowId }) => {
     const sayaSettingAtom = atom<SayaSetting>({
       key: `${prefix}.sayaSetting`,
       default: {
@@ -124,9 +121,7 @@ const main: InitPlugin = {
             const setZenzaComment = zenzaCommentAtom
               ? useSetRecoilState(zenzaCommentAtom)
               : null
-            const setRawComment = useSetRecoilState(
-              rawCommentFamily(remoteWindow.id)
-            )
+            const setRawComment = useSetRecoilState(rawCommentFamily(windowId))
             const wsRef = useRef<ReconnectingWebSocket | null>(null)
             const send = (ws: ReconnectingWebSocket, payload: object) => {
               ws.send(JSON.stringify(payload))
@@ -459,7 +454,7 @@ const main: InitPlugin = {
             atoms.globalContentPlayerPlayingContentFamily(windowId)
           )
           useEffect(() => {
-            remoteWindow.setTitle(`Saya コメント - ${appInfo.name}`)
+            rpc.setWindowTitle(`Saya コメント - ${appInfo.name}`)
           }, [])
           return (
             <>

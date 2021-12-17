@@ -9,16 +9,13 @@ const meta = {
   id: _id,
   name: "SamplePlugin",
   author: "ci7lus",
-  version: "0.0.1",
+  version: "0.1.0",
   description: " 読み込み確認用プラグイン",
 }
 const sampleWindowId = `${_id}.sampleWindow`
 
 const main: InitPlugin = {
-  renderer: ({ packages, functions, atoms }) => {
-    const remote = packages.Electron
-    const remoteWindow = remote.getCurrentWindow()
-
+  renderer: ({ atoms, windowId }) => {
     const currentTime = atom<string | null>({
       key: `${prefix}.currentTime`,
       default: null,
@@ -48,14 +45,14 @@ const main: InitPlugin = {
               atoms.contentPlayerPlayingContentAtom
             )
             useEffect(() => {
-              console.info("time updated:", time, "on", remoteWindow.id)
+              console.info("time updated:", time, "on", windowId)
             }, [time])
             useEffect(() => {
               console.info(
-                activeContentPlayerId === remoteWindow.id
+                activeContentPlayerId === windowId
                   ? "このウィンドウはアクティブです:"
                   : "このウィンドウはアクティブではありません:",
-                remoteWindow.id,
+                windowId,
                 activeContentPlayerId
               )
             }, [activeContentPlayerId])
@@ -114,20 +111,6 @@ const main: InitPlugin = {
       destroy() {
         console.info("destroy")
       },
-      contextMenu: {
-        label: meta.name,
-        submenu: [
-          {
-            label: "ウィンドウを開く",
-            click: () => {
-              functions.openWindow({
-                name: sampleWindowId,
-                isSingletone: true,
-              })
-            },
-          },
-        ],
-      },
       windows: {
         [sampleWindowId]: () => {
           const time = useRecoilValue(currentTime)
@@ -163,6 +146,20 @@ const main: InitPlugin = {
               })
             },
           },
+          {
+            label: "ウィンドウを開く",
+            click: () => {
+              functions.openWindow({
+                name: sampleWindowId,
+                isSingletone: true,
+              })
+            },
+          },
+        ],
+      },
+      contextMenu: {
+        label: meta.name,
+        submenu: [
           {
             label: "ウィンドウを開く",
             click: () => {

@@ -19,16 +19,13 @@ const meta = {
   id: _id,
   name: "EPGStation",
   author: "ci7lus",
-  version: "0.0.1",
+  version: "0.1.0",
   description: "EPGStationの録画を再生するためのプラグインです。",
 }
 const recordsWindowId = `${_id}.records`
 
 const main: InitPlugin = {
-  renderer: ({ appInfo, packages, functions, atoms }) => {
-    const remote = packages.Electron
-    const remoteWindow = remote.getCurrentWindow()
-
+  renderer: ({ appInfo, functions, atoms, rpc }) => {
     const settingAtom = atom<EPGStationSetting>({
       key: `${prefix}.setting`,
       default: {},
@@ -125,19 +122,6 @@ const main: InitPlugin = {
       destroy() {
         return
       },
-      contextMenu: {
-        label: "EPGStation 録画一覧",
-        click: () => {
-          functions.openWindow({
-            name: recordsWindowId,
-            isSingletone: true,
-            args: {
-              width: 800,
-              height: 600,
-            },
-          })
-        },
-      },
       windows: {
         [recordsWindowId]: () => {
           const setting = useRecoilValue(settingAtom)
@@ -156,7 +140,7 @@ const main: InitPlugin = {
           )
           const services = useRecoilValue(atoms.mirakurunServicesSelector)
           useEffect(() => {
-            remoteWindow.setTitle(`EPGStation 録画一覧 - ${appInfo.name}`)
+            rpc.setWindowTitle(`EPGStation 録画一覧 - ${appInfo.name}`)
           }, [])
 
           return (
@@ -204,6 +188,19 @@ const main: InitPlugin = {
         return
       },
       appMenu: {
+        label: "EPGStation 録画一覧",
+        click: () => {
+          functions.openWindow({
+            name: recordsWindowId,
+            isSingletone: true,
+            args: {
+              width: 800,
+              height: 600,
+            },
+          })
+        },
+      },
+      contextMenu: {
         label: "EPGStation 録画一覧",
         click: () => {
           functions.openWindow({
