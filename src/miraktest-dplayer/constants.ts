@@ -4,7 +4,7 @@ export const META = {
   id: _ID,
   name: "DPlayer",
   author: "ci7lus",
-  version: "0.3.1",
+  version: "0.3.2",
   description:
     "映像の上にDPlayerを表示するプラグインです。別途コメントソースが必要です。",
 }

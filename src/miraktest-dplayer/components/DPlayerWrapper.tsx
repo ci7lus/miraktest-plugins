@@ -55,6 +55,7 @@ export const DPlayerWrapper: React.VFC<{
   }, [])
 
   const isPlayingRef = useRefFromState(isPlaying)
+  const isSeekableRef = useRefFromState(isSeekable)
 
   useEffect(() => {
     const playerInstance = new DPlayer({
@@ -92,7 +93,9 @@ export const DPlayerWrapper: React.VFC<{
     playerInstance.danmaku.show()
 
     playerInstance.on("pause" as DPlayer.DPlayerEvents.pause, () => {
-      isPlayingRef.current && playerInstance.play()
+      if (isSeekableRef.current === false || isPlayingRef.current === true) {
+        playerInstance.play()
+      }
     })
 
     player.current = playerInstance
