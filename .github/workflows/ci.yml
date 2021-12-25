@@ -94,6 +94,7 @@ jobs:
           timeZone: 9
           format: "YYYYMMDDHH"
       - name: Release
+        if: github.ref == 'refs/heads/master'
         uses: softprops/action-gh-release@v1
         with:
           files: dist/*.plugin.*
