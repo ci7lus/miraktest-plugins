@@ -29,3 +29,14 @@ export const SEASON_LABEL = {
   [SeasonName.AUTUMN]: "秋",
   [SeasonName.WINTER]: "冬",
 }
+
+export const ANNICT_PLUGIN_ID = "io.github.ci7lus.miraktest-plugins.annict"
+export const ANNICT_PLUGIN_PREFIX = "plugins.ci7lus.annict"
+export const ANNICT_META = {
+  id: ANNICT_PLUGIN_ID,
+  name: "Annict",
+  author: "ci7lus",
+  version: "0.2.1",
+  description: "視聴中の番組をAnnictで記録する",
+}
+export const ANNICT_TRACK_WINDOW_ID = `${ANNICT_PLUGIN_ID}.track`

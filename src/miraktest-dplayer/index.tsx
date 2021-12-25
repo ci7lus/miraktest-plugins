@@ -4,7 +4,7 @@ import { atom, useRecoilValue, useRecoilState } from "recoil"
 import { InitPlugin } from "../@types/plugin"
 import tailwind from "../tailwind.scss"
 import { DPlayerWrapper } from "./components/DPlayerWrapper"
-import { META, PREFIX } from "./constants"
+import { DPLAYER_META, DPLAYER_PREFIX } from "./constants"
 
 /**
  * MirakTest DPlayer Plugin
@@ -16,16 +16,16 @@ import { META, PREFIX } from "./constants"
 const main: InitPlugin = {
   renderer: async ({ atoms }) => {
     const opacityAtom = atom<number>({
-      key: `${PREFIX}.opacity`,
+      key: `${DPLAYER_PREFIX}.opacity`,
       default: 1,
     })
     const zoomAtom = atom<number>({
-      key: `${PREFIX}.zoom`,
+      key: `${DPLAYER_PREFIX}.zoom`,
       default: 1,
     })
 
     return {
-      ...META,
+      ...DPLAYER_META,
       exposedAtoms: [],
       sharedAtoms: [
         { type: "atom", atom: opacityAtom },
@@ -40,7 +40,7 @@ const main: InitPlugin = {
       },
       components: [
         {
-          id: `${PREFIX}.dplayerCommentPlayer`,
+          id: `${DPLAYER_PREFIX}.dplayerCommentPlayer`,
           position: "onPlayer",
           component: () => {
             const isPlaying = useRecoilValue(atoms.contentPlayerIsPlayingAtom)
@@ -60,9 +60,9 @@ const main: InitPlugin = {
           },
         },
         {
-          id: `${PREFIX}.settings`,
+          id: `${DPLAYER_PREFIX}.settings`,
           position: "onSetting",
-          label: META.name,
+          label: DPLAYER_META.name,
           component: () => {
             const [opacity, setOpacity] = useRecoilState(opacityAtom)
             const [zoom, setZoom] = useRecoilState(zoomAtom)

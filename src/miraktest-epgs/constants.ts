@@ -394,3 +394,14 @@ export const AudioSamplingRate = {
   44100: "44.1kHz",
   48000: "48kHz",
 }
+
+export const EPGS_ID = "io.github.ci7lus.miraktest-plugins.epgs"
+export const EPGS_PREFIX = "plugins.ci7lus.epgs"
+export const EPGS_META = {
+  id: EPGS_ID,
+  name: "EPGStation",
+  author: "ci7lus",
+  version: "0.1.1",
+  description: "EPGStationの録画を再生するためのプラグインです。",
+}
+export const EPGS_RECORDS_WINDOW_ID = `${EPGS_ID}.records`

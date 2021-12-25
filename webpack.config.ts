@@ -141,8 +141,8 @@ const config: (
       },
       // ホストがグローバルに露出しているRecoil/Reactを用いる
       externals: {
-        react: `"React" in globalThis?React:{}`,
-        recoil: `"Recoil" in globalThis?Recoil:{}`,
+        react: "'React' in globalThis?React:{}",
+        recoil: "'Recoil' in globalThis?Recoil:{}",
       },
     }
     if (isAnalyzeEnabled) {

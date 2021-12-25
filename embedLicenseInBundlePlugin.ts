@@ -13,7 +13,7 @@ export default class EmbedLicenseInBundlePlugin {
       ) => {
         for (const asset of Object.values(stats.compilation.assets)) {
           const { existsAt } = asset
-          if (!existsAt.endsWith(".licenses.txt")) {
+          if (!existsAt || !existsAt.endsWith(".licenses.txt")) {
             continue
           }
           const bundlePath = existsAt.replace(".licenses.txt", ".js")
