@@ -401,7 +401,7 @@ export const EPGS_META = {
   id: EPGS_ID,
   name: "EPGStation",
   author: "ci7lus",
-  version: "0.1.2",
+  version: "0.1.3",
   description: "EPGStationの録画を再生するためのプラグインです。",
 }
 export const EPGS_RECORDS_WINDOW_ID = `${EPGS_ID}.records`

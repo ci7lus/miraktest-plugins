@@ -19,7 +19,8 @@ export const RecordList: React.VFC<{
   services: Service[]
   searchTerm: string | null
   setRecord: React.Dispatch<React.SetStateAction<EPGSProgramRecord | null>>
-}> = ({ api, services, searchTerm, setRecord }) => {
+  reload: number
+}> = ({ api, services, searchTerm, setRecord, reload }) => {
   const [_records, setRecords] = useState<EPGSProgramRecord[] | null>(null)
   const records = useMemo(() => _records || [], [_records])
 
@@ -97,7 +98,7 @@ export const RecordList: React.VFC<{
         setRecords(records)
       })
       .catch(() => console.error("録画番組の取得に失敗しました"))
-  }, [pageIndex, pageSize, globalFilter])
+  }, [pageIndex, pageSize, globalFilter, reload])
   useEffect(() => {
     gotoPage(0)
     setGlobalFilter(searchTerm)
