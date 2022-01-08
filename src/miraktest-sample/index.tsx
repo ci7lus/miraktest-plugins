@@ -1,3 +1,6 @@
+import fs from "fs"
+import os from "os"
+import path from "path"
 import { InitPlugin } from "../@types/plugin"
 import { SAMPLE_META, SAMPLE_WINDOW_ID } from "./constants"
 
@@ -8,6 +11,8 @@ const main: InitPlugin = {
         require("./SampleRenderer").SampleRenderer
       : undefined,
   main: ({ appInfo, packages, functions }) => {
+    const homedir = os.homedir()
+    console.info("homedir:", homedir)
     return {
       ...SAMPLE_META,
       setup: () => {
@@ -34,6 +39,44 @@ const main: InitPlugin = {
                 name: SAMPLE_WINDOW_ID,
                 isSingletone: true,
               })
+            },
+          },
+          {
+            label: "/tmp/mirakにファイルを書き込んでみる",
+            click: () => {
+              fs.promises.writeFile("/tmp/mirak", "Hello, world!")
+            },
+          },
+          {
+            label: "/tmp/.mirakにファイルを書き込んでみる",
+            click: () => {
+              fs.promises.writeFile("/tmp/.mirak", "Hello, world!")
+            },
+          },
+          {
+            label: "~/mirakにファイルを書き込んでみる",
+            click: () => {
+              fs.promises.writeFile(
+                path.join(homedir, "mirak"),
+                "Hello, world!"
+              )
+            },
+          },
+          {
+            label: "~/.mirakにファイルを書き込んでみる",
+            click: () => {
+              fs.promises.writeFile(
+                path.join(homedir, ".mirak"),
+                "Hello, world!"
+              )
+            },
+          },
+          {
+            label: "evalで/tmp/mirakevalにファイルを書き込んでみる",
+            click() {
+              eval(
+                `require('fs').promises.writeFile('/tmp/mirakeval', 'Hello, world!')`
+              )
             },
           },
         ],

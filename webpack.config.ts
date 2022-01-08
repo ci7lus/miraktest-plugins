@@ -143,6 +143,8 @@ const config: (
       externals: {
         react: "'React' in globalThis?React:{}",
         recoil: "'Recoil' in globalThis?Recoil:{}",
+        fs: "commonjs fs",
+        os: "commonjs os",
       },
     }
     if (isAnalyzeEnabled) {
