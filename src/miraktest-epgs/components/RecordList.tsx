@@ -1,6 +1,11 @@
 import dayjs from "dayjs"
 import React, { useEffect, useMemo, useState } from "react"
-import { ArrowLeft, ArrowRight } from "react-feather"
+import {
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
+} from "react-feather"
 import { useTable, usePagination, Column, useGlobalFilter } from "react-table"
 import { Service } from "../../@types/plugin"
 import { EPGStationAPI } from "../api"
@@ -169,13 +174,21 @@ export const RecordList: React.VFC<{
       <div className="px-2 my-4 flex justify-center items-center space-x-4">
         <button
           type="button"
+          onClick={() => gotoPage(0)}
+          disabled={pageIndex === 0}
+          className={`${pageIndex === 0 && "cursor-not-allowed text-gray-400"}`}
+        >
+          <ChevronsLeft />
+        </button>
+        <button
+          type="button"
           disabled={!canPreviousPage}
           onClick={() => previousPage()}
           className={`${
             !canPreviousPage && "cursor-not-allowed text-gray-400"
           }`}
         >
-          <ArrowLeft />
+          <ChevronLeft />
         </button>
         <div>
           {pageIndex + 1}/{pageOptions.length || 1}
@@ -186,7 +199,19 @@ export const RecordList: React.VFC<{
           onClick={() => nextPage()}
           className={`${!canNextPage && "cursor-not-allowed text-gray-400"}`}
         >
-          <ArrowRight />
+          <ChevronRight />
+        </button>
+        <button
+          type="button"
+          disabled={!pageOptions.length}
+          onClick={() => {
+            pageOptions.length && gotoPage(pageOptions.length - 1)
+          }}
+          className={`${
+            !pageOptions.length && "cursor-not-allowed text-gray-400"
+          }`}
+        >
+          <ChevronsRight />
         </button>
       </div>
     </div>
