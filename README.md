@@ -38,6 +38,8 @@
   ニコニコ実況（過去ログ API）から視聴中の録画番組のコメントを取得します。コメントの表示には Zenza か DPlayer プラグインが必要です。
 - [Gyazo](./src/miraktest-gyazo)<br />
   スクリーンショットを Gyazo にアップロードします。
+- [Twitter](./src/miraktest-twitter)<br />
+  視聴中の番組に関連するツイートを投稿します。
 
 ## ビルド
 
