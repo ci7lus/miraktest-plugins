@@ -65,7 +65,7 @@ export const TwitterRenderer: InitPlugin["renderer"] = ({
           )
           const [
             isContentInfoEmbedInImageEnabled,
-            // TODO: setIsContentInfoEmbedInImageEnabled,
+            setIsContentInfoEmbedInImageEnabled,
           ] = useState(setting.isContentInfoEmbedInImageEnabled)
           return (
             <>
@@ -114,7 +114,7 @@ export const TwitterRenderer: InitPlugin["renderer"] = ({
                     value={accessTokenSecret || ""}
                     onChange={(e) => setAccessTokenSecret(e.target.value)}
                   />
-                  {/*<label className="block mt-4">
+                  <label className="block mt-4">
                     <span>画像に番組情報を埋め込む</span>
                     <input
                       type="checkbox"
@@ -126,7 +126,7 @@ export const TwitterRenderer: InitPlugin["renderer"] = ({
                         )
                       }
                     />
-                    </label>*/}
+                  </label>
                 </label>
                 <button
                   type="submit"

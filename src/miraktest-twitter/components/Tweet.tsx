@@ -1,4 +1,5 @@
 import clsx from "clsx"
+import dayjs from "dayjs"
 import React, { useEffect, useRef, useState } from "react"
 import { RotateCw } from "react-feather"
 import {
@@ -9,11 +10,17 @@ import {
 import type { Status } from "twitter-d"
 import twitterText from "twitter-text"
 import { ContentPlayerPlayingContent } from "../../@types/plugin"
+import { embedInfoInImage } from "../embedInfo"
+import { imageToCanvas } from "../imageToCanvas"
 import { SayaDefinition, TwitterSetting } from "../types"
-import { blobToBase64Uri } from "../utils"
+
+type ImageDatum = {
+  imageUrl: string
+  uri: string
+}
 
 export const TweetComponent: React.FC<{
-  setting: Required<Omit<TwitterSetting, "isContentInfoEmbedInImageEnabled">>
+  setting: Required<TwitterSetting>
   playingContent: ContentPlayerPlayingContent | null
   sayaDefinition: SayaDefinition
   imageUrl: string | null
@@ -31,7 +38,7 @@ export const TweetComponent: React.FC<{
     setRemaining(280 - weightedLength)
   }, [text, hashtag])
   const [isPosting, setIsPosting] = useState(false)
-  const [images, setImages] = useState<string[]>([])
+  const [images, setImages] = useState<ImageDatum[]>([])
   const [selectedImages, setSelectedImages] = useState<string[]>([])
   const [failed, setFailed] = useState("")
   const [serviceTags, setServiceTags] = useState<string[]>([])
@@ -79,7 +86,29 @@ export const TweetComponent: React.FC<{
     if (!imageUrl) {
       return
     }
-    setImages((images) => [imageUrl, ...images.slice(0, 30)])
+    imageToCanvas(imageUrl)
+      .then((canvas) => {
+        if (setting.isContentInfoEmbedInImageEnabled === false) {
+          const image = canvas.toDataURL("image/jpeg", 0.9).split(",")[1]
+          setImages((images) => [
+            { imageUrl, uri: image },
+            ...images.slice(0, 30),
+          ])
+        } else {
+          const label = [
+            playingContent?.service?.name,
+            playingContent?.program?.name,
+            dayjs().format("HH:mm"),
+          ]
+            .filter((s) => s)
+            .join(" - ")
+          setImages((images) => [
+            { imageUrl, uri: embedInfoInImage(canvas, label).split(",")[1] },
+            ...images.slice(0, 30),
+          ])
+        }
+      })
+      .catch(console.error)
   }, [imageUrl])
   const formRef = useRef<HTMLFormElement>(null)
 
@@ -235,11 +264,15 @@ export const TweetComponent: React.FC<{
                 setIsPosting(true)
                 setFailed("")
                 Promise.all(
-                  selectedImages.map(async (image) => {
-                    const response = await fetch(image)
-                    const uri = await blobToBase64Uri(await response.blob())
+                  selectedImages.map(async (targetImageUrl) => {
+                    const media = images.find(
+                      ({ imageUrl }) => imageUrl === targetImageUrl
+                    )?.uri
+                    if (!media) {
+                      return
+                    }
                     const uploadResult = await twitter.media.mediaUpload({
-                      media: uri.split(",")[1],
+                      media,
                     })
                     return uploadResult.media_id_string
                   })
@@ -388,7 +421,7 @@ export const TweetComponent: React.FC<{
               "gap-2"
             )}
           >
-            {images.map((imageUrl) => (
+            {images.map(({ imageUrl }) => (
               <div
                 onClick={() => {
                   setSelectedImages((selectedImages) =>
