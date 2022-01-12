@@ -140,7 +140,7 @@ export const TweetComponent: React.FC<{
                   )}
                   key={tag}
                   onClick={() => {
-                    setHashtag((prev) => `${prev} ${tag}`.trim())
+                    setHashtag((prev) => `${prev.trim()} ${tag}`.trim())
                   }}
                   disabled={(hashtag + " ").includes(tag + " ")}
                 >
