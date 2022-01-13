@@ -417,7 +417,8 @@ export const TweetComponent: React.FC<{
               "overflow-auto",
               "px-2",
               "grid",
-              "grid-cols-3",
+              "grid-cols-2",
+              "md:grid-cols-3",
               "gap-2"
             )}
           >
