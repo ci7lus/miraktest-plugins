@@ -216,29 +216,45 @@ export const TweetComponent: React.FC<{
                   .search({
                     q: serviceTags.join(" OR ") + " exclude:retweets",
                     locale: "ja",
+                    result_type: "recent",
                   })
                   .then((tweets: Search | { data: Search }) => {
                     const statuses =
                       "data" in tweets ? tweets.data.statuses : tweets.statuses
                     console.debug(statuses)
-                    setSuggestedTags(
-                      Array.from(
-                        new Set(
-                          statuses
-                            .filter(
-                              (status) => status.entities.hashtags.length <= 5
-                            )
-                            .map(
-                              (status) =>
-                                (
-                                  status.entities
-                                    .hashtags as Status["entities"]["hashtags"]
-                                )?.map((hashtag) => "#" + hashtag.text) ?? []
-                            )
-                            .flat()
-                        )
-                      ).filter((hashtag) => !serviceTags.includes(hashtag))
+                    const lowServiceTags = serviceTags.map((tag) =>
+                      tag.toLowerCase()
                     )
+                    const sortedHashtags = Object.entries(
+                      statuses
+                        .map(
+                          (status) =>
+                            (
+                              status.entities
+                                .hashtags as Status["entities"]["hashtags"]
+                            )?.map((hashtag) => "#" + hashtag.text) ?? []
+                        )
+                        .flat()
+                        .filter(
+                          (hashtag) =>
+                            !lowServiceTags.includes(hashtag.toLowerCase())
+                        )
+                        .reduce((record: Record<string, number>, tag) => {
+                          if (tag in record) {
+                            record[tag]++
+                          } else {
+                            record[tag] = 1
+                          }
+                          return record
+                        }, {})
+                    ).sort((a, b) => b[1] - a[1])
+                    console.info("タグ候補:", sortedHashtags)
+                    const hashtags = sortedHashtags.every(([, n]) => n === 1)
+                      ? sortedHashtags.map(([tag]) => tag)
+                      : sortedHashtags
+                          .filter(([, n]) => n > 1)
+                          .map(([tag]) => tag)
+                    setSuggestedTags(hashtags)
                   })
                   .catch((e) => {
                     console.error(e)
