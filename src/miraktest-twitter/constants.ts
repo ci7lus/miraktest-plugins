@@ -4,7 +4,7 @@ export const TWITTER_META = {
   id: TWITTER_PLUGIN_ID,
   name: "Twitter",
   author: "ci7lus",
-  version: "0.0.4",
+  version: "0.0.5",
   description: "視聴中の番組に関連するツイートを投稿する",
 }
 export const TWITTER_TWEET_WINDOW_ID = `${TWITTER_PLUGIN_ID}.tweet`

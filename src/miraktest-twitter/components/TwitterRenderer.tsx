@@ -1,5 +1,6 @@
 import Axios from "axios"
 import React, { useEffect, useState } from "react"
+import { useThrottleFn } from "react-use"
 import { atom, useRecoilValue, useRecoilState, useSetRecoilState } from "recoil"
 import YAML from "yaml"
 import { InitPlugin } from "../../@types/plugin"
@@ -16,6 +17,7 @@ export const TwitterRenderer: InitPlugin["renderer"] = ({
   appInfo,
   rpc,
   atoms,
+  windowId,
 }) => {
   const settingAtom = atom<TwitterSetting>({
     key: `${TWITTER_PLUGIN_PREFIX}.setting`,
@@ -24,6 +26,10 @@ export const TwitterRenderer: InitPlugin["renderer"] = ({
   const imageUrlAtom = atom<string | null>({
     key: `${TWITTER_PLUGIN_PREFIX}.imageUrl`,
     default: null,
+  })
+  const timeAtom = atom<number>({
+    key: `${TWITTER_PLUGIN_PREFIX}.time`,
+    default: 0,
   })
 
   return {
@@ -38,6 +44,7 @@ export const TwitterRenderer: InitPlugin["renderer"] = ({
         type: "atom",
         atom: imageUrlAtom,
       },
+      { type: "atom", atom: timeAtom },
     ],
     storedAtoms: [
       {
@@ -145,6 +152,23 @@ export const TwitterRenderer: InitPlugin["renderer"] = ({
         component: () => {
           const url = useRecoilValue(atoms.contentPlayerScreenshotUrlSelector)
           const setImageUrl = useSetRecoilState(imageUrlAtom)
+          const time = useRecoilValue(atoms.contentPlayerPlayingTimeSelector)
+          const isSeekable = useRecoilValue(
+            atoms.contentPlayerIsSeekableSelector
+          )
+          const setTime = useSetRecoilState(timeAtom)
+          const activeId = useRecoilValue(
+            atoms.globalActiveContentPlayerIdSelector
+          )
+          useThrottleFn(
+            () => {
+              if (windowId === activeId && isSeekable) {
+                setTime(time)
+              }
+            },
+            1000,
+            [time, activeId, isSeekable] as never
+          )
           useEffect(() => {
             if (!url) {
               return
@@ -187,6 +211,7 @@ export const TwitterRenderer: InitPlugin["renderer"] = ({
             })
             .catch(console.error)
         }, [])
+        const time = useRecoilValue(timeAtom)
 
         const isCredentialFulfilled =
           setting.consumerKey &&
@@ -208,6 +233,7 @@ export const TwitterRenderer: InitPlugin["renderer"] = ({
                   playingContent={playingContent}
                   sayaDefinition={sayaDefinition}
                   imageUrl={imageUrl}
+                  time={time}
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center">

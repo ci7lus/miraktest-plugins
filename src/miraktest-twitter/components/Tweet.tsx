@@ -1,7 +1,8 @@
 import clsx from "clsx"
 import dayjs from "dayjs"
+import formatDuration from "format-duration"
 import React, { useEffect, useRef, useState } from "react"
-import { RotateCw } from "react-feather"
+import { Info, RotateCw } from "react-feather"
 import {
   AccountVerifyCredentials,
   Search,
@@ -17,6 +18,7 @@ import { SayaDefinition, TwitterSetting } from "../types"
 type ImageDatum = {
   imageUrl: string
   uri: string
+  label?: string
 }
 
 export const TweetComponent: React.FC<{
@@ -24,7 +26,8 @@ export const TweetComponent: React.FC<{
   playingContent: ContentPlayerPlayingContent | null
   sayaDefinition: SayaDefinition
   imageUrl: string | null
-}> = ({ setting, playingContent, sayaDefinition, imageUrl }) => {
+  time: number
+}> = ({ setting, playingContent, sayaDefinition, imageUrl, time }) => {
   const [text, setText] = useState("")
   const [hashtag, setHashtag] = useState("")
   const [tweetText, setTweetText] = useState("")
@@ -92,19 +95,35 @@ export const TweetComponent: React.FC<{
           const image = canvas.toDataURL("image/jpeg", 0.9).split(",")[1]
           setImages((images) => [
             { imageUrl, uri: image },
-            ...images.slice(0, 30),
+            ...images.slice(0, 29),
           ])
         } else {
+          const now = dayjs()
           const label = [
             playingContent?.service?.name,
             playingContent?.program?.name,
-            dayjs().format("HH:mm"),
+            playingContent?.program?.startAt
+              ? now.isAfter(
+                  playingContent.program.startAt +
+                    playingContent.program.duration
+                )
+                ? time !== 0
+                  ? formatDuration(time)
+                  : null
+                : formatDuration(
+                    now.diff(playingContent.program.startAt, "millisecond")
+                  )
+              : null,
           ]
             .filter((s) => s)
             .join(" - ")
           setImages((images) => [
-            { imageUrl, uri: embedInfoInImage(canvas, label).split(",")[1] },
-            ...images.slice(0, 30),
+            {
+              imageUrl,
+              uri: embedInfoInImage(canvas, label).split(",")[1],
+              label,
+            },
+            ...images.slice(0, 29),
           ])
         }
       })
@@ -422,7 +441,7 @@ export const TweetComponent: React.FC<{
               "gap-2"
             )}
           >
-            {images.map(({ imageUrl }) => (
+            {images.map(({ imageUrl, label }) => (
               <div
                 onClick={() => {
                   setSelectedImages((selectedImages) =>
@@ -455,6 +474,20 @@ export const TweetComponent: React.FC<{
                     ? selectedImages.indexOf(imageUrl) + 1
                     : ""}
                 </p>
+                {label && (
+                  <p
+                    className={clsx(
+                      "absolute",
+                      "right-0",
+                      "bottom-0",
+                      "p-2",
+                      "text-gray-200"
+                    )}
+                    title={label}
+                  >
+                    <Info size="1rem" />
+                  </p>
+                )}
               </div>
             ))}
           </div>
