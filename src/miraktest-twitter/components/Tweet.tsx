@@ -92,7 +92,7 @@ export const TweetComponent: React.FC<{
     imageToCanvas(imageUrl)
       .then((canvas) => {
         if (setting.isContentInfoEmbedInImageEnabled === false) {
-          const image = canvas.toDataURL("image/jpeg", 0.9).split(",")[1]
+          const image = canvas.toDataURL("image/jpeg", 0.9)
           setImages((images) => [
             { imageUrl, uri: image },
             ...images.slice(0, 29),
@@ -120,7 +120,7 @@ export const TweetComponent: React.FC<{
           setImages((images) => [
             {
               imageUrl,
-              uri: embedInfoInImage(canvas, label).split(",")[1],
+              uri: embedInfoInImage(canvas, label),
               label,
             },
             ...images.slice(0, 29),
@@ -284,9 +284,9 @@ export const TweetComponent: React.FC<{
                 setFailed("")
                 Promise.all(
                   selectedImages.map(async (targetImageUrl) => {
-                    const media = images.find(
-                      ({ imageUrl }) => imageUrl === targetImageUrl
-                    )?.uri
+                    const media = images
+                      .find(({ imageUrl }) => imageUrl === targetImageUrl)
+                      ?.uri.split(",")[1]
                     if (!media) {
                       return
                     }
@@ -441,7 +441,7 @@ export const TweetComponent: React.FC<{
               "gap-2"
             )}
           >
-            {images.map(({ imageUrl, label }) => (
+            {images.map(({ imageUrl, uri, label }) => (
               <div
                 onClick={() => {
                   setSelectedImages((selectedImages) =>
@@ -454,6 +454,20 @@ export const TweetComponent: React.FC<{
                 }}
                 key={imageUrl}
                 className={clsx("relative")}
+                onContextMenu={(e) => {
+                  e.preventDefault()
+                  const clickable = document.createElement("a")
+                  clickable.download = [
+                    label ||
+                      [playingContent?.program?.name, time]
+                        .filter((s) => s)
+                        .join("-") ||
+                      "mirak",
+                    ".jpg",
+                  ].join("")
+                  clickable.href = uri
+                  clickable.click()
+                }}
               >
                 <img
                   className={clsx(
