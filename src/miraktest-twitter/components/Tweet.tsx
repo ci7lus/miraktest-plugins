@@ -217,6 +217,7 @@ export const TweetComponent: React.FC<{
                     q: serviceTags.join(" OR ") + " exclude:retweets",
                     locale: "ja",
                     result_type: "recent",
+                    count: 30,
                   })
                   .then((tweets: Search | { data: Search }) => {
                     const statuses =
@@ -225,8 +226,16 @@ export const TweetComponent: React.FC<{
                     const lowServiceTags = serviceTags.map((tag) =>
                       tag.toLowerCase()
                     )
-                    const sortedHashtags = Object.entries(
+                    const dedupedByUser = Array.from(
                       statuses
+                        .reduce((arr, status) => {
+                          arr.set(status.user.id_str, status)
+                          return arr
+                        }, new Map<string, typeof statuses[0]>())
+                        .values()
+                    )
+                    const sortedHashtags = Object.entries(
+                      dedupedByUser
                         .map(
                           (status) =>
                             (
