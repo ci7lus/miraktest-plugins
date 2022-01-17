@@ -7,13 +7,15 @@ import {
   AccountVerifyCredentials,
   Search,
   TwitterClient,
+  UsersShow,
 } from "twitter-api-client"
 import type { Status } from "twitter-d"
 import twitterText from "twitter-text"
 import { ContentPlayerPlayingContent } from "../../@types/plugin"
+import { TWITTER_MAPPING } from "../constants"
 import { embedInfoInImage } from "../embedInfo"
 import { imageToCanvas } from "../imageToCanvas"
-import { SayaDefinition, TwitterSetting } from "../types"
+import { SayaDefinition, TwitterSetting, SayaDefinitionChannel } from "../types"
 
 type ImageDatum = {
   imageUrl: string
@@ -44,6 +46,7 @@ export const TweetComponent: React.FC<{
   const [images, setImages] = useState<ImageDatum[]>([])
   const [selectedImages, setSelectedImages] = useState<string[]>([])
   const [failed, setFailed] = useState("")
+  const [sayaDef, setSayaDef] = useState<SayaDefinitionChannel | null>(null)
   const [serviceTags, setServiceTags] = useState<string[]>([])
   const [suggestedTags, setSuggestedTags] = useState<string[]>([])
   const [suggestObtaining, setSuggestObtaining] = useState(false)
@@ -72,12 +75,16 @@ export const TweetComponent: React.FC<{
   useEffect(() => {
     const serviceId = playingContent?.service?.serviceId
     if (!serviceId) {
-      setServiceTags([])
       return
     }
-    const twitterKeywords = sayaDefinition.channels.find((channel) =>
+    const sayaDef = sayaDefinition.channels.find((channel) =>
       channel.serviceIds.includes(serviceId)
-    )?.twitterKeywords
+    )
+    if (!sayaDef) {
+      return
+    }
+    setSayaDef(sayaDef)
+    const { twitterKeywords } = sayaDef
     if (!twitterKeywords) {
       setServiceTags([])
       return
@@ -207,71 +214,100 @@ export const TweetComponent: React.FC<{
               title="タグを取得する"
               disabled={suggestObtaining}
               onClick={() => {
-                if (!serviceTags || serviceTags.length === 0) {
-                  return
+                const lowServiceTags = serviceTags.map((tag) =>
+                  tag.toLowerCase()
+                )
+                if (sayaDef && TWITTER_MAPPING[sayaDef.name]) {
+                  // 番組情報の公式ツイートからタグを取得する
+                  const screenName = TWITTER_MAPPING[sayaDef.name]
+                  twitter.accountsAndUsers
+                    .usersShow({
+                      screen_name: screenName,
+                    })
+                    .then((_user: UsersShow | { data: UsersShow }) => {
+                      const user = "data" in _user ? _user.data : _user
+                      if (!user.status) {
+                        return
+                      }
+                      setSuggestedTags(
+                        (
+                          user.status.entities
+                            .hashtags as Status["entities"]["hashtags"]
+                        )
+                          ?.map((hashtag) => "#" + hashtag.text)
+                          .filter(
+                            (hashtag) =>
+                              !lowServiceTags.includes(hashtag.toLowerCase())
+                          ) || []
+                      )
+                    })
+                } else {
+                  // ハッシュタグからタグを取得する
+                  if (!serviceTags || serviceTags.length === 0) {
+                    return
+                  }
+                  setFailed("")
+                  setSuggestObtaining(true)
+                  twitter.tweets
+                    .search({
+                      q: serviceTags.join(" OR ") + " exclude:retweets",
+                      locale: "ja",
+                      result_type: "recent",
+                      count: 30,
+                    })
+                    .then((tweets: Search | { data: Search }) => {
+                      const statuses =
+                        "data" in tweets
+                          ? tweets.data.statuses
+                          : tweets.statuses
+                      console.debug(statuses)
+                      const dedupedByUser = Array.from(
+                        statuses
+                          .reduce((arr, status) => {
+                            arr.set(status.user.id_str, status)
+                            return arr
+                          }, new Map<string, typeof statuses[0]>())
+                          .values()
+                      )
+                      const sortedHashtags = Object.entries(
+                        dedupedByUser
+                          .map(
+                            (status) =>
+                              (
+                                status.entities
+                                  .hashtags as Status["entities"]["hashtags"]
+                              )?.map((hashtag) => "#" + hashtag.text) ?? []
+                          )
+                          .flat()
+                          .filter(
+                            (hashtag) =>
+                              !lowServiceTags.includes(hashtag.toLowerCase())
+                          )
+                          .reduce((record: Record<string, number>, tag) => {
+                            if (tag in record) {
+                              record[tag]++
+                            } else {
+                              record[tag] = 1
+                            }
+                            return record
+                          }, {})
+                      ).sort((a, b) => b[1] - a[1])
+                      console.info("タグ候補:", sortedHashtags)
+                      const hashtags = sortedHashtags.every(([, n]) => n === 1)
+                        ? sortedHashtags.map(([tag]) => tag)
+                        : sortedHashtags
+                            .filter(([, n]) => n > 1)
+                            .map(([tag]) => tag)
+                      setSuggestedTags(hashtags)
+                    })
+                    .catch((e) => {
+                      console.error(e)
+                      setFailed("タグの取得に失敗しました")
+                    })
+                    .finally(() => {
+                      setSuggestObtaining(false)
+                    })
                 }
-                setFailed("")
-                setSuggestObtaining(true)
-                twitter.tweets
-                  .search({
-                    q: serviceTags.join(" OR ") + " exclude:retweets",
-                    locale: "ja",
-                    result_type: "recent",
-                    count: 30,
-                  })
-                  .then((tweets: Search | { data: Search }) => {
-                    const statuses =
-                      "data" in tweets ? tweets.data.statuses : tweets.statuses
-                    console.debug(statuses)
-                    const lowServiceTags = serviceTags.map((tag) =>
-                      tag.toLowerCase()
-                    )
-                    const dedupedByUser = Array.from(
-                      statuses
-                        .reduce((arr, status) => {
-                          arr.set(status.user.id_str, status)
-                          return arr
-                        }, new Map<string, typeof statuses[0]>())
-                        .values()
-                    )
-                    const sortedHashtags = Object.entries(
-                      dedupedByUser
-                        .map(
-                          (status) =>
-                            (
-                              status.entities
-                                .hashtags as Status["entities"]["hashtags"]
-                            )?.map((hashtag) => "#" + hashtag.text) ?? []
-                        )
-                        .flat()
-                        .filter(
-                          (hashtag) =>
-                            !lowServiceTags.includes(hashtag.toLowerCase())
-                        )
-                        .reduce((record: Record<string, number>, tag) => {
-                          if (tag in record) {
-                            record[tag]++
-                          } else {
-                            record[tag] = 1
-                          }
-                          return record
-                        }, {})
-                    ).sort((a, b) => b[1] - a[1])
-                    console.info("タグ候補:", sortedHashtags)
-                    const hashtags = sortedHashtags.every(([, n]) => n === 1)
-                      ? sortedHashtags.map(([tag]) => tag)
-                      : sortedHashtags
-                          .filter(([, n]) => n > 1)
-                          .map(([tag]) => tag)
-                    setSuggestedTags(hashtags)
-                  })
-                  .catch((e) => {
-                    console.error(e)
-                    setFailed("タグの取得に失敗しました")
-                  })
-                  .finally(() => {
-                    setSuggestObtaining(false)
-                  })
               }}
             >
               <RotateCw size={18} />
