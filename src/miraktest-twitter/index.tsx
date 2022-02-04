@@ -28,8 +28,8 @@ const main: InitPlugin = {
             name: TWITTER_TWEET_WINDOW_ID,
             isSingletone: true,
             args: {
-              width: 600,
-              height: 400,
+              width: 500,
+              height: 650,
             },
           })
         },
@@ -41,8 +41,8 @@ const main: InitPlugin = {
             name: TWITTER_TWEET_WINDOW_ID,
             isSingletone: true,
             args: {
-              width: 600,
-              height: 400,
+              width: 500,
+              height: 650,
             },
           })
         },
