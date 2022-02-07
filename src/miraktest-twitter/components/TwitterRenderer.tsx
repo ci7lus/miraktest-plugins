@@ -161,13 +161,13 @@ export const TwitterRenderer: InitPlugin["renderer"] = ({
             atoms.globalActiveContentPlayerIdSelector
           )
           useThrottleFn(
-            () => {
+            (time: number, activeId: number | null, isSeekable: boolean) => {
               if (windowId === activeId && isSeekable) {
                 setTime(time)
               }
             },
             1000,
-            [time, activeId, isSeekable] as never
+            [time, activeId, isSeekable]
           )
           useEffect(() => {
             if (!url) {
