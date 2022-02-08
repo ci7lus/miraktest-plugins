@@ -1,5 +1,7 @@
+import { Switch } from "@headlessui/react"
+import clsx from "clsx"
 import dayjs from "dayjs"
-import React, { useCallback, useEffect } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { Play } from "react-feather"
 import { useRecoilState } from "recoil"
 import { ContentPlayerPlayingContent, Service } from "../../@types/plugin"
@@ -9,8 +11,8 @@ import { thumbnailFamily } from "../atom"
 import { Genre, SubGenre } from "../constants"
 import { convertProgramRecordToProgram } from "../convertion"
 import { EPGSProgramRecord } from "../types"
-import "dayjs/locale/ja"
 
+import "dayjs/locale/ja"
 dayjs.locale("ja")
 
 export const RecordDetail: React.VFC<{
@@ -37,6 +39,8 @@ export const RecordDetail: React.VFC<{
   const genre3 = Genre[record.genre3]
   const subGenre3 = genre3 && SubGenre[record.genre3][record.subGenre3]
 
+  const [isOpenWithNewWindow, setIsOpenWithNewWindow] = useState(false)
+
   useEffect(() => {
     if (thumbnailUrl) {
       return
@@ -51,13 +55,8 @@ export const RecordDetail: React.VFC<{
   }, [thumbnailUrl])
 
   const play = useCallback(
-    (isNewWindow: boolean) => {
-      const playFile = record.videoFiles.find((video) => video.type === "ts")
-      if (!playFile) {
-        console.warn("tsが見つかりませんでした:", record)
-        return
-      }
-      const url = api.getVideoUrl({ videoId: playFile.id })
+    (videoId: number, isNewWindow: boolean) => {
+      const url = api.getVideoUrl({ videoId })
       const program = convertProgramRecordToProgram(record, service)
       const payload = {
         contentType: "EPGStation",
@@ -113,23 +112,40 @@ export const RecordDetail: React.VFC<{
               </p>
             ))}
         </div>
-        <div className="w-full p-2 bg-gray-200 rounded-md my-2 flex space-x-2 overflow-auto flex-wrap">
-          <button
-            type="button"
-            className="bg-indigo-400 text-gray-100 rounded-md px-2 p-1 flex items-center justify-center space-x-2 focus:outline-none m-1"
-            onClick={() => play(false)}
-          >
-            <Play className="flex-shrink-0" size={16} />
-            <span className="flex-shrink-0">視聴</span>
-          </button>
-          <button
-            type="button"
-            className="bg-indigo-400 text-gray-100 rounded-md px-2 p-1 flex items-center justify-center space-x-2 focus:outline-none m-1"
-            onClick={() => play(true)}
-          >
-            <Play className="flex-shrink-0" size={16} />
-            <span className="flex-shrink-0">新しいウィンドウで視聴</span>
-          </button>
+        <div className="w-full p-2 bg-gray-200 rounded-md my-2">
+          <Switch.Group>
+            <div className="flex items-center mb-2">
+              <Switch
+                checked={isOpenWithNewWindow}
+                onChange={(e) => setIsOpenWithNewWindow(e)}
+                className={`${
+                  isOpenWithNewWindow ? "bg-blue-600" : "bg-gray-300"
+                } relative inline-flex items-center h-6 rounded-full w-11`}
+              >
+                <span
+                  className={`${
+                    isOpenWithNewWindow ? "translate-x-6" : "translate-x-1"
+                  } inline-block w-4 h-4 transform bg-white rounded-full transition ease-in-out duration-200`}
+                />
+              </Switch>
+              <Switch.Label className="ml-2">
+                新しいウィンドウで開く
+              </Switch.Label>
+            </div>
+          </Switch.Group>
+          <div className={clsx("flex space-x-2 overflow-auto flex-wrap")}>
+            {record.videoFiles.map((videoFile) => (
+              <button
+                key={videoFile.id}
+                type="button"
+                className="bg-indigo-400 text-gray-100 rounded-md px-2 p-1 flex items-center justify-center space-x-1 focus:outline-none m-1"
+                onClick={() => play(videoFile.id, isOpenWithNewWindow)}
+              >
+                <Play className="flex-shrink-0" size={16} />
+                <span className="flex-shrink-0">{videoFile.name}</span>
+              </button>
+            ))}
+          </div>
         </div>
         <div className="w-full bg-gray-200 whitespace-pre-wrap rounded-md p-4 md:my-2 text-sm leading-relaxed programDescription">
           <AutoLinkedText>
