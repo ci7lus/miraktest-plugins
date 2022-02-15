@@ -176,7 +176,7 @@ export const AnnictRenderer: InitPlugin["renderer"] = ({
         const [arm, setArm] = useState<ARM[] | null>(null)
         useEffect(() => {
           Axios.get<string>(
-            "https://raw.githack.com/SlashNephy/saya/dev/docs/definitions.yml",
+            "https://cdn.jsdelivr.net/gh/SlashNephy/saya@dev/docs/definitions.yml",
             {
               responseType: "text",
             }
@@ -188,7 +188,7 @@ export const AnnictRenderer: InitPlugin["renderer"] = ({
             .catch(console.error)
           // https://arm.kawaiioverflow.com/api/ids?service=syobocal&id= が死んでる気がするので
           Axios.get(
-            "https://raw.githack.com/kawaiioverflow/arm/master/arm.json"
+            "https://cdn.jsdelivr.net/gh/kawaiioverflow/arm@latest/arm.json"
           )
             .then((r) => setArm(r.data))
             .catch(console.error)

@@ -103,7 +103,7 @@ const main: InitPlugin = {
               }
               axios
                 .get<string>(
-                  "https://raw.githack.com/SlashNephy/saya/dev/docs/definitions.yml",
+                  "https://cdn.jsdelivr.net/gh/SlashNephy/saya@dev/docs/definitions.yml",
                   {
                     responseType: "text",
                   }
