@@ -23,19 +23,17 @@
 - [Discord RPC](./src/miraktest-drpc)<br />
   (v1 標準機能代替) Discord に番組情報を連携表示するプラグインです。
 - [Saya](./src/miraktest-saya)<br />
-  (v1 標準機能代替) Saya と連携し、視聴中のサービスに関するコメントを取得します。コメントの表示には Zenza か DPlayer プラグインが必要です。
+  (v1 標準機能代替) Saya と連携し、視聴中のサービスに関するコメントを取得します。コメントの表示には DPlayer プラグインが必要です。
 - [DPlayer](./src/miraktest-dplayer)<br />
   (v1 標準機能代替) Saya プラグインと連携し、コメントを表示します。
-- [Zenza](./src/miraktest-zenza)<br />
-  ~~Saya プラグインと連携し、コメントを表示します。~~ **現在動きません**
 - [EPGStation](./src/miraktest-epgs)<br />
   EPGStation と連携し、録画番組を再生します。
 - [Annict](./src/miraktest-annict)<br />
   Annict と連携し、視聴中のアニメを記録します。
 - [Miyou](./src/miraktest-miyou)<br />
-  Miyou から視聴中の録画番組のコメントを取得します。コメントの表示には Zenza か DPlayer プラグインが必要です。
+  Miyou から視聴中の録画番組のコメントを取得します。コメントの表示には DPlayer プラグインが必要です。
 - [Nico](./src/miraktest-nico)<br />
-  ニコニコ実況（過去ログ API）から視聴中の録画番組のコメントを取得します。コメントの表示には Zenza か DPlayer プラグインが必要です。
+  ニコニコ実況（過去ログ API）から視聴中の録画番組のコメントを取得します。コメントの表示には DPlayer プラグインが必要です。
 - [Gyazo](./src/miraktest-gyazo)<br />
   スクリーンショットを Gyazo にアップロードします。
 - [Twitter](./src/miraktest-twitter)<br />
@@ -47,10 +45,6 @@
 git clone git@github.com:ci7lus/miraktest-plugins.git
 cd miraktest-plugins
 yarn
-git submodule init
-cd zenzawatch
-yarn
-cd ..
 yarn build
 yarn build --env=files=miraktest-annict # miraktest-annictだけをビルドする
 ```

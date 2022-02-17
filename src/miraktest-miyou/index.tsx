@@ -1,14 +1,14 @@
 import axios from "axios"
+import dayjs from "dayjs"
 import React, { useEffect, useState } from "react"
-import type { RecoilState } from "recoil"
-import { atom, useRecoilValue, useRecoilState, useSetRecoilState } from "recoil"
+import { atom, useRecoilValue, useRecoilState } from "recoil"
 import YAML from "yaml"
-import { Atom, InitPlugin } from "../@types/plugin"
+import { InitPlugin } from "../@types/plugin"
 import { SayaDefinition } from "../miraktest-annict/types"
 import { DPLAYER_COMMENT_EVENT } from "../miraktest-dplayer/constants"
 import { DPlayerCommentPayload } from "../miraktest-dplayer/types"
 import { trimCommentForFlow } from "../miraktest-saya/comment"
-import { NicoCommentChat } from "../miraktest-zenza/types"
+import { ChatInput, PECORE_ID } from "../pecore"
 import { useRefFromState, wait } from "../shared/utils"
 import tailwind from "../tailwind.scss"
 import { MiyouComment, MiyouSetting } from "./types"
@@ -28,7 +28,7 @@ const meta = {
   author: "ci7lus",
   version: "0.0.1",
   description:
-    "Miyouからコメントを取得するプラグインです。ZenzaかDPlayerプラグインが必要です。",
+    "Miyouからコメントを取得するプラグインです。対応するコメントレンダラープラグインが必要です。",
 }
 
 const main: InitPlugin = {
@@ -45,8 +45,8 @@ const main: InitPlugin = {
       default: null,
     })
 
-    let zenzaCommentAtom: RecoilState<NicoCommentChat> | null = null
     let isDplayerFound = false
+    let isPkrFound = false
 
     const client = axios.create({
       baseURL: "https://miteru.digitiminimi.com/a2sc.php",
@@ -72,21 +72,11 @@ const main: InitPlugin = {
         },
       ],
       setup({ plugins }) {
-        const zenza = plugins.find(
-          (plugin) => plugin.id === "io.github.ci7lus.miraktest-plugins.zenza"
-        )
-        if (zenza) {
-          const family = zenza.exposedAtoms.find(
-            (atom): atom is Atom<NicoCommentChat> =>
-              atom.type === "atom" &&
-              atom.atom.key === "plugins.ci7lus.zenza.comment"
-          )
-          if (family) {
-            zenzaCommentAtom = family.atom
-          }
-        }
         isDplayerFound = !!plugins.find(
           (plugin) => plugin.id === "io.github.ci7lus.miraktest-plugins.dplayer"
+        )
+        isPkrFound = !!plugins.find(
+          (plugin) => plugin.id === "io.github.ci7lus.miraktest-plugins.pecore"
         )
       },
       components: [
@@ -102,14 +92,11 @@ const main: InitPlugin = {
             )
             const time = useRecoilValue(atoms.contentPlayerPlayingTimeSelector)
             const timeRef = useRefFromState(time)
-            const setZenzaComment = zenzaCommentAtom
-              ? useSetRecoilState(zenzaCommentAtom)
-              : null
             const [token, setToken] = useRecoilState(tokenAtom)
 
             // miyou token取得
             useEffect(() => {
-              if (!setZenzaComment && !isDplayerFound) {
+              if (!isPkrFound && !isDplayerFound) {
                 console.warn("コメント送信先の取得に失敗しています")
                 return
               }
@@ -296,13 +283,6 @@ const main: InitPlugin = {
                   if (text.length === 0) {
                     continue
                   }
-                  if (setZenzaComment) {
-                    setZenzaComment({
-                      date: comment.time,
-                      mail: comment.email,
-                      content: text,
-                    })
-                  }
                   if (isDplayerFound) {
                     const event = new CustomEvent(DPLAYER_COMMENT_EVENT, {
                       bubbles: false,
@@ -318,6 +298,24 @@ const main: InitPlugin = {
                         type: "right",
                         commands: [],
                       } as DPlayerCommentPayload,
+                    })
+                    window.dispatchEvent(event)
+                  }
+                  if (isPkrFound) {
+                    const detail: ChatInput = {
+                      thread: "1",
+                      no: comment.title,
+                      vpos: performance.now() / 10 + 200,
+                      mail: [comment.email],
+                      date: dayjs(comment.time).format(),
+                      dateUsec: NaN,
+                      anonymous: true,
+                      commands: [],
+                      content: text,
+                    }
+                    const event = new CustomEvent(PECORE_ID, {
+                      bubbles: false,
+                      detail,
                     })
                     window.dispatchEvent(event)
                   }

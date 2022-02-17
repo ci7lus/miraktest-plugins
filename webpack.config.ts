@@ -33,7 +33,6 @@ const entries: Entry[] = [
     name: "miraktest-saya",
     dir: "./src/miraktest-saya",
   },
-  // { name: "miraktest-zenza", dir: "./src/miraktest-zenza" },
   {
     name: "miraktest-dplayer",
     dir: "./src/miraktest-dplayer",
@@ -132,8 +131,6 @@ const config: (
         new esm(),
         new LicenseWebpackPlugin({
           licenseTextOverrides: {
-            "@zenza/components": "MIT License 2021 segabito",
-            ZenzaWatch: "MIT License 2021 segabito",
             "discord-rpc": "MIT License snek <me@gus.host>",
           },
         }) as never,

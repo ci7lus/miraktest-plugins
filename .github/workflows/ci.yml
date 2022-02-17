@@ -73,10 +73,6 @@ jobs:
       - name: Install
         run: |
           yarn
-      - name: Install (zenzawatch)
-        run: |
-          yarn
-        working-directory: ./zenzawatch
       - name: Build
         run: |
           yarn build --env=analyze=yes

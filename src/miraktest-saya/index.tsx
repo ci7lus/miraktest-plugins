@@ -1,6 +1,6 @@
+import dayjs from "dayjs"
 import React, { useEffect, useRef, useState } from "react"
 import { Plus, X } from "react-feather"
-import type { RecoilState } from "recoil"
 import {
   atom,
   atomFamily,
@@ -10,10 +10,10 @@ import {
 } from "recoil"
 import ReconnectingWebSocket from "reconnecting-websocket"
 import urlJoin from "url-join"
-import { Atom, InitPlugin } from "../@types/plugin"
+import { InitPlugin } from "../@types/plugin"
 import { DPLAYER_COMMENT_EVENT } from "../miraktest-dplayer/constants"
 import { DPlayerCommentPayload } from "../miraktest-dplayer/types"
-import { NicoCommentChat } from "../miraktest-zenza/types"
+import { ChatInput, PECORE_ID } from "../pecore"
 import { useRefFromState } from "../shared/utils"
 import tailwind from "../tailwind.scss"
 import { trimCommentForFlow } from "./comment"
@@ -33,7 +33,7 @@ const meta = {
   author: "ci7lus",
   version: "0.1.0",
   description:
-    "Sayaからコメントを取得するプラグインです。ZenzaかDPlayerプラグインが必要です。",
+    "Sayaからコメントを取得するプラグインです。対応するコメントレンダラープラグインが必要です。",
 }
 const commentWindowId = `${_id}.sayaCommentWindow`
 
@@ -52,8 +52,8 @@ const main: InitPlugin = {
       default: [],
     })
 
-    let zenzaCommentAtom: RecoilState<NicoCommentChat> | null = null
     let isDplayerFound = false
+    let isPkrFound = false
 
     const commentFamilyKey = `${prefix}.rawComment`
     const rawCommentFamily = atomFamily<DPlayerCommentPayload | null, number>({
@@ -87,21 +87,11 @@ const main: InitPlugin = {
         },
       ],
       setup({ plugins }) {
-        const zenza = plugins.find(
-          (plugin) => plugin.id === "io.github.ci7lus.miraktest-plugins.zenza"
-        )
-        if (zenza) {
-          const family = zenza.exposedAtoms.find(
-            (atom): atom is Atom<NicoCommentChat> =>
-              atom.type === "atom" &&
-              atom.atom.key === "plugins.ci7lus.zenza.comment"
-          )
-          if (family) {
-            zenzaCommentAtom = family.atom
-          }
-        }
         isDplayerFound = !!plugins.find(
           (plugin) => plugin.id === "io.github.ci7lus.miraktest-plugins.dplayer"
+        )
+        isPkrFound = !!plugins.find(
+          (plugin) => plugin.id === "io.github.ci7lus.miraktest-plugins.pecore"
         )
       },
       components: [
@@ -118,9 +108,6 @@ const main: InitPlugin = {
             const isPlaying = useRecoilValue(atoms.contentPlayerIsPlayingAtom)
             const time = useRecoilValue(atoms.contentPlayerPlayingTimeSelector)
             const timeRef = useRefFromState(time)
-            const setZenzaComment = zenzaCommentAtom
-              ? useSetRecoilState(zenzaCommentAtom)
-              : null
             const setRawComment = useSetRecoilState(rawCommentFamily(windowId))
             const wsRef = useRef<ReconnectingWebSocket | null>(null)
             const send = (ws: ReconnectingWebSocket, payload: object) => {
@@ -135,7 +122,7 @@ const main: InitPlugin = {
               })
             }
             useEffect(() => {
-              if (!setZenzaComment && !isDplayerFound) {
+              if (!isPkrFound && !isDplayerFound) {
                 console.warn("コメント送信先の取得に失敗しています")
                 return
               }
@@ -207,20 +194,28 @@ const main: InitPlugin = {
                   setRawComment(payload)
                   const commentText = trimCommentForFlow(payload.text)
                   if (commentText.trim().length === 0) return
-                  if (setZenzaComment) {
-                    setZenzaComment({
-                      no: payload.no,
-                      date: payload.time,
-                      date_usec: payload.timeMs,
-                      user_id: payload.author || undefined,
-                      mail: payload.type,
-                      content: commentText,
-                    })
-                  }
                   if (isDplayerFound) {
                     const event = new CustomEvent(DPLAYER_COMMENT_EVENT, {
                       bubbles: false,
                       detail: { ...payload, text: commentText },
+                    })
+                    window.dispatchEvent(event)
+                  }
+                  if (isPkrFound) {
+                    const detail: ChatInput = {
+                      thread: "1",
+                      no: payload.source + payload.author,
+                      vpos: performance.now() / 10 + 200,
+                      mail: [],
+                      date: dayjs(payload.time * 1000).format(),
+                      dateUsec: payload.timeMs / 10,
+                      anonymous: true,
+                      commands: [],
+                      content: commentText,
+                    }
+                    const event = new CustomEvent(PECORE_ID, {
+                      bubbles: false,
+                      detail,
                     })
                     window.dispatchEvent(event)
                   }
