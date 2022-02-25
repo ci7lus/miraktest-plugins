@@ -148,12 +148,18 @@ export const TweetComponent: React.FC<{
           "bg-gray-800",
           "flex",
           "justify-between",
-          "items-center"
+          "items-center",
+          "space-x-2"
         )}
       >
-        <h1 className={clsx("text-lg")}>ツイート</h1>
+        <h1 className={clsx("text-lg", "flex-shrink-0")}>ツイート</h1>
         {failed && (
-          <p className={clsx("text-red-400", "font-semibold")}>{failed}</p>
+          <p
+            className={clsx("text-red-400", "font-semibold", "truncate")}
+            title={failed}
+          >
+            {failed}
+          </p>
         )}
       </div>
       <div className={clsx("w-full", "flex", "overflow-auto")}>
@@ -358,29 +364,62 @@ export const TweetComponent: React.FC<{
                   })
                 )
                   .then((mediaIds) => {
-                    twitter.tweets
-                      .statusesUpdate({
-                        status: tweetText,
-                        media_ids: mediaIds.join(",") || undefined,
-                      })
-                      .then(() => {
-                        setText("")
-                        setSelectedImages([])
-                      })
-                      .catch((e) => {
-                        console.error(e)
-                        if ("data" in e) {
-                          const data = JSON.parse(e.data)
-                          setFailed(
-                            "ツイートに失敗しました: " + data.message || e.data
-                          )
-                        } else {
-                          setFailed("ツイートに失敗しました")
-                        }
-                      })
-                      .finally(() => {
-                        setIsPosting(false)
-                      })
+                    const media_ids = mediaIds.filter((s): s is string => !!s)
+                    setting.isReplyProhibitEnabled
+                      ? twitter.tweetsV2
+                          .createTweet({
+                            text: tweetText,
+                            media:
+                              0 < media_ids.length
+                                ? {
+                                    media_ids,
+                                  }
+                                : undefined,
+                            reply_settings: "mentionedUsers",
+                          })
+                          .then(() => {
+                            setText("")
+                            setSelectedImages([])
+                          })
+                          .catch((e) => {
+                            console.error(e)
+                            if ("data" in e) {
+                              const data = JSON.parse(e.data)
+                              setFailed(
+                                "失敗しました: " +
+                                  (data.detail || data.message || e.data)
+                              )
+                            } else {
+                              setFailed("失敗しました")
+                            }
+                          })
+                          .finally(() => {
+                            setIsPosting(false)
+                          })
+                      : twitter.tweets
+                          .statusesUpdate({
+                            status: tweetText,
+                            media_ids: media_ids.join(",") || undefined,
+                          })
+                          .then(() => {
+                            setText("")
+                            setSelectedImages([])
+                          })
+                          .catch((e) => {
+                            console.error(e)
+                            if ("data" in e) {
+                              const data = JSON.parse(e.data)
+                              setFailed(
+                                "失敗しました: " +
+                                  (data.detail || data.message || e.data)
+                              )
+                            } else {
+                              setFailed("失敗しました")
+                            }
+                          })
+                          .finally(() => {
+                            setIsPosting(false)
+                          })
                   })
                   .catch((e) => {
                     console.error(e)

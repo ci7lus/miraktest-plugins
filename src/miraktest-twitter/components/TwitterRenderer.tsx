@@ -1,4 +1,5 @@
 import Axios from "axios"
+import clsx from "clsx"
 import React, { useEffect, useState } from "react"
 import { useThrottleFn } from "react-use"
 import { atom, useRecoilValue, useRecoilState, useSetRecoilState } from "recoil"
@@ -21,7 +22,10 @@ export const TwitterRenderer: InitPlugin["renderer"] = ({
 }) => {
   const settingAtom = atom<TwitterSetting>({
     key: `${TWITTER_PLUGIN_PREFIX}.setting`,
-    default: { isContentInfoEmbedInImageEnabled: false },
+    default: {
+      isContentInfoEmbedInImageEnabled: false,
+      isReplyProhibitEnabled: false,
+    },
   })
   const imageUrlAtom = atom<string | null>({
     key: `${TWITTER_PLUGIN_PREFIX}.imageUrl`,
@@ -74,6 +78,9 @@ export const TwitterRenderer: InitPlugin["renderer"] = ({
             isContentInfoEmbedInImageEnabled,
             setIsContentInfoEmbedInImageEnabled,
           ] = useState(setting.isContentInfoEmbedInImageEnabled)
+          const [isReplyProhibitEnabled, setIsReplyProhibitEnabled] = useState(
+            setting.isReplyProhibitEnabled
+          )
           return (
             <>
               <style>{tailwind}</style>
@@ -86,8 +93,8 @@ export const TwitterRenderer: InitPlugin["renderer"] = ({
                     consumerSecret: consumerSecret || undefined,
                     accessToken: accessToken || undefined,
                     accessTokenSecret: accessTokenSecret || undefined,
-                    isContentInfoEmbedInImageEnabled:
-                      isContentInfoEmbedInImageEnabled,
+                    isContentInfoEmbedInImageEnabled,
+                    isReplyProhibitEnabled,
                   })
                 }}
               >
@@ -133,6 +140,23 @@ export const TwitterRenderer: InitPlugin["renderer"] = ({
                         )
                       }
                     />
+                  </label>
+                  <label className="block mt-4">
+                    <span>ツイートを返信禁止に設定する</span>
+                    <input
+                      type="checkbox"
+                      className="block mt-2 form-checkbox"
+                      checked={isReplyProhibitEnabled || false}
+                      onChange={() =>
+                        setIsReplyProhibitEnabled((enabled) => !enabled)
+                      }
+                    />
+                    <span
+                      className={clsx("block mt-1", "text-sm", "text-gray-400")}
+                    >
+                      設定する認証情報においてTwitter API v2
+                      が有効化されている必要があります
+                    </span>
                   </label>
                 </label>
                 <button

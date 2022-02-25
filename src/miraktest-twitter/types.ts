@@ -4,6 +4,7 @@ export type TwitterSetting = {
   accessToken?: string
   accessTokenSecret?: string
   isContentInfoEmbedInImageEnabled: boolean
+  isReplyProhibitEnabled: boolean
 }
 
 export type SayaDefinitionBoard = {
