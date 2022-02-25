@@ -6,3 +6,15 @@ export const trimCommentForFlow = (s: string) => {
     .replace(/^\/nicoad.*/, "") // ニコニ広告削除
     .replace(/^\/\w+\s?/, "") // コマンド削除
 }
+
+export const classfySource = (s: string) => {
+  if (s.startsWith("5ch")) {
+    return "5ch"
+  } else if (s.startsWith("Twitter")) {
+    return "twitter"
+  } else if (s.startsWith("ニコニコ生放送")) {
+    return "nicojk"
+  } else {
+    return
+  }
+}

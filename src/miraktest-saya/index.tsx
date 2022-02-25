@@ -16,7 +16,7 @@ import { DPlayerCommentPayload } from "../miraktest-dplayer/types"
 import { ChatInput, PECORE_ID } from "../pecore"
 import { useRefFromState } from "../shared/utils"
 import tailwind from "../tailwind.scss"
-import { trimCommentForFlow } from "./comment"
+import { classfySource, trimCommentForFlow } from "./comment"
 import { SayaSetting } from "./types"
 
 /**
@@ -31,7 +31,7 @@ const meta = {
   id: _id,
   name: "Saya",
   author: "ci7lus",
-  version: "0.2.0",
+  version: "0.2.1",
   description:
     "Sayaからコメントを取得するプラグインです。対応するコメントレンダラープラグインが必要です。",
 }
@@ -45,6 +45,9 @@ const main: InitPlugin = {
         replaces: [],
         isEnabled: true,
         isTimeshiftEnabled: true,
+        isTwitterDisabled: false,
+        is5chDisabled: false,
+        isNicojkDisabled: false,
       },
     })
     const sayaUrlHistoryAtom = atom<string[]>({
@@ -194,6 +197,16 @@ const main: InitPlugin = {
                   setRawComment(payload)
                   const commentText = trimCommentForFlow(payload.text)
                   if (commentText.trim().length === 0) return
+                  const source = classfySource(payload.source)
+                  if (sayaSetting.isTwitterDisabled && source === "twitter") {
+                    return
+                  }
+                  if (sayaSetting.is5chDisabled && source === "5ch") {
+                    return
+                  }
+                  if (sayaSetting.isNicojkDisabled && source === "nicojk") {
+                    return
+                  }
                   if (isDplayerFound) {
                     const event = new CustomEvent(DPLAYER_COMMENT_EVENT, {
                       bubbles: false,
@@ -270,6 +283,15 @@ const main: InitPlugin = {
             const [repl2, setRepl2] = useState("")
             const [sayaHistoryUrl, setSayaHistoryUrl] =
               useRecoilState(sayaUrlHistoryAtom)
+            const [is5chDisabled, setIs5chDisabled] = useState(
+              sayaSetting.is5chDisabled
+            )
+            const [isTwitterDisabled, setIsTwitterDisabled] = useState(
+              sayaSetting.isTwitterDisabled
+            )
+            const [isNicojkDisabled, setIsNicojkDisabled] = useState(
+              sayaSetting.isNicojkDisabled
+            )
             return (
               <>
                 <style>{tailwind}</style>
@@ -294,6 +316,9 @@ const main: InitPlugin = {
                       replaces,
                       isEnabled,
                       isTimeshiftEnabled,
+                      is5chDisabled,
+                      isTwitterDisabled,
+                      isNicojkDisabled,
                     })
                   }}
                 >
@@ -395,6 +420,37 @@ const main: InitPlugin = {
                         <Plus className="pointer-events-none" size={16} />
                       </button>
                     </div>
+                  </label>
+                  <label className="block mt-4">
+                    <span>Twitterを除外する</span>
+                    <input
+                      type="checkbox"
+                      className="block mt-2 form-checkbox"
+                      checked={isTwitterDisabled || false}
+                      onChange={() =>
+                        setIsTwitterDisabled((enabled) => !enabled)
+                      }
+                    />
+                  </label>
+                  <label className="block mt-4">
+                    <span>5chを除外する</span>
+                    <input
+                      type="checkbox"
+                      className="block mt-2 form-checkbox"
+                      checked={is5chDisabled || false}
+                      onChange={() => setIs5chDisabled((enabled) => !enabled)}
+                    />
+                  </label>
+                  <label className="block mt-4">
+                    <span>ニコニコ実況を除外する</span>
+                    <input
+                      type="checkbox"
+                      className="block mt-2 form-checkbox"
+                      checked={isNicojkDisabled || false}
+                      onChange={() =>
+                        setIsNicojkDisabled((enabled) => !enabled)
+                      }
+                    />
                   </label>
                   <button
                     type="submit"
