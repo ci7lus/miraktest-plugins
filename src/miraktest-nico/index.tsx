@@ -230,6 +230,7 @@ const main: InitPlugin = {
                   }
                   const text = trimCommentForFlow(comment.content)
                   if (text.length === 0) {
+                    index++
                     continue
                   }
                   const { color, position } = parseMail(comment.mail)
