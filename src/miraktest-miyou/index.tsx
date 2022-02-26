@@ -281,6 +281,7 @@ const main: InitPlugin = {
                   }
                   const text = trimCommentForFlow(comment.text)
                   if (text.length === 0) {
+                    index++
                     continue
                   }
                   if (isDplayerFound) {
