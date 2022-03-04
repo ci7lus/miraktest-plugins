@@ -61,6 +61,10 @@ const entries: Entry[] = [
     name: "miraktest-twitter",
     dir: "./src/miraktest-twitter",
   },
+  {
+    name: "miraktest-local",
+    dir: "./src/miraktest-local",
+  },
 ]
 
 const config: (
