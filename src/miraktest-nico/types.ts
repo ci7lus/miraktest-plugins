@@ -17,6 +17,19 @@ export type NicoLogComment = {
   content: string
 }
 
+export type NicoLiveChat = {
+  thread: string
+  no: number
+  vpos: number
+  date: number
+  date_usec: number
+  mail: string
+  user_id: string
+  premium: number
+  anonymity: number
+  content: string
+}
+
 export type IdealChat = Omit<
   NicoLogComment,
   "no" | "vpos" | "date" | "date_usec"
