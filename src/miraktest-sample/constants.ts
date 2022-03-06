@@ -6,5 +6,7 @@ export const SAMPLE_META = {
   author: "ci7lus",
   version: "0.1.1",
   description: " 読み込み確認用プラグイン",
+  authorUrl: "https://github.com/ci7lus",
+  url: "https://github.com/ci7lus/miraktest-plugins/tree/master/src/miraktest-sample",
 }
 export const SAMPLE_WINDOW_ID = `${SAMPLE_ID}.sampleWindow`

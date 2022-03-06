@@ -6,5 +6,7 @@ export const LOCAL_META = {
   author: "ci7lus",
   version: "0.0.1",
   description: "ローカルファイルの再生を行うプラグインです。",
+  authorUrl: "https://github.com/ci7lus",
+  url: "https://github.com/ci7lus/miraktest-plugins/tree/master/src/miraktest-local",
 }
 export const Local_RECORDS_WINDOW_ID = `${LOCAL_ID}.records`

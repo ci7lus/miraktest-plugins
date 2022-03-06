@@ -34,6 +34,8 @@ const meta = {
   version: "0.2.1",
   description:
     "Sayaからコメントを取得するプラグインです。対応するコメントレンダラープラグインが必要です。",
+  authorUrl: "https://github.com/ci7lus",
+  url: "https://github.com/ci7lus/miraktest-plugins/tree/master/src/miraktest-saya",
 }
 const commentWindowId = `${_id}.sayaCommentWindow`
 

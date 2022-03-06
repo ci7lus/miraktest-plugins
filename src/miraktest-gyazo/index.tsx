@@ -12,7 +12,9 @@ const meta = {
   name: "Gyazo",
   author: "ci7lus",
   version: "0.0.1",
-  description: "スクリーンショットをGyazoにアップロードするプラグイン",
+  description: "スクリーンショットをGyazoにアップロードするプラグインです。",
+  authorUrl: "https://github.com/ci7lus",
+  url: "https://github.com/ci7lus/miraktest-plugins/tree/master/src/miraktest-gyazo",
 }
 
 const main: InitPlugin = {

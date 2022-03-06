@@ -18,6 +18,8 @@ const meta = {
   version: "0.2.0",
   description:
     "ニコニコ実況からコメントを取得するプラグインです。対応するコメントレンダラープラグインが必要です。",
+  authorUrl: "https://github.com/ci7lus",
+  url: "https://github.com/ci7lus/miraktest-plugins/tree/master/src/miraktest-nico",
 }
 
 export const NicoRenderer: InitPlugin["renderer"] = ({ atoms }) => {

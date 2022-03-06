@@ -29,6 +29,8 @@ const meta = {
   version: "0.1.0",
   description:
     "Miyouからコメントを取得するプラグインです。対応するコメントレンダラープラグインが必要です。",
+  authorUrl: "https://github.com/ci7lus",
+  url: "https://github.com/ci7lus/miraktest-plugins/tree/master/src/miraktest-miyou",
 }
 
 const main: InitPlugin = {

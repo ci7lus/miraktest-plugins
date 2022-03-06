@@ -6,6 +6,8 @@ export const DRPC_META = {
   author: "ci7lus",
   version: "0.1.1",
   description: "表示中の番組を Discord に共有します",
+  authorUrl: "https://github.com/ci7lus",
+  url: "https://github.com/ci7lus/miraktest-plugins/tree/master/src/miraktest-drpc",
 }
 
 export const DRPC_ACTIVITY_EVENT_ID = `${DRPC_ID}.setActivity`

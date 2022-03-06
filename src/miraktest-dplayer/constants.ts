@@ -7,6 +7,8 @@ export const DPLAYER_META = {
   version: "0.3.4",
   description:
     "映像の上にDPlayerを表示するプラグインです。別途コメントソースが必要です。",
+  authorUrl: "https://github.com/ci7lus",
+  url: "https://github.com/ci7lus/miraktest-plugins/tree/master/src/miraktest-dplayer",
 }
 
 export const DPLAYER_COMMENT_EVENT = `${DPLAYER_ID}.comment`

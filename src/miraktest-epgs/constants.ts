@@ -403,5 +403,7 @@ export const EPGS_META = {
   author: "ci7lus",
   version: "0.1.3",
   description: "EPGStationの録画を再生するためのプラグインです。",
+  authorUrl: "https://github.com/ci7lus",
+  url: "https://github.com/ci7lus/miraktest-plugins/tree/master/src/miraktest-epgs",
 }
 export const EPGS_RECORDS_WINDOW_ID = `${EPGS_ID}.records`

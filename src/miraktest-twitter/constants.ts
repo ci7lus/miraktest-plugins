@@ -6,6 +6,8 @@ export const TWITTER_META = {
   author: "ci7lus",
   version: "0.0.9",
   description: "視聴中の番組に関連するツイートを投稿する",
+  authorUrl: "https://github.com/ci7lus",
+  url: "https://github.com/ci7lus/miraktest-plugins/tree/master/src/miraktest-twitter",
 }
 export const TWITTER_TWEET_WINDOW_ID = `${TWITTER_PLUGIN_ID}.tweet`
 
