@@ -1,6 +1,6 @@
 # miraktest-nico
 
-[ニコニコ実況](https://jk.nicovideo.jp) との連携を行うプラグインです。現在は録画のみ対応です。<br />
+[ニコニコ実況](https://jk.nicovideo.jp) との連携を行うプラグインです。放送中番組と録画番組両方に対応しています。<br />
 過去ログは[ニコニコ実況 過去ログ API](https://jikkyo.tsukumijima.net/)から取得します。<br />
 対応するコメントレンダラープラグインが必要です。
 

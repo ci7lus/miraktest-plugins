@@ -33,7 +33,7 @@
 - [Miyou](./src/miraktest-miyou)<br />
   Miyou から視聴中の録画番組のコメントを取得します。コメントの表示には DPlayer プラグインが必要です。
 - [Nico](./src/miraktest-nico)<br />
-  ニコニコ実況（過去ログ API）から視聴中の録画番組のコメントを取得します。コメントの表示には DPlayer プラグインが必要です。
+  ニコニコ生放送から視聴中の番組に関するコメントを、ニコニコ実況（過去ログ API）から視聴中の録画番組のコメントを取得します。コメントの表示には DPlayer プラグインが必要です。
 - [Gyazo](./src/miraktest-gyazo)<br />
   スクリーンショットを Gyazo にアップロードします。
 - [Twitter](./src/miraktest-twitter)<br />
