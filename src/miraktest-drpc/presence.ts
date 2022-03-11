@@ -10,7 +10,7 @@ export const PresenceRegisteredGRLogos = [
 
 export const PresenceRegisteredBSLogos = [
   101, 103, 141, 151, 161, 171, 181, 191, 200, 211, 222, 231, 234, 236, 241,
-  242, 251, 252, 255, 256,
+  242, 251, 252, 255, 256, 260, 263, 265,
 ]
 
 export const PresenceRegisteredCSLogos = [
