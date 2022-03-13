@@ -57,7 +57,12 @@ export const RecordDetail: React.VFC<{
   const play = useCallback(
     (videoId: number, isNewWindow: boolean) => {
       const url = api.getVideoUrl({ videoId })
-      const program = convertProgramRecordToProgram(record, service)
+      const now = dayjs()
+      const endAt = now.isAfter(record.endAt) ? record.endAt : now.unix() * 1000
+      const program = convertProgramRecordToProgram(
+        { ...record, endAt },
+        service
+      )
       const payload = {
         contentType: "EPGStation",
         url,
