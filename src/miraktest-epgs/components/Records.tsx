@@ -1,3 +1,4 @@
+import { Switch } from "@headlessui/react"
 import clsx from "clsx"
 import React, { useState } from "react"
 import { RotateCw, Search } from "react-feather"
@@ -21,6 +22,7 @@ export const Records: React.VFC<{
   const [record, setRecord] = useState<EPGSProgramRecord | null>(null)
 
   const [reload, setReload] = useState(0)
+  const [isRecording, setIsRecording] = useState(false)
 
   return (
     <div className="w-full h-full flex flex-col">
@@ -29,7 +31,7 @@ export const Records: React.VFC<{
           <h2 className="font-semibold text-lg">録画番組</h2>
           <div
             className={clsx(
-              "w-1/3",
+              "w-1/2",
               "flex",
               "items-center",
               "justify-center",
@@ -49,6 +51,24 @@ export const Records: React.VFC<{
             >
               <RotateCw size={20} />
             </button>
+            <Switch.Group>
+              <div className="flex items-center justify-center flex-shrink-0">
+                <Switch
+                  checked={isRecording}
+                  onChange={(e) => setIsRecording(e)}
+                  className={`${
+                    isRecording ? "bg-blue-600" : "bg-gray-300"
+                  } relative inline-flex items-center h-6 rounded-full w-11`}
+                >
+                  <span
+                    className={`${
+                      isRecording ? "translate-x-6" : "translate-x-1"
+                    } inline-block w-4 h-4 transform bg-white rounded-full transition ease-in-out duration-200`}
+                  />
+                </Switch>
+                <Switch.Label className="ml-2">録画中</Switch.Label>
+              </div>
+            </Switch.Group>
             <form
               className="flex items-center justify-center space-x-2 w-full"
               onSubmit={(e) => {
@@ -82,6 +102,7 @@ export const Records: React.VFC<{
             searchTerm={searchTerm || null}
             setRecord={setRecord}
             reload={reload}
+            isRecording={isRecording}
           />
         </div>
         {record ? (

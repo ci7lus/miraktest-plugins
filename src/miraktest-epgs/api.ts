@@ -98,11 +98,11 @@ export class EPGStationAPI {
     return objUrl
   }
   async getRecordings({ offset, limit }: { offset?: number; limit?: number }) {
-    const { data } = await this.client.get<{ records: EPGSProgramRecord[] }>(
-      "api/recording",
-      { params: { isHalfWidth: true, offset, limit } }
-    )
-    return data.records
+    const { data } = await this.client.get<{
+      records: EPGSProgramRecord[]
+      total: number
+    }>("api/recording", { params: { isHalfWidth: true, offset, limit } })
+    return data
   }
   getVideoUrl({ videoId }: { videoId: number }) {
     return urljoin(this.baseUrl.href, `api/videos/${videoId}`)

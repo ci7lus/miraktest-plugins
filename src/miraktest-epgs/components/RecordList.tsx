@@ -20,7 +20,8 @@ export const RecordList: React.VFC<{
   searchTerm: string | null
   setRecord: React.Dispatch<React.SetStateAction<EPGSProgramRecord | null>>
   reload: number
-}> = ({ api, services, searchTerm, setRecord, reload }) => {
+  isRecording: boolean
+}> = ({ api, services, searchTerm, setRecord, reload, isRecording }) => {
   const [_records, setRecords] = useState<EPGSProgramRecord[] | null>(null)
   const records = useMemo(() => _records || [], [_records])
 
@@ -87,22 +88,30 @@ export const RecordList: React.VFC<{
 
   useEffect(() => {
     setPageSize(pageSize)
-    api
-      .getRecords({
-        offset: pageSize * pageIndex,
-        limit: pageSize,
-        keyword: globalFilter || undefined,
-      })
-      .then(({ records, total }) => {
-        setTotal(total)
-        setRecords(records)
-      })
-      .catch(() => console.error("録画番組の取得に失敗しました"))
-  }, [pageIndex, pageSize, globalFilter, reload])
+    isRecording
+      ? api
+          .getRecordings({ offset: pageSize * pageIndex, limit: pageSize })
+          .then(({ records, total }) => {
+            setTotal(total)
+            setRecords(records)
+          })
+          .catch(() => console.error("録画番組の取得に失敗しました"))
+      : api
+          .getRecords({
+            offset: pageSize * pageIndex,
+            limit: pageSize,
+            keyword: globalFilter || undefined,
+          })
+          .then(({ records, total }) => {
+            setTotal(total)
+            setRecords(records)
+          })
+          .catch(() => console.error("録画番組の取得に失敗しました"))
+  }, [pageIndex, pageSize, globalFilter, reload, isRecording])
   useEffect(() => {
     gotoPage(0)
     setGlobalFilter(searchTerm)
-  }, [searchTerm])
+  }, [searchTerm, isRecording])
 
   return (
     <div className="h-full flex flex-col">
