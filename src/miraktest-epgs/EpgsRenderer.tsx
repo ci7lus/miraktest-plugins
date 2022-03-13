@@ -46,58 +46,6 @@ export const EpgsRenderer: InitPlugin["renderer"] = ({
       return
     },
     components: [
-      /*{
-        id: `${EPGS_PREFIX}.okkake`,
-        position: "onPlayer",
-        component: () => {
-          const playingContent = useRecoilValue(
-            atoms.contentPlayerPlayingContentAtom
-          )
-          const position = useRecoilValue(
-            atoms.contentPlayerPlayingPositionSelector
-          )
-          const positionRef = useRefFromState(position)
-          const setPosition = useSetRecoilState(
-            atoms.contentPlayerPositionUpdateTriggerAtom
-          )
-          useEffect(() => {
-            if (
-              !playingContent ||
-              playingContent.contentType !== "EPGStation" ||
-              !playingContent.program ||
-              dayjs().isAfter(
-                playingContent.program.startAt + playingContent.program.duration
-              )
-            ) {
-              return
-            }
-            const endAt =
-              playingContent.program.startAt + playingContent.program.duration
-            console.info("[epgs] 追っかけ再生モードを開始します")
-            let isSeeked = false
-            const timer = setInterval(() => {
-              const position = positionRef.current
-              console.log("position", position)
-              if (dayjs().isAfter(endAt)) {
-                console.info(
-                  "[epgs] 放送が終了しました、追っかけ再生モードを終了します"
-                )
-                clearInterval(timer)
-                return
-              }
-              if (!isSeeked && 0.99 < position) {
-                console.info("[epgs] 範囲を再取得します:")
-                setPosition(0.8)
-                isSeeked = true
-              }
-            }, 5000)
-            return () => {
-              clearInterval(timer)
-            }
-          }, [playingContent])
-          return <></>
-        },
-      },*/
       {
         id: `${EPGS_PREFIX}.settings`,
         position: "onSetting",
