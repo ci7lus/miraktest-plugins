@@ -99,7 +99,9 @@ export const DrpcRenderer: InitPlugin["renderer"] = ({
                 startTimestamp = Math.ceil((new Date().getTime() - time) / 1000)
               } else {
                 startTimestamp = program.startAt / 1000
-                endTimestamp = (program.startAt + program.duration) / 1000
+                if (program.duration !== 1) {
+                  endTimestamp = (program.startAt + program.duration) / 1000
+                }
               }
               const activity: Presence = {
                 largeImageKey,
