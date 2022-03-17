@@ -18,8 +18,10 @@ export const FileSelector: React.VFC<{
   openContentPlayer: (_: ContentPlayerPlayingContent) => Promise<number>
   requestDialog: Parameters<InitPluginInRenderer>[0]["rpc"]["requestDialog"]
 }> = ({ services, setPlayingContent, openContentPlayer, requestDialog }) => {
-  const [filePath, setFilePath] = useState("")
-  const [startAt, setStartAt] = useState("")
+  const [url, setFilePath] = useState("")
+  const [startAt, setStartAt] = useState(
+    dayjs().startOf("hour").format("YYYY-MM-DDTHH:mm")
+  )
   const [duration, setDuration] = useState(30)
   const [serviceId, setServiceId] = useState(-1)
 
@@ -34,13 +36,13 @@ export const FileSelector: React.VFC<{
       </div>
       <div className="w-full flex overflow-auto p-4">
         <form
+          className={clsx("w-full")}
           onSubmit={(e) => {
             e.preventDefault()
-            if (!filePath) {
+            if (!url) {
               return
             }
             const contentType = "Local"
-            const url = "file://" + filePath
             const service = services.find(
               (service) => service.serviceId === serviceId
             )
@@ -77,11 +79,12 @@ export const FileSelector: React.VFC<{
                 className={clsx(
                   "block mt-1 form-input rounded-l-md w-full text-gray-900 focus:outline-none cursor-pointer"
                 )}
-                value={filePath || ""}
+                value={url || ""}
                 onChange={(e) => setFilePath(e.target.value)}
                 spellCheck={false}
               />
               <button
+                type="button"
                 className={clsx(
                   `px-4 py-2 mt-1 rounded-r-md flex items-center justify-center bg-gray-200 text-gray-900 focus:outline-none cursor-pointer`
                 )}
@@ -96,14 +99,14 @@ export const FileSelector: React.VFC<{
                   if (!path) {
                     return
                   }
-                  setFilePath(path)
+                  setFilePath("file://" + path)
                 }}
               >
                 <File className="pointer-events-none" size="1.75rem" />
               </button>
             </div>
           </label>
-          <div className={clsx("flex", "space-x-2")}>
+          <div className={clsx("flex", "space-x-2", "W-full")}>
             <label className="block mt-2">
               <span>開始時間</span>
               <input
@@ -127,10 +130,10 @@ export const FileSelector: React.VFC<{
                   setDuration(p)
                 }}
               />
-              {startAt ? (
+              {startAt && dayjs(startAt).isValid() ? (
                 <span>{dayjs(startAt).add(duration, "minutes").format()}</span>
               ) : (
-                <span>未選択</span>
+                <span>無効な日付</span>
               )}
             </label>
           </div>
@@ -151,7 +154,7 @@ export const FileSelector: React.VFC<{
             </option>
             {services.map((service) => {
               return (
-                <option key={service.serviceId} value={service.serviceId}>
+                <option key={service.id} value={service.serviceId}>
                   {service.name}
                 </option>
               )
