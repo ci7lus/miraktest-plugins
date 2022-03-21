@@ -9,7 +9,7 @@ import { ChatInput, PECORE_ID } from "../../pecore"
 import { getEmbeddedData } from "../casAPI"
 import { parseMail } from "../parser"
 import { NicoLiveChat } from "../types"
-import { LiveProgram } from "../types/cas"
+import { PartialLiveProgram } from "../types/cas"
 import { NicoLiveWS } from "../types/ws"
 
 type MessageWS = {
@@ -23,7 +23,7 @@ export const NicoLiveStream = memo(
     isPkrFound,
     isDplayerFound,
   }: {
-    liveProgram: LiveProgram
+    liveProgram: PartialLiveProgram
     isPkrFound: boolean
     isDplayerFound: boolean
   }) => {

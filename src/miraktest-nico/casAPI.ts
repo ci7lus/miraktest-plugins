@@ -56,3 +56,19 @@ export const getEmbeddedData = async ({ liveId }: { liveId: string }) => {
   }
   return JSON.parse(data) as EmbeddedData
 }
+
+export const getCommunityOnAir = async ({ comId }: { comId: string }) => {
+  const onair = await axios.get<{
+    meta: { status: number }
+    data: { live: { id: string } }
+  }>(
+    `https://com.nicovideo.jp/api/v1/communities/${comId.replace(
+      "co",
+      ""
+    )}/lives/onair.json`
+  )
+  if (onair.data.meta.status !== 200) {
+    throw new Error(`status is ${onair.data.meta.status}`)
+  }
+  return onair.data.data.live
+}

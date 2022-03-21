@@ -64,3 +64,5 @@ interface ShowTime {
 interface ThumbnailUrl {
   normal: string
 }
+
+export type PartialLiveProgram = Partial<LiveProgram> & { id: string }
