@@ -67,8 +67,5 @@ export const getCommunityOnAir = async ({ comId }: { comId: string }) => {
       ""
     )}/lives/onair.json`
   )
-  if (onair.data.meta.status !== 200) {
-    throw new Error(`status is ${onair.data.meta.status}`)
-  }
   return onair.data.data.live
 }

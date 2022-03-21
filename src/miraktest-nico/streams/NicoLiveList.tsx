@@ -47,7 +47,7 @@ export const NicoLiveList = ({
       channel.serviceIds.includes(service?.serviceId || 0)
     )
     console.info("ニコニコ実況（生）を有効化します:", chDef)
-    setDef(chDef || null)
+    setDef((prev) => (prev && prev.name === chDef?.name ? prev : chDef || null))
   }, [sayaDefinition, service, program, isSeekable])
 
   const [programs, setPrograms] = useState<PartialLiveProgram[]>([])
@@ -58,12 +58,12 @@ export const NicoLiveList = ({
         setPrograms([])
         return
       }
-      console.info("ニコ生番組の取得を開始します", def.name)
+      console.info("ニコ生番組の取得を開始します:", def.name)
 
       Promise.allSettled([
-        ...(def.nicoliveCommunityIds || []).map((comId) =>
-          getCommunityOnAir({ comId })
-        ),
+        ...(def.nicoliveCommunityIds || [])
+          .filter((id) => id.startsWith("co"))
+          .map((comId) => getCommunityOnAir({ comId })),
         ...(def.nicoliveTags || []).map((tag) =>
           getLivePrograms({ searchWord: tag })
         ),

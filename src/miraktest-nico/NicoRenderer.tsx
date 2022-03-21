@@ -15,7 +15,7 @@ const meta = {
   id: _id,
   name: "ニコニコ実況",
   author: "ci7lus",
-  version: "0.2.1",
+  version: "0.2.2",
   description:
     "ニコニコ実況からコメントを取得するプラグインです。対応するコメントレンダラープラグインが必要です。",
   authorUrl: "https://github.com/ci7lus",
