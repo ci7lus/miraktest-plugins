@@ -37,3 +37,10 @@ export const wait = (s: number) =>
   new Promise<void>((res) => {
     setTimeout(() => res(), s)
   })
+
+// https://stackoverflow.com/a/65479695
+export const assertFulfilled = <T>(
+  item: PromiseSettledResult<T>
+): item is PromiseFulfilledResult<T> => {
+  return item.status === "fulfilled"
+}
