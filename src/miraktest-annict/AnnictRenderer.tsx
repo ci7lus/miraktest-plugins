@@ -4,6 +4,7 @@ import { useThrottleFn } from "react-use"
 import { atom, useRecoilValue, useRecoilState, useSetRecoilState } from "recoil"
 import YAML from "yaml"
 import { InitPlugin } from "../@types/plugin"
+import { SayaDefinition } from "../miraktest-saya/types"
 import tailwind from "../tailwind.scss"
 import { AnnictTrack } from "./components/AnnictTrack"
 import {
@@ -11,7 +12,7 @@ import {
   ANNICT_PLUGIN_PREFIX,
   ANNICT_TRACK_WINDOW_ID,
 } from "./constants"
-import { AnnictSetting, ARM, SayaDefinition } from "./types"
+import { AnnictSetting, ARM } from "./types"
 
 /**
  * MirakTest Annict Plugin

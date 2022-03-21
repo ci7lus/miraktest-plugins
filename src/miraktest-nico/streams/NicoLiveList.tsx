@@ -5,7 +5,7 @@ import { Program, Service } from "../../@types/plugin"
 import {
   SayaDefinition,
   SayaDefinitionChannel,
-} from "../../miraktest-annict/types"
+} from "../../miraktest-saya/types"
 import { assertFulfilled } from "../../shared/utils"
 import { getCommunityOnAir, getLivePrograms } from "../casAPI"
 import { NicoSetting } from "../types"
