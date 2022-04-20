@@ -11,10 +11,11 @@ export type ChatInput = {
   commands: string[]
   score?: undefined
   fork?: undefined
-  position?: "ue" | "naka" | "shita"
+  position?: "ue" | "naka" | "shita" | (string & {})
   size?: string
   colorName?: string
   colorCode?: string
+  color?: string
   font?: string
   atNumber?: number
 }
