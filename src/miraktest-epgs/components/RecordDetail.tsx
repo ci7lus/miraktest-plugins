@@ -58,6 +58,7 @@ export const RecordDetail: React.VFC<{
     (videoId: number, isNewWindow: boolean) => {
       const url = api.getVideoUrl({ videoId })
       const program = convertProgramRecordToProgram(record, service)
+      program.startAt -= 3000
       const payload = {
         contentType: "EPGStation",
         url,
