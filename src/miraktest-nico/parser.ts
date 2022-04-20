@@ -41,13 +41,25 @@ export const SIZE_MAP: { [key: string]: string } = {
 }
 
 export const parseMail = (mail?: string) => {
-  let color = COLOR_MAP.white
-  let position = POSITION_MAP.naka
-  const size = SIZE_MAP.medium
+  let color: string | undefined = undefined
+  let position: string | undefined = undefined
+  let size: string | undefined = undefined
   const commands = mail?.split(" ") || []
   for (const command of commands) {
-    color ||= COLOR_MAP[command]
-    position ||= POSITION_MAP[command]
+    if (COLOR_MAP[command]) {
+      color ||= command
+    }
+    if (POSITION_MAP[command]) {
+      position ||= command
+    }
+    // サイズ変更はsmall以外禁止する
+    if (command === "small") {
+      size ||= SIZE_MAP[command]
+    }
+    // #から始まっていればカラーコードとみなす
+    if (command.startsWith("#")) {
+      color ||= command
+    }
   }
   return { color, position, size }
 }

@@ -9,7 +9,7 @@ import { trimCommentForFlow } from "../../miraktest-saya/comment"
 import { SayaDefinition } from "../../miraktest-saya/types"
 import { ChatInput, PECORE_ID } from "../../pecore"
 import { useRefFromState, wait } from "../../shared/utils"
-import { parseMail } from "../parser"
+import { parseMail, POSITION_MAP } from "../parser"
 import { IdealChat, NicoLogComment, NicoSetting } from "../types"
 
 export const KakologStream = ({
@@ -180,8 +180,11 @@ export const KakologStream = ({
             date: dayjs(comment.date).format(),
             dateUsec: comment.date_usec,
             anonymous: true,
-            commands: [color, position],
+            commands: [],
             content: text,
+            color,
+            colorCode: color,
+            position: position,
           }
           const event = new CustomEvent(PECORE_ID, {
             bubbles: false,
@@ -201,8 +204,8 @@ export const KakologStream = ({
               author: comment.user_id,
               text,
               no: comment.no,
-              color: color,
-              type: position,
+              color,
+              type: POSITION_MAP[position || "naka"] || "right",
               commands: [],
             } as DPlayerCommentPayload,
           })

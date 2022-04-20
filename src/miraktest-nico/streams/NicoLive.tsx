@@ -7,7 +7,7 @@ import { DPlayerCommentPayload } from "../../miraktest-dplayer/types"
 import { trimCommentForFlow } from "../../miraktest-saya/comment"
 import { ChatInput, PECORE_ID } from "../../pecore"
 import { getEmbeddedData } from "../casAPI"
-import { parseMail } from "../parser"
+import { parseMail, POSITION_MAP } from "../parser"
 import { NicoLiveChat } from "../types"
 import { NicoLiveWS } from "../types/ws"
 
@@ -163,7 +163,7 @@ export const NicoLiveStream = memo(
                 text,
                 no: chat.no,
                 color: color,
-                type: position,
+                type: POSITION_MAP[position || "naka"] || "right",
                 commands: [],
               } as DPlayerCommentPayload,
             })
@@ -174,11 +174,14 @@ export const NicoLiveStream = memo(
               thread: "1",
               no: chat.no.toString(),
               vpos: performance.now() / 10 + 200,
-              mail: [chat.mail],
+              mail: chat.mail?.split(" "),
               date: dayjs(chat.date * 1000).format(),
               dateUsec: chat.date_usec,
               anonymous: !!chat.anonymity,
-              commands: [color, position],
+              commands: [],
+              position,
+              color,
+              colorCode: color,
               content: text,
             }
             const event = new CustomEvent(PECORE_ID, {
