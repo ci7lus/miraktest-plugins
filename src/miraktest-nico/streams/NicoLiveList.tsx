@@ -52,8 +52,11 @@ export const NicoLiveList = ({
 
   const [programs, setPrograms] = useState<PartialLiveProgram[]>([])
 
+  const [timing, setTiming] = useState(-1)
+
   useThrottleFn(
-    (def) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    (def: SayaDefinitionChannel | null, _: number) => {
       if (!def) {
         setPrograms([])
         return
@@ -90,15 +93,36 @@ export const NicoLiveList = ({
       })
     },
     5000,
-    [def]
+    [def, timing]
   )
+  useEffect(() => {
+    const min = programs
+      .map((program) => program.endAt)
+      .filter((n): n is string => !!n)
+      .sort((a, b) => (a < b ? -1 : 1))
+      .shift()
+    if (!min) {
+      const timer = setTimeout(() => {
+        setTiming(performance.now())
+      }, 1000 * 60 * 10)
+      return () => {
+        clearTimeout(timer)
+      }
+    }
+    const timer = setTimeout(() => {
+      setTiming(performance.now())
+    }, Math.max(Math.abs(dayjs().diff(min, "millisecond")), 1000 * 60))
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [programs])
 
   return (
     <>
       {programs.map((program) => (
         <NicoLiveStream
           key={program.id}
-          liveProgram={program}
+          liveId={program.id}
           isPkrFound={isPkrFound}
           isDplayerFound={isDplayerFound}
         />

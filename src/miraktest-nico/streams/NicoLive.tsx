@@ -9,7 +9,6 @@ import { ChatInput, PECORE_ID } from "../../pecore"
 import { getEmbeddedData } from "../casAPI"
 import { parseMail } from "../parser"
 import { NicoLiveChat } from "../types"
-import { PartialLiveProgram } from "../types/cas"
 import { NicoLiveWS } from "../types/ws"
 
 type MessageWS = {
@@ -19,26 +18,26 @@ type MessageWS = {
 
 export const NicoLiveStream = memo(
   ({
-    liveProgram,
+    liveId,
     isPkrFound,
     isDplayerFound,
   }: {
-    liveProgram: PartialLiveProgram
+    liveId: string
     isPkrFound: boolean
     isDplayerFound: boolean
   }) => {
     const [systemWSUrl, setSystemWSUrl] = useState<string | null>(null)
     const [messageWSData, setMessageWSData] = useState<MessageWS | null>(null)
     useThrottleFn(
-      (liveProgram) => {
-        getEmbeddedData({ liveId: liveProgram.id })
+      (liveId) => {
+        getEmbeddedData({ liveId })
           .then((embedded) => {
             setSystemWSUrl(embedded.site.relive.webSocketUrl)
           })
           .catch(console.error)
       },
       1000 * 10,
-      [liveProgram]
+      [liveId]
     )
     useEffect(() => {
       if (!systemWSUrl) {
@@ -156,8 +155,8 @@ export const NicoLiveStream = memo(
             const event = new CustomEvent(DPLAYER_COMMENT_EVENT, {
               bubbles: false,
               detail: {
-                source: `ニコニコ生放送 [${liveProgram.title}/${chat.thread}]`,
-                sourceUrl: `https://live.nicovideo.jp/watch/${liveProgram.id}`,
+                source: `ニコニコ生放送 [${chat.thread}]`,
+                sourceUrl: `https://live.nicovideo.jp/watch/${liveId}`,
                 time: chat.date,
                 timeMs: chat.date_usec,
                 author: chat.user_id,
