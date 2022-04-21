@@ -4,13 +4,16 @@ import dayjs from "dayjs"
 import React, { useCallback, useEffect, useState } from "react"
 import { Play } from "react-feather"
 import { useRecoilState } from "recoil"
-import { ContentPlayerPlayingContent, Service } from "../../@types/plugin"
+import { ContentPlayerPlayingContent } from "../../@types/plugin"
 import { AutoLinkedText } from "../../shared/AutoLinkedText"
 import { EPGStationAPI } from "../api"
 import { thumbnailFamily } from "../atom"
 import { Genre, SubGenre } from "../constants"
-import { convertProgramRecordToProgram } from "../convertion"
-import { EPGSProgramRecord } from "../types"
+import {
+  convertChannelToService,
+  convertProgramRecordToProgram,
+} from "../convertion"
+import { EPGSChannel, EPGSProgramRecord } from "../types"
 
 import "dayjs/locale/ja"
 dayjs.locale("ja")
@@ -18,19 +21,19 @@ dayjs.locale("ja")
 export const RecordDetail: React.VFC<{
   api: EPGStationAPI
   record: EPGSProgramRecord
-  services: Service[]
+  channels: EPGSChannel[]
   setPlayingContent: React.Dispatch<
     React.SetStateAction<ContentPlayerPlayingContent | null>
   >
   openContentPlayer: (_: ContentPlayerPlayingContent) => Promise<number>
-}> = ({ api, record, services, setPlayingContent, openContentPlayer }) => {
+}> = ({ api, record, channels, setPlayingContent, openContentPlayer }) => {
   const thumbnail = [...record.thumbnails].shift()
   const [thumbnailUrl, setThunbnailUrl] = useRecoilState(
     thumbnailFamily(thumbnail || 0)
   )
 
   const duration = (record.endAt - record.startAt) / 1000
-  const service = services.find((service) => service.id === record.channelId)
+  const channel = channels.find((channel) => channel.id === record.channelId)
 
   const genre1 = Genre[record.genre1]
   const subGenre1 = genre1 && SubGenre[record.genre1][record.subGenre1]
@@ -62,7 +65,8 @@ export const RecordDetail: React.VFC<{
   const play = useCallback(
     (videoId: number, isNewWindow: boolean) => {
       const url = api.getVideoUrl({ videoId })
-      const program = convertProgramRecordToProgram(record, service)
+      const program = convertProgramRecordToProgram(record, channel)
+      const service = channel ? convertChannelToService(channel) : undefined
       if (isStartAtOverride) {
         program.startAt = dayjs(startAtOver).unix() * 1000
         program.duration = durationOver * 1000 * 60
@@ -97,8 +101,8 @@ export const RecordDetail: React.VFC<{
         <></>
       )}
       <div className="w-full p-4">
-        {service ? (
-          <h3 className="text-xl text-gray-600 mb-1">{service.name}</h3>
+        {channel ? (
+          <h3 className="text-xl text-gray-600 mb-1">{channel.name}</h3>
         ) : (
           <></>
         )}

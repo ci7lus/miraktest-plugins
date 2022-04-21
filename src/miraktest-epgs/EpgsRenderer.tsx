@@ -6,7 +6,7 @@ import { EPGStationAPI } from "./api"
 import { Records } from "./components/Records"
 import { EPGS_PREFIX, EPGS_META, EPGS_RECORDS_WINDOW_ID } from "./constants"
 import styles from "./index.scss"
-import { EPGStationSetting } from "./types"
+import { EPGSChannel, EPGStationSetting } from "./types"
 
 export const EpgsRenderer: InitPlugin["renderer"] = ({
   appInfo,
@@ -117,7 +117,14 @@ export const EpgsRenderer: InitPlugin["renderer"] = ({
           if (!setting?.baseUrl) {
             return
           }
-          setApi(new EPGStationAPI(setting.baseUrl))
+          const api = new EPGStationAPI(setting.baseUrl)
+          setApi(api)
+          api
+            .getChannels()
+            .then((channels) => {
+              setChannels(channels)
+            })
+            .catch(console.error)
         }, [setting])
         const activeId = useRecoilValue(
           atoms.globalActiveContentPlayerIdSelector
@@ -125,7 +132,7 @@ export const EpgsRenderer: InitPlugin["renderer"] = ({
         const setPlayingContent = useSetRecoilState(
           atoms.globalContentPlayerPlayingContentFamily(activeId ?? 0)
         )
-        const services = useRecoilValue(atoms.mirakurunServicesSelector)
+        const [channels, setChannels] = useState<EPGSChannel[] | null>(null)
         useEffect(() => {
           rpc.setWindowTitle(`EPGStation 録画一覧 - ${appInfo.name}`)
         }, [])
@@ -135,10 +142,10 @@ export const EpgsRenderer: InitPlugin["renderer"] = ({
             <style>{tailwind}</style>
             <style>{styles}</style>
             <div className="w-full h-screen bg-gray-100 text-gray-900 flex leading-loose">
-              {api && services ? (
+              {api && channels !== null ? (
                 <Records
                   api={api}
-                  services={services}
+                  channels={channels}
                   setPlayingContent={setPlayingContent}
                   openContentPlayer={(
                     playingContent: ContentPlayerPlayingContent

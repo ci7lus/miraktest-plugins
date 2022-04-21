@@ -2,20 +2,20 @@ import { Switch } from "@headlessui/react"
 import clsx from "clsx"
 import React, { useState } from "react"
 import { RotateCw, Search } from "react-feather"
-import { ContentPlayerPlayingContent, Service } from "../../@types/plugin"
+import { ContentPlayerPlayingContent } from "../../@types/plugin"
 import { EPGStationAPI } from "../api"
-import type { EPGSProgramRecord } from "../types"
+import type { EPGSChannel, EPGSProgramRecord } from "../types"
 import { RecordDetail } from "./RecordDetail"
 import { RecordList } from "./RecordList"
 
 export const Records: React.VFC<{
   api: EPGStationAPI
-  services: Service[]
+  channels: EPGSChannel[]
   setPlayingContent: React.Dispatch<
     React.SetStateAction<ContentPlayerPlayingContent | null>
   >
   openContentPlayer: (_: ContentPlayerPlayingContent) => Promise<number>
-}> = ({ api, services, setPlayingContent, openContentPlayer }) => {
+}> = ({ api, channels, setPlayingContent, openContentPlayer }) => {
   const [searchTerm, setSearchTerm] = useState<string | null>(null)
   const [localTerm, setLocalTerm] = useState<string>("")
 
@@ -98,7 +98,7 @@ export const Records: React.VFC<{
         <div className={record ? "w-2/3" : "w-full"}>
           <RecordList
             api={api}
-            services={services}
+            channels={channels}
             searchTerm={searchTerm || null}
             setRecord={setRecord}
             reload={reload}
@@ -110,7 +110,7 @@ export const Records: React.VFC<{
             <RecordDetail
               api={api}
               record={record}
-              services={services}
+              channels={channels}
               setPlayingContent={setPlayingContent}
               openContentPlayer={openContentPlayer}
             />

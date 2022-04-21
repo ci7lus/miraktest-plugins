@@ -7,21 +7,20 @@ import {
   ChevronsRight,
 } from "react-feather"
 import { useTable, usePagination, Column, useGlobalFilter } from "react-table"
-import { Service } from "../../@types/plugin"
 import { EPGStationAPI } from "../api"
-import type { EPGSProgramRecord } from "../types"
+import type { EPGSChannel, EPGSProgramRecord } from "../types"
 import "dayjs/locale/ja"
 
 dayjs.locale("ja")
 
 export const RecordList: React.VFC<{
   api: EPGStationAPI
-  services: Service[]
+  channels: EPGSChannel[]
   searchTerm: string | null
   setRecord: React.Dispatch<React.SetStateAction<EPGSProgramRecord | null>>
   reload: number
   isRecording: boolean
-}> = ({ api, services, searchTerm, setRecord, reload, isRecording }) => {
+}> = ({ api, channels, searchTerm, setRecord, reload, isRecording }) => {
   const [_records, setRecords] = useState<EPGSProgramRecord[] | null>(null)
   const records = useMemo(() => _records || [], [_records])
 
@@ -31,8 +30,8 @@ export const RecordList: React.VFC<{
         id: "channel",
         Header: "放送局",
         accessor: (record: EPGSProgramRecord) =>
-          services &&
-          services.find((channel) => record.channelId === channel.id)?.name,
+          channels &&
+          channels.find((channel) => record.channelId === channel.id)?.name,
       },
       {
         id: "name",
@@ -53,7 +52,7 @@ export const RecordList: React.VFC<{
         Cell: ({ value }: { value: number }) => `${value}m`,
       },
     ],
-    [services]
+    [channels]
   )
 
   const [total, setTotal] = useState<number | null>(null)
@@ -116,7 +115,7 @@ export const RecordList: React.VFC<{
   return (
     <div className="h-full flex flex-col">
       <div className="w-full mx-auto px-2 py-2 overflow-auto">
-        {_records === null || !services ? (
+        {_records === null || !channels ? (
           <div
             className="flex items-center justify-center h-full w-full"
             style={{ minHeight: "60vh" }}

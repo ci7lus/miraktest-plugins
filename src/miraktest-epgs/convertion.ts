@@ -1,9 +1,9 @@
 import { Program, Service } from "../@types/plugin"
-import { EPGSProgramRecord } from "./types"
+import { EPGSChannel, EPGSProgramRecord } from "./types"
 
 export const convertProgramRecordToProgram = (
   record: EPGSProgramRecord,
-  service?: Service
+  service?: EPGSChannel
 ): Program => {
   return {
     ...record,
@@ -13,5 +13,19 @@ export const convertProgramRecordToProgram = (
     duration: record.endAt - record.startAt,
     isFree: true,
     extended: { 拡張情報: record.extended },
+  }
+}
+
+export const convertChannelToService = (channel: EPGSChannel): Service => {
+  return {
+    ...channel,
+    type: 1,
+    channel: {
+      type: channel.channelType as Exclude<
+        Service["channel"],
+        undefined
+      >["type"],
+      channel: channel.channel,
+    },
   }
 }
