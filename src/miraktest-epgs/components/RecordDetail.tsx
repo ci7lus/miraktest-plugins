@@ -40,6 +40,11 @@ export const RecordDetail: React.VFC<{
   const subGenre3 = genre3 && SubGenre[record.genre3][record.subGenre3]
 
   const [isOpenWithNewWindow, setIsOpenWithNewWindow] = useState(false)
+  const [isStartAtOverride, setIsStartAtOverride] = useState(false)
+  const [startAtOver, setStartAtOver] = useState(
+    dayjs(record.startAt).format("YYYY-MM-DDTHH:mm")
+  )
+  const [durationOver, setDurationOver] = useState(duration / 60)
 
   useEffect(() => {
     if (thumbnailUrl) {
@@ -58,6 +63,10 @@ export const RecordDetail: React.VFC<{
     (videoId: number, isNewWindow: boolean) => {
       const url = api.getVideoUrl({ videoId })
       const program = convertProgramRecordToProgram(record, service)
+      if (isStartAtOverride) {
+        program.startAt = dayjs(startAtOver).unix() * 1000
+        program.duration = durationOver * 1000 * 60
+      }
       program.startAt -= 3000
       const payload = {
         contentType: "EPGStation",
@@ -71,7 +80,7 @@ export const RecordDetail: React.VFC<{
         setPlayingContent(payload)
       }
     },
-    [record]
+    [record, isStartAtOverride, startAtOver, durationOver]
   )
 
   return (
@@ -134,6 +143,59 @@ export const RecordDetail: React.VFC<{
               </Switch.Label>
             </div>
           </Switch.Group>
+          <Switch.Group>
+            <div className="flex items-center mb-2">
+              <Switch
+                checked={isStartAtOverride}
+                onChange={(e) => setIsStartAtOverride(e)}
+                className={`${
+                  isStartAtOverride ? "bg-blue-600" : "bg-gray-300"
+                } relative inline-flex items-center h-6 rounded-full w-11`}
+              >
+                <span
+                  className={`${
+                    isStartAtOverride ? "translate-x-6" : "translate-x-1"
+                  } inline-block w-4 h-4 transform bg-white rounded-full transition ease-in-out duration-200`}
+                />
+              </Switch>
+              <Switch.Label className="ml-2">時間を上書きする</Switch.Label>
+            </div>
+          </Switch.Group>
+          {isStartAtOverride && (
+            <div className={clsx("w-full")}>
+              <label className="block mt-2 w-full">
+                <span>開始時間</span>
+                <input
+                  type="datetime-local"
+                  className="block mt-1 form-input rounded-md w-full text-gray-900"
+                  value={startAtOver || ""}
+                  onChange={(e) => setStartAtOver(e.target.value)}
+                />
+              </label>
+              <label className="block mt-2 w-full">
+                <span>長さ</span>
+                <input
+                  type="number"
+                  className="block mt-1 form-input rounded-md w-full text-gray-900"
+                  value={durationOver}
+                  onChange={(e) => {
+                    const p = parseInt(e.target.value)
+                    if (Number.isNaN(p)) {
+                      return
+                    }
+                    setDurationOver(p)
+                  }}
+                />
+                {startAtOver && dayjs(startAtOver).isValid() ? (
+                  <span>
+                    {dayjs(startAtOver).add(durationOver, "minutes").format()}
+                  </span>
+                ) : (
+                  <span>無効な日付</span>
+                )}
+              </label>
+            </div>
+          )}
           <div className={clsx("flex space-x-2 overflow-auto flex-wrap")}>
             {record.videoFiles.map((videoFile) => (
               <button
