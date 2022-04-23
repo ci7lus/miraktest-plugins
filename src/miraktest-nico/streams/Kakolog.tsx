@@ -170,7 +170,7 @@ export const KakologStream = ({
           index++
           continue
         }
-        const { color, position } = parseMail(comment.mail)
+        const { color, position, size } = parseMail(comment.mail)
         if (isPkrFound) {
           const detail: ChatInput = {
             thread: "1",
@@ -185,6 +185,7 @@ export const KakologStream = ({
             color,
             colorCode: color,
             position: position,
+            size,
           }
           const event = new CustomEvent(PECORE_ID, {
             bubbles: false,

@@ -150,7 +150,7 @@ export const NicoLiveStream = memo(
           if (text.length === 0) {
             return
           }
-          const { color, position } = parseMail(chat.mail)
+          const { color, position, size } = parseMail(chat.mail)
           if (isDplayerFound) {
             const event = new CustomEvent(DPLAYER_COMMENT_EVENT, {
               bubbles: false,
@@ -183,6 +183,7 @@ export const NicoLiveStream = memo(
               color,
               colorCode: color,
               content: text,
+              size,
             }
             const event = new CustomEvent(PECORE_ID, {
               bubbles: false,
