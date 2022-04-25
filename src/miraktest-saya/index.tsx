@@ -31,7 +31,7 @@ const meta = {
   id: _id,
   name: "Saya",
   author: "ci7lus",
-  version: "0.2.1",
+  version: "0.2.2",
   description:
     "Sayaからコメントを取得するプラグインです。対応するコメントレンダラープラグインが必要です。",
   authorUrl: "https://github.com/ci7lus",
@@ -197,7 +197,10 @@ const main: InitPlugin = {
                   const payload: DPlayerCommentPayload = JSON.parse(e.data)
                   if (payload.text.startsWith("RT @")) return
                   setRawComment(payload)
-                  const commentText = trimCommentForFlow(payload.text)
+                  const commentText = trimCommentForFlow(payload.text).replace(
+                    /\n/g,
+                    " "
+                  )
                   if (commentText.trim().length === 0) return
                   const source = classfySource(payload.source)
                   if (sayaSetting.isTwitterDisabled && source === "twitter") {
