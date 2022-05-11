@@ -1,4 +1,5 @@
-import React, { useState } from "react"
+import clsx from "clsx"
+import React, { useMemo, useState } from "react"
 import { useDebounce } from "react-use"
 import { atom, useRecoilValue, useRecoilState } from "recoil"
 import { InitPlugin } from "../@types/plugin"
@@ -23,6 +24,10 @@ const main: InitPlugin = {
       key: `${DPLAYER_PREFIX}.zoom`,
       default: 1,
     })
+    const ngAtom = atom<string[]>({
+      key: `${DPLAYER_PREFIX}.ng`,
+      default: [],
+    })
 
     return {
       ...DPLAYER_META,
@@ -30,10 +35,12 @@ const main: InitPlugin = {
       sharedAtoms: [
         { type: "atom", atom: opacityAtom },
         { type: "atom", atom: zoomAtom },
+        { type: "atom", atom: ngAtom },
       ],
       storedAtoms: [
         { type: "atom", atom: opacityAtom },
         { type: "atom", atom: zoomAtom },
+        { type: "atom", atom: ngAtom },
       ],
       setup() {
         return
@@ -49,12 +56,15 @@ const main: InitPlugin = {
             )
             const opacity = useRecoilValue(opacityAtom)
             const zoom = useRecoilValue(zoomAtom)
+            const ng = useRecoilValue(ngAtom)
+            const ngRegex = useMemo(() => ng.map((ng) => new RegExp(ng)), [ng])
             return (
               <DPlayerWrapper
                 isPlaying={isPlaying}
                 isSeekable={isSeekable}
                 opacity={opacity}
                 zoom={zoom}
+                ng={ngRegex}
               />
             )
           },
@@ -66,6 +76,8 @@ const main: InitPlugin = {
           component: () => {
             const [opacity, setOpacity] = useRecoilState(opacityAtom)
             const [zoom, setZoom] = useRecoilState(zoomAtom)
+            const [ng, setNg] = useRecoilState(ngAtom)
+            const [addNg, setAddNg] = useState("")
             const [rangeOpacity, setRangeOpacity] = useState(opacity * 10)
             const [rangeZoom, setRangeZoom] = useState(zoom * 10)
             useDebounce(
@@ -115,6 +127,57 @@ const main: InitPlugin = {
                       <span>{rangeZoom / 10}</span>
                     </label>
                   </form>
+                  <label className="mt-4 block">
+                    <span>NG設定（正規表現）</span>
+                    <div className="flex space-x-2">
+                      <input
+                        type="text"
+                        placeholder="(piyo)+"
+                        className="block mt-2 form-input rounded-md w-full text-gray-900"
+                        value={addNg}
+                        onChange={(e) => setAddNg(e.target.value)}
+                      />
+                      <button
+                        type="button"
+                        className="mt-2 px-4 flex items-center justify-center text-gray-900 bg-gray-200 rounded-md focus:outline-none cursor-pointer"
+                        onClick={() => {
+                          setNg((replaces) => [...replaces, addNg])
+                          setAddNg("")
+                        }}
+                        disabled={!addNg}
+                      >
+                        +
+                      </button>
+                    </div>
+                    <div className="flex flex-wrap space-x-2 mt-4">
+                      {ng.map((word, idx) => (
+                        <div
+                          className="p-1 px-2 bg-gray-200 text-gray-800 rounded-md flex space-x-1 items-center justify-center"
+                          key={idx}
+                        >
+                          <span
+                            className={clsx(
+                              "text-gray-200",
+                              "hover:text-gray-800"
+                            )}
+                          >
+                            {word}
+                          </span>
+                          <span
+                            title="削除する"
+                            className="flex items-center justify-center bg-gray-200 rounded-md cursor-pointer"
+                            onClick={() => {
+                              const copied = Object.assign([], ng)
+                              ;(copied as (string | null)[])[idx] = null
+                              setNg(copied.filter((s) => !!s))
+                            }}
+                          >
+                            ❌
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </label>
                 </div>
               </>
             )

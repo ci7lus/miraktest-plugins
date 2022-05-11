@@ -10,7 +10,8 @@ export const DPlayerWrapper: React.VFC<{
   isSeekable: boolean
   opacity: number
   zoom: number
-}> = memo(({ isPlaying, isSeekable, opacity, zoom }) => {
+  ng: RegExp[]
+}> = memo(({ isPlaying, isSeekable, opacity, zoom, ng }) => {
   const dplayerElementRef = useRef<HTMLDivElement>(null)
   const player = useRef<DPlayer | null>()
 
@@ -42,7 +43,13 @@ export const DPlayerWrapper: React.VFC<{
   useEffect(() => {
     const handler = (event: CustomEvent) => {
       const comment = event.detail as DPlayerCommentPayload
-      if (!player.current) return
+      if (!player.current) {
+        return
+      }
+      if (ng.some((ng) => ng.test(comment.text))) {
+        console.debug("ng:", comment.text)
+        return
+      }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       player.current.danmaku.draw(comment as any)
     }
@@ -52,7 +59,7 @@ export const DPlayerWrapper: React.VFC<{
         DPLAYER_COMMENT_EVENT,
         handler as EventListener
       )
-  }, [])
+  }, [ng])
 
   const isPlayingRef = useRefFromState(isPlaying)
   const isSeekableRef = useRefFromState(isSeekable)
