@@ -17,7 +17,7 @@ export const SearchWorkForm: React.FC<{
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
-    if (!searchTerm) {
+    if (!searchTerm || Array.from(searchTerm).length < 2) {
       setWorks(null)
       return
     }
@@ -26,8 +26,6 @@ export const SearchWorkForm: React.FC<{
     sdk
       .searchWorksByTerm({
         term: searchTerm,
-        count: 10,
-        since: null,
       })
       .then((result) => {
         if (isSubscribed) {
@@ -72,11 +70,10 @@ export const SearchWorkForm: React.FC<{
           setSearchTerm(localTerm || null)
         }}
       >
-        <Search size={18} />
         <input
           type="text"
           placeholder="キーワードを入力…"
-          className="block form-input rounded-md w-full text-gray-900"
+          className="block form-input rounded-md w-full text-gray-900 pr-8"
           value={localTerm}
           onChange={(e) => setLocalTerm(e.target.value)}
           onKeyPress={(e) => {
@@ -88,6 +85,18 @@ export const SearchWorkForm: React.FC<{
           onFocus={() => setIsVisible(true)}
           onClick={() => setIsVisible(true)}
         />
+        <button
+          type="button"
+          onClick={() => {
+            setSearchTerm(localTerm || null)
+          }}
+          className={clsx("absolute", "right-2.5", "top-2.5")}
+        >
+          <Search
+            size={"1.25rem"}
+            className={clsx("pointer-events-none", "text-gray-800")}
+          />
+        </button>
       </form>
       <div
         className={clsx(

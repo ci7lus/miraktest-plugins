@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { GraphQLClient } from "./graphqlRequestLoader"
+import { GraphQLClient } from "graphql-request"
 import * as Dom from "graphql-request/dist/types.dom"
 import gql from "graphql-tag"
 export type Maybe<T> = T | null
@@ -1338,8 +1338,6 @@ export type WorkQuery = {
 
 export type searchWorksByTermQueryVariables = Exact<{
   term: Scalars["String"]
-  count: Maybe<Scalars["Int"]>
-  since: Maybe<Scalars["String"]>
 }>
 
 export type searchWorksByTermQuery = {
@@ -1554,7 +1552,7 @@ export const WorkFragmentDoc = gql`
         ...Cast
       }
     }
-    episodes(orderBy: { field: SORT_NUMBER, direction: ASC }, last: 50) {
+    episodes(orderBy: { field: SORT_NUMBER, direction: ASC }, last: 100) {
       nodes {
         ...Episode
       }
@@ -1579,8 +1577,8 @@ export const WorkDocument = gql`
   ${WorkFragmentDoc}
 `
 export const searchWorksByTermDocument = gql`
-  query searchWorksByTerm($term: String!, $count: Int, $since: String) {
-    searchWorks(titles: [$term], after: $since, first: $count) {
+  query searchWorksByTerm($term: String!) {
+    searchWorks(titles: [$term], first: 50) {
       nodes {
         ...Work
       }
