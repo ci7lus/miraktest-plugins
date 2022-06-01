@@ -36,7 +36,7 @@ export const ANNICT_META = {
   id: ANNICT_PLUGIN_ID,
   name: "Annict",
   author: "ci7lus",
-  version: "0.2.1",
+  version: "0.3.0",
   description: "視聴中の番組をAnnictで記録する",
   authorUrl: "https://github.com/ci7lus",
   url: "https://github.com/ci7lus/miraktest-plugins/tree/master/src/miraktest-annict",

@@ -1,6 +1,7 @@
 import { Presence } from "discord-rpc"
 import React, { useEffect, useState } from "react"
 import { atom, useRecoilValue, useRecoilState } from "recoil"
+import { syncEffect, refine as $ } from "recoil-sync"
 import { InitPlugin } from "../@types/plugin"
 import tailwind from "../tailwind.scss"
 import { DRPC_PREFIX, DRPC_META, DRPC_ACTIVITY_EVENT_ID } from "./constants"
@@ -11,10 +12,21 @@ export const DrpcRenderer: InitPlugin["renderer"] = ({
   atoms,
   windowId,
   rpc,
+  constants,
 }) => {
   const isEnabledAtom = atom({
     key: `${DRPC_PREFIX}.isEnabled`,
     default: true,
+    effects: [
+      syncEffect({
+        storeKey: constants.recoil.sharedKey,
+        refine: $.boolean(),
+      }),
+      syncEffect({
+        storeKey: constants.recoil.storedKey,
+        refine: $.boolean(),
+      }),
+    ],
   })
 
   return {

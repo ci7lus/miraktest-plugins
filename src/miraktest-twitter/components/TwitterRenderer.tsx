@@ -3,6 +3,7 @@ import clsx from "clsx"
 import React, { useEffect, useState } from "react"
 import { useThrottleFn } from "react-use"
 import { atom, useRecoilValue, useRecoilState, useSetRecoilState } from "recoil"
+import { syncEffect, refine as $ } from "recoil-sync"
 import YAML from "yaml"
 import { InitPlugin } from "../../@types/plugin"
 import tailwind from "../../tailwind.scss"
@@ -19,21 +20,52 @@ export const TwitterRenderer: InitPlugin["renderer"] = ({
   rpc,
   atoms,
   windowId,
+  constants,
 }) => {
+  const settingRefine = $.object({
+    consumerKey: $.voidable($.string()),
+    consumerSecret: $.voidable($.string()),
+    accessToken: $.voidable($.string()),
+    accessTokenSecret: $.voidable($.string()),
+    isContentInfoEmbedInImageEnabled: $.boolean(),
+    isReplyProhibitEnabled: $.boolean(),
+  })
   const settingAtom = atom<TwitterSetting>({
     key: `${TWITTER_PLUGIN_PREFIX}.setting`,
     default: {
       isContentInfoEmbedInImageEnabled: false,
       isReplyProhibitEnabled: false,
     },
+    effects: [
+      syncEffect({
+        storeKey: constants.recoil.sharedKey,
+        refine: settingRefine,
+      }),
+      syncEffect({
+        storeKey: constants.recoil.storedKey,
+        refine: settingRefine,
+      }),
+    ],
   })
   const imageUrlAtom = atom<string | null>({
     key: `${TWITTER_PLUGIN_PREFIX}.imageUrl`,
     default: null,
+    effects: [
+      syncEffect({
+        storeKey: constants.recoil.sharedKey,
+        refine: settingRefine,
+      }),
+    ],
   })
   const timeAtom = atom<number>({
     key: `${TWITTER_PLUGIN_PREFIX}.time`,
     default: 0,
+    effects: [
+      syncEffect({
+        storeKey: constants.recoil.sharedKey,
+        refine: settingRefine,
+      }),
+    ],
   })
 
   return {

@@ -1,6 +1,7 @@
 import axios from "axios"
 import React, { useEffect, useState } from "react"
 import { atom, useRecoilValue, useRecoilState } from "recoil"
+import { syncEffect, refine as $ } from "recoil-sync"
 import YAML from "yaml"
 import { InitPlugin } from "../@types/plugin"
 import { SayaDefinition } from "../miraktest-saya/types"
@@ -15,20 +16,36 @@ const meta = {
   id: _id,
   name: "ニコニコ実況",
   author: "ci7lus",
-  version: "0.2.5",
+  version: "0.3.0",
   description:
     "ニコニコ実況からコメントを取得するプラグインです。対応するコメントレンダラープラグインが必要です。",
   authorUrl: "https://github.com/ci7lus",
   url: "https://github.com/ci7lus/miraktest-plugins/tree/master/src/miraktest-nico",
 }
 
-export const NicoRenderer: InitPlugin["renderer"] = ({ atoms }) => {
+export const NicoRenderer: InitPlugin["renderer"] = ({ atoms, constants }) => {
+  const settingRefine = $.object({
+    isLiveEnabled: $.boolean(),
+    isTimeshiftEnabled: $.boolean(),
+    mail: $.voidable($.string()),
+    pass: $.voidable($.string()),
+  })
   const settingAtom = atom<NicoSetting>({
     key: `${prefix}.setting`,
     default: {
       isLiveEnabled: true,
       isTimeshiftEnabled: true,
     },
+    effects: [
+      syncEffect({
+        storeKey: constants.recoil.sharedKey,
+        refine: settingRefine,
+      }),
+      syncEffect({
+        storeKey: constants.recoil.storedKey,
+        refine: settingRefine,
+      }),
+    ],
   })
 
   let isDplayerFound = false

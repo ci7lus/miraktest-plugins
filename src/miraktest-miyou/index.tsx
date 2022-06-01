@@ -2,6 +2,7 @@ import axios from "axios"
 import dayjs from "dayjs"
 import React, { useEffect, useState } from "react"
 import { atom, useRecoilValue, useRecoilState } from "recoil"
+import { syncEffect, refine as $ } from "recoil-sync"
 import YAML from "yaml"
 import { InitPlugin } from "../@types/plugin"
 import { DPLAYER_COMMENT_EVENT } from "../miraktest-dplayer/constants"
@@ -26,7 +27,7 @@ const meta = {
   id: _id,
   name: "Miyou",
   author: "ci7lus",
-  version: "0.1.0",
+  version: "0.2.0",
   description:
     "Miyouからコメントを取得するプラグインです。対応するコメントレンダラープラグインが必要です。",
   authorUrl: "https://github.com/ci7lus",
@@ -34,17 +35,38 @@ const meta = {
 }
 
 const main: InitPlugin = {
-  renderer: ({ atoms }) => {
+  renderer: ({ atoms, constants }) => {
+    const settingRefine = $.object({
+      isEnabled: $.boolean(),
+      mail: $.voidable($.string()),
+      pass: $.voidable($.string()),
+    })
     const miyouSettingAtom = atom<MiyouSetting>({
       key: `${prefix}.setting`,
       default: {
         isEnabled: true,
       },
+      effects: [
+        syncEffect({
+          storeKey: constants.recoil.sharedKey,
+          refine: settingRefine,
+        }),
+        syncEffect({
+          storeKey: constants.recoil.storedKey,
+          refine: settingRefine,
+        }),
+      ],
     })
 
     const tokenAtom = atom<string | null>({
       key: `${prefix}.token`,
       default: null,
+      effects: [
+        syncEffect({
+          storeKey: constants.recoil.sharedKey,
+          refine: $.nullable($.string()),
+        }),
+      ],
     })
 
     let isDplayerFound = false

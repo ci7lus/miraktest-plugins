@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { atom, useRecoilValue, useRecoilState, useSetRecoilState } from "recoil"
+import { syncEffect, refine as $ } from "recoil-sync"
 import { ContentPlayerPlayingContent, InitPlugin } from "../@types/plugin"
 import tailwind from "../tailwind.scss"
 import { EPGStationAPI } from "./api"
@@ -13,14 +14,32 @@ export const EpgsRenderer: InitPlugin["renderer"] = ({
   functions,
   atoms,
   rpc,
+  constants,
 }) => {
+  const settingRefine = $.object({ baseUrl: $.voidable($.string()) })
   const settingAtom = atom<EPGStationSetting>({
     key: `${EPGS_PREFIX}.setting`,
     default: {},
+    effects: [
+      syncEffect({
+        storeKey: constants.recoil.sharedKey,
+        refine: settingRefine,
+      }),
+      syncEffect({
+        storeKey: constants.recoil.storedKey,
+        refine: settingRefine,
+      }),
+    ],
   })
   const epgsUrlHistoryAtom = atom<string[]>({
     key: `${EPGS_PREFIX}.epgsUrlHistory`,
     default: [],
+    effects: [
+      syncEffect({
+        storeKey: constants.recoil.storedKey,
+        refine: $.array($.string()),
+      }),
+    ],
   })
 
   return {

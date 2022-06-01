@@ -2,6 +2,7 @@ import Axios from "axios"
 import React, { useEffect, useState } from "react"
 import { useThrottleFn } from "react-use"
 import { atom, useRecoilValue, useRecoilState, useSetRecoilState } from "recoil"
+import { syncEffect, refine as $ } from "recoil-sync"
 import YAML from "yaml"
 import { InitPlugin } from "../@types/plugin"
 import { SayaDefinition } from "../miraktest-saya/types"
@@ -26,18 +27,44 @@ export const AnnictRenderer: InitPlugin["renderer"] = ({
   rpc,
   windowId,
   atoms,
+  constants,
 }) => {
+  const settingRefine = $.object({
+    accessToken: $.voidable($.string()),
+  })
   const settingAtom = atom<AnnictSetting>({
     key: `${ANNICT_PLUGIN_PREFIX}.setting`,
     default: {},
+    effects: [
+      syncEffect({
+        storeKey: constants.recoil.sharedKey,
+        refine: settingRefine,
+      }),
+      syncEffect({
+        storeKey: constants.recoil.storedKey,
+        refine: settingRefine,
+      }),
+    ],
   })
   const twitterAtom = atom<boolean>({
     key: `${ANNICT_PLUGIN_PREFIX}.twitter`,
     default: false,
+    effects: [
+      syncEffect({
+        storeKey: constants?.recoil?.storedKey,
+        refine: $.boolean(),
+      }),
+    ],
   })
   const facebookAtom = atom<boolean>({
     key: `${ANNICT_PLUGIN_PREFIX}.facebook`,
     default: false,
+    effects: [
+      syncEffect({
+        storeKey: constants?.recoil?.storedKey,
+        refine: $.boolean(),
+      }),
+    ],
   })
   const timeAtom = atom<number>({
     key: `${ANNICT_PLUGIN_PREFIX}.time`,

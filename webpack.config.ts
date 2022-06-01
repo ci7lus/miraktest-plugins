@@ -144,10 +144,11 @@ const config: (
         splitChunks: false,
         minimizer: [new ESBuildMinifyPlugin({ target: "es2018" })],
       },
-      // ホストがグローバルに露出しているRecoil/Reactを用いる
+      // ホストがグローバルに露出しているRecoil/Recoil-Sync/Reactを用いる
       externals: {
         react: "'React' in globalThis?React:{}",
         recoil: "'Recoil' in globalThis?Recoil:{}",
+        "recoil-sync": "'RecoilSync' in globalThis?RecoilSync:{}",
         fs: "commonjs fs",
         os: "commonjs os",
       },
