@@ -69,6 +69,12 @@ export const AnnictRenderer: InitPlugin["renderer"] = ({
   const timeAtom = atom<number>({
     key: `${ANNICT_PLUGIN_PREFIX}.time`,
     default: 0,
+    effects: [
+      syncEffect({
+        storeKey: constants?.recoil?.sharedKey,
+        refine: $.number(),
+      }),
+    ],
   })
 
   return {
