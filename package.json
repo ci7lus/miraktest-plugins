@@ -16,7 +16,8 @@
     "lint:eslint": "eslint --max-warnings 0 --cache './src/**/*.{js,ts,tsx}'",
     "format:eslint": "eslint './src/**/*.{js,ts,tsx}' --cache --fix",
     "tsc": "tsc --noEmit",
-    "annict-gql": "graphql-codegen --config annict-codegen.yml"
+    "annict-gql": "graphql-codegen --config annict-codegen.yml",
+    "postinstall": "webpack --color -c webpack-sync.config.ts"
   },
   "devDependencies": {
     "@ci7lus/eslint-config": "^1.0.1",

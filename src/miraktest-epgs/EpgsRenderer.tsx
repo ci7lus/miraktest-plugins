@@ -22,11 +22,11 @@ export const EpgsRenderer: InitPlugin["renderer"] = ({
     default: {},
     effects: [
       syncEffect({
-        storeKey: constants.recoil.sharedKey,
+        storeKey: constants?.recoil?.sharedKey,
         refine: settingRefine,
       }),
       syncEffect({
-        storeKey: constants.recoil.storedKey,
+        storeKey: constants?.recoil?.storedKey,
         refine: settingRefine,
       }),
     ],
@@ -36,7 +36,7 @@ export const EpgsRenderer: InitPlugin["renderer"] = ({
     default: [],
     effects: [
       syncEffect({
-        storeKey: constants.recoil.storedKey,
+        storeKey: constants?.recoil?.storedKey,
         refine: $.array($.string()),
       }),
     ],

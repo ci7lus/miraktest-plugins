@@ -38,11 +38,11 @@ export const NicoRenderer: InitPlugin["renderer"] = ({ atoms, constants }) => {
     },
     effects: [
       syncEffect({
-        storeKey: constants.recoil.sharedKey,
+        storeKey: constants?.recoil?.sharedKey,
         refine: settingRefine,
       }),
       syncEffect({
-        storeKey: constants.recoil.storedKey,
+        storeKey: constants?.recoil?.storedKey,
         refine: settingRefine,
       }),
     ],

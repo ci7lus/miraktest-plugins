@@ -48,11 +48,11 @@ const main: InitPlugin = {
       },
       effects: [
         syncEffect({
-          storeKey: constants.recoil.sharedKey,
+          storeKey: constants?.recoil?.sharedKey,
           refine: settingRefine,
         }),
         syncEffect({
-          storeKey: constants.recoil.storedKey,
+          storeKey: constants?.recoil?.storedKey,
           refine: settingRefine,
         }),
       ],
@@ -63,7 +63,7 @@ const main: InitPlugin = {
       default: null,
       effects: [
         syncEffect({
-          storeKey: constants.recoil.sharedKey,
+          storeKey: constants?.recoil?.sharedKey,
           refine: $.nullable($.string()),
         }),
       ],

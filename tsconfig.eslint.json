@@ -3,6 +3,7 @@
   "include": [
     "src",
     "./webpack.config.ts",
+    "./webpack-sync.config.ts",
     "./tailwind.config.js",
     "./embedLicenseInBundlePlugin.ts"
   ],

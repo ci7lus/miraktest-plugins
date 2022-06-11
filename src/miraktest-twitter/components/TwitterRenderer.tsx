@@ -38,11 +38,11 @@ export const TwitterRenderer: InitPlugin["renderer"] = ({
     },
     effects: [
       syncEffect({
-        storeKey: constants.recoil.sharedKey,
+        storeKey: constants?.recoil?.sharedKey,
         refine: settingRefine,
       }),
       syncEffect({
-        storeKey: constants.recoil.storedKey,
+        storeKey: constants?.recoil?.storedKey,
         refine: settingRefine,
       }),
     ],
@@ -52,7 +52,7 @@ export const TwitterRenderer: InitPlugin["renderer"] = ({
     default: null,
     effects: [
       syncEffect({
-        storeKey: constants.recoil.sharedKey,
+        storeKey: constants?.recoil?.sharedKey,
         refine: settingRefine,
       }),
     ],
@@ -62,7 +62,7 @@ export const TwitterRenderer: InitPlugin["renderer"] = ({
     default: 0,
     effects: [
       syncEffect({
-        storeKey: constants.recoil.sharedKey,
+        storeKey: constants?.recoil?.sharedKey,
         refine: settingRefine,
       }),
     ],

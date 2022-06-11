@@ -19,11 +19,11 @@ export const DrpcRenderer: InitPlugin["renderer"] = ({
     default: true,
     effects: [
       syncEffect({
-        storeKey: constants.recoil.sharedKey,
+        storeKey: constants?.recoil?.sharedKey,
         refine: $.boolean(),
       }),
       syncEffect({
-        storeKey: constants.recoil.storedKey,
+        storeKey: constants?.recoil?.storedKey,
         refine: $.boolean(),
       }),
     ],

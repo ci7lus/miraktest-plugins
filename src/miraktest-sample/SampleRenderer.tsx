@@ -15,7 +15,7 @@ export const SampleRenderer: InitPlugin["renderer"] = ({
     default: null,
     effects: [
       syncEffect({
-        storeKey: constants.recoil.sharedKey,
+        storeKey: constants?.recoil?.sharedKey,
         refine: $.nullable($.string()),
       }),
     ],

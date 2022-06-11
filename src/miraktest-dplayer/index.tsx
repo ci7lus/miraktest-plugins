@@ -22,11 +22,11 @@ const main: InitPlugin = {
       default: 1,
       effects: [
         syncEffect({
-          storeKey: constants.recoil.sharedKey,
+          storeKey: constants?.recoil?.sharedKey,
           refine: $.number(),
         }),
         syncEffect({
-          storeKey: constants.recoil.storedKey,
+          storeKey: constants?.recoil?.storedKey,
           refine: $.number(),
         }),
       ],
@@ -36,11 +36,11 @@ const main: InitPlugin = {
       default: 1,
       effects: [
         syncEffect({
-          storeKey: constants.recoil.sharedKey,
+          storeKey: constants?.recoil?.sharedKey,
           refine: $.number(),
         }),
         syncEffect({
-          storeKey: constants.recoil.storedKey,
+          storeKey: constants?.recoil?.storedKey,
           refine: $.number(),
         }),
       ],
@@ -50,11 +50,11 @@ const main: InitPlugin = {
       default: [],
       effects: [
         syncEffect({
-          storeKey: constants.recoil.sharedKey,
+          storeKey: constants?.recoil?.sharedKey,
           refine: $.array($.string()),
         }),
         syncEffect({
-          storeKey: constants.recoil.storedKey,
+          storeKey: constants?.recoil?.storedKey,
           refine: $.array($.string()),
         }),
       ],
