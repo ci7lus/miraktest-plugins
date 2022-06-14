@@ -135,7 +135,7 @@ export const RecordList: React.VFC<{
                       {...column.getHeaderProps()}
                       className={`table-cell text-center font-bold text-gray-800`}
                     >
-                      {column.render("Header")}
+                      {column.render("Header") as React.ReactNode}
                     </div>
                   ))}
                 </div>
@@ -169,7 +169,7 @@ export const RecordList: React.VFC<{
                           {...cell.getCellProps()}
                           className={`table-cell px-2 whitespace-pre truncate`}
                         >
-                          {cell.render("Cell")}
+                          {cell.render("Cell") as React.ReactNode}
                         </span>
                       )
                     })}

@@ -1,4 +1,4 @@
-import Interweave from "interweave"
+import { Interweave } from "interweave"
 import {
   Email,
   EmailMatcher,
