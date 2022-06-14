@@ -1,4 +1,5 @@
 import axios from "axios"
+import rax from "axios-retry"
 import React, { useEffect, useState } from "react"
 import { atom, useRecoilValue, useRecoilState } from "recoil"
 import { syncEffect, refine as $ } from "recoil-sync"
@@ -12,11 +13,16 @@ const meta = {
   id: _id,
   name: "Gyazo",
   author: "ci7lus",
-  version: "0.1.0",
+  version: "0.1.1",
   description: "スクリーンショットをGyazoにアップロードするプラグインです。",
   authorUrl: "https://github.com/ci7lus",
   url: "https://github.com/ci7lus/miraktest-plugins/tree/master/src/miraktest-gyazo",
 }
+
+rax(axios, {
+  retryDelay: () => 1000,
+  retryCondition: (res) => res.isAxiosError,
+})
 
 const main: InitPlugin = {
   renderer: ({ atoms, constants }) => {

@@ -64,6 +64,7 @@
     "@types/react": "^17.0.26",
     "@types/react-dom": "^17.0.9",
     "axios": "^0.22.0",
+    "axios-retry": "^3.2.5",
     "clsx": "^1.1.1",
     "dayjs": "^1.10.7",
     "discord-rpc": "^4.0.1",
