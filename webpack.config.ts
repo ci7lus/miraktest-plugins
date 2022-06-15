@@ -130,6 +130,12 @@ const config: (
       },
       resolve: {
         extensions: [".ts", ".tsx", ".js", ".json"],
+        alias: {
+          "recoil-sync$": path.resolve(
+            __dirname,
+            "./dist/recoil-sync-loader.js"
+          ),
+        },
       },
       plugins: [
         new esm(),
@@ -144,7 +150,7 @@ const config: (
         splitChunks: false,
         minimizer: [new ESBuildMinifyPlugin({ target: "es2018" })],
       },
-      // ホストがグローバルに露出しているRecoil/Reactを用いる
+      // ホストがグローバルに露出しているRecoil/Recoil-Sync/Reactを用いる
       externals: {
         react: "'React' in globalThis?React:{}",
         recoil: "'Recoil' in globalThis?Recoil:{}",

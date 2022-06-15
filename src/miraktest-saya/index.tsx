@@ -8,6 +8,7 @@ import {
   useRecoilState,
   useSetRecoilState,
 } from "recoil"
+import { syncEffect, refine as $ } from "recoil-sync"
 import ReconnectingWebSocket from "reconnecting-websocket"
 import urlJoin from "url-join"
 import { InitPlugin } from "../@types/plugin"
@@ -31,7 +32,7 @@ const meta = {
   id: _id,
   name: "Saya",
   author: "ci7lus",
-  version: "0.2.2",
+  version: "0.3.0",
   description:
     "Sayaからコメントを取得するプラグインです。対応するコメントレンダラープラグインが必要です。",
   authorUrl: "https://github.com/ci7lus",
@@ -40,7 +41,16 @@ const meta = {
 const commentWindowId = `${_id}.sayaCommentWindow`
 
 const main: InitPlugin = {
-  renderer: ({ appInfo, rpc, atoms, windowId }) => {
+  renderer: ({ appInfo, rpc, atoms, windowId, constants }) => {
+    const settingRefine = $.object({
+      baseUrl: $.voidable($.string()),
+      replaces: $.array($.array($.string())),
+      isEnabled: $.boolean(),
+      isTimeshiftEnabled: $.voidable($.boolean()),
+      isTwitterDisabled: $.voidable($.boolean()),
+      is5chDisabled: $.voidable($.boolean()),
+      isNicojkDisabled: $.voidable($.boolean()),
+    })
     const sayaSettingAtom = atom<SayaSetting>({
       key: `${prefix}.sayaSetting`,
       default: {
@@ -51,10 +61,26 @@ const main: InitPlugin = {
         is5chDisabled: false,
         isNicojkDisabled: false,
       },
+      effects: [
+        syncEffect({
+          storeKey: constants?.recoil?.sharedKey,
+          refine: settingRefine,
+        }),
+        syncEffect({
+          storeKey: constants?.recoil?.storedKey,
+          refine: settingRefine,
+        }),
+      ],
     })
     const sayaUrlHistoryAtom = atom<string[]>({
       key: `${prefix}.sayaUrlHistory`,
       default: [],
+      effects: [
+        syncEffect({
+          storeKey: constants?.recoil?.storedKey,
+          refine: $.array($.string()),
+        }),
+      ],
     })
 
     let isDplayerFound = false

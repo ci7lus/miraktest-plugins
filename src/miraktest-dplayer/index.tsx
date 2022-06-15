@@ -2,6 +2,7 @@ import clsx from "clsx"
 import React, { useMemo, useState } from "react"
 import { useDebounce } from "react-use"
 import { atom, useRecoilValue, useRecoilState } from "recoil"
+import { syncEffect, refine as $ } from "recoil-sync"
 import { InitPlugin } from "../@types/plugin"
 import tailwind from "../tailwind.scss"
 import { DPlayerWrapper } from "./components/DPlayerWrapper"
@@ -15,18 +16,48 @@ import { DPLAYER_META, DPLAYER_PREFIX } from "./constants"
  */
 
 const main: InitPlugin = {
-  renderer: async ({ atoms }) => {
+  renderer: async ({ atoms, constants }) => {
     const opacityAtom = atom<number>({
       key: `${DPLAYER_PREFIX}.opacity`,
       default: 1,
+      effects: [
+        syncEffect({
+          storeKey: constants?.recoil?.sharedKey,
+          refine: $.number(),
+        }),
+        syncEffect({
+          storeKey: constants?.recoil?.storedKey,
+          refine: $.number(),
+        }),
+      ],
     })
     const zoomAtom = atom<number>({
       key: `${DPLAYER_PREFIX}.zoom`,
       default: 1,
+      effects: [
+        syncEffect({
+          storeKey: constants?.recoil?.sharedKey,
+          refine: $.number(),
+        }),
+        syncEffect({
+          storeKey: constants?.recoil?.storedKey,
+          refine: $.number(),
+        }),
+      ],
     })
     const ngAtom = atom<string[]>({
       key: `${DPLAYER_PREFIX}.ng`,
       default: [],
+      effects: [
+        syncEffect({
+          storeKey: constants?.recoil?.sharedKey,
+          refine: $.array($.string()),
+        }),
+        syncEffect({
+          storeKey: constants?.recoil?.storedKey,
+          refine: $.array($.string()),
+        }),
+      ],
     })
 
     return {

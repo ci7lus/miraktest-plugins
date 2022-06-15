@@ -16,7 +16,8 @@
     "lint:eslint": "eslint --max-warnings 0 --cache './src/**/*.{js,ts,tsx}'",
     "format:eslint": "eslint './src/**/*.{js,ts,tsx}' --cache --fix",
     "tsc": "tsc --noEmit",
-    "annict-gql": "graphql-codegen --config annict-codegen.yml"
+    "annict-gql": "graphql-codegen --config annict-codegen.yml",
+    "postinstall": "webpack --color -c webpack-sync.config.ts"
   },
   "devDependencies": {
     "@ci7lus/eslint-config": "^1.0.1",
@@ -76,7 +77,8 @@
     "react-feather": "^2.0.9",
     "react-table": "^7.7.0",
     "react-use": "^17.3.1",
-    "recoil": "^0.4.1",
+    "recoil": "^0.7.3-alpha.2",
+    "recoil-sync": "^0.0.1-alpha.2",
     "reconnecting-websocket": "^4.4.0",
     "twitter-api-client": "^1.5.1",
     "twitter-text": "^3.1.0",

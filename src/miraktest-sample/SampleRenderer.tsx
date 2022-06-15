@@ -1,13 +1,24 @@
 import React, { useEffect } from "react"
 import { atom, useRecoilValue, useRecoilState } from "recoil"
+import { syncEffect, refine as $ } from "recoil-sync"
 import { InitPlugin } from "../@types/plugin"
 import tailwind from "../tailwind.scss"
 import { SAMPLE_PREFIX, SAMPLE_META, SAMPLE_WINDOW_ID } from "./constants"
 
-export const SampleRenderer: InitPlugin["renderer"] = ({ atoms, windowId }) => {
+export const SampleRenderer: InitPlugin["renderer"] = ({
+  atoms,
+  windowId,
+  constants,
+}) => {
   const currentTime = atom<string | null>({
     key: `${SAMPLE_PREFIX}.currentTime`,
     default: null,
+    effects: [
+      syncEffect({
+        storeKey: constants?.recoil?.sharedKey,
+        refine: $.nullable($.string()),
+      }),
+    ],
   })
 
   return {

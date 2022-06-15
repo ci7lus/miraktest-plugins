@@ -1,6 +1,7 @@
 import axios from "axios"
 import React, { useEffect, useState } from "react"
 import { atom, useRecoilValue, useRecoilState } from "recoil"
+import { syncEffect, refine as $ } from "recoil-sync"
 import { InitPlugin } from "../@types/plugin"
 import tailwind from "../tailwind.scss"
 import { GyazoSetting } from "./types"
@@ -11,21 +12,41 @@ const meta = {
   id: _id,
   name: "Gyazo",
   author: "ci7lus",
-  version: "0.0.1",
+  version: "0.1.0",
   description: "スクリーンショットをGyazoにアップロードするプラグインです。",
   authorUrl: "https://github.com/ci7lus",
   url: "https://github.com/ci7lus/miraktest-plugins/tree/master/src/miraktest-gyazo",
 }
 
 const main: InitPlugin = {
-  renderer: ({ atoms }) => {
+  renderer: ({ atoms, constants }) => {
+    const settingRefine = $.object({
+      token: $.voidable($.string()),
+      collectionId: $.voidable($.string()),
+    })
     const settingAtom = atom<GyazoSetting>({
       key: `${prefix}.setting`,
       default: {},
+      effects: [
+        syncEffect({
+          storeKey: constants?.recoil?.sharedKey,
+          refine: settingRefine,
+        }),
+        syncEffect({
+          storeKey: constants?.recoil?.storedKey,
+          refine: settingRefine,
+        }),
+      ],
     })
     const ssA = atom<string>({
       key: `${prefix}.objurl`,
       default: "",
+      effects: [
+        syncEffect({
+          storeKey: constants?.recoil?.sharedKey,
+          refine: $.string(),
+        }),
+      ],
     })
 
     return {
