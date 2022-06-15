@@ -1,3 +1,5 @@
+// eslint-disable-next-line import/no-unresolved
+import type { DPlayerDanmakuItem } from "dplayer"
 import React, { memo, useEffect, useRef } from "react"
 import { useRefFromState } from "../../shared/utils"
 import { DPLAYER_COMMENT_EVENT } from "../constants"
@@ -24,11 +26,6 @@ export const DPlayerWrapper: React.VFC<{
   }
 
   useEffect(() => {
-    if (!player.current) return
-    player.current.danmaku.opacity(opacity)
-  }, [opacity])
-
-  useEffect(() => {
     const playerRef = player.current
     if (!playerRef) {
       return
@@ -41,8 +38,8 @@ export const DPlayerWrapper: React.VFC<{
   }, [isPlaying])
 
   useEffect(() => {
-    const handler = (event: CustomEvent) => {
-      const comment = event.detail as DPlayerCommentPayload
+    const handler = (event: CustomEvent<DPlayerCommentPayload>) => {
+      const comment = event.detail
       if (!player.current) {
         return
       }
@@ -50,8 +47,10 @@ export const DPlayerWrapper: React.VFC<{
         console.debug("ng:", comment.text)
         return
       }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      player.current.danmaku.draw(comment as any)
+      player.current.danmaku.draw({
+        ...comment,
+        color: comment.color || "#ffffff",
+      } as DPlayerDanmakuItem)
     }
     window.addEventListener(DPLAYER_COMMENT_EVENT, handler as EventListener)
     return () =>
@@ -96,7 +95,10 @@ export const DPlayerWrapper: React.VFC<{
       hotkey: false,
     })
 
-    playerInstance.danmaku.opacity(opacity)
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    window.dplayer = playerInstance
+
     playerInstance.danmaku.show()
 
     playerInstance.on("pause" as DPlayer.DPlayerEvents.pause, () => {
@@ -123,7 +125,10 @@ export const DPlayerWrapper: React.VFC<{
   return (
     <>
       <style>{style}</style>
-      <div style={{ zoom }} ref={dplayerElementRef}></div>
+      <div
+        style={{ zoom, opacity: opacity.toString() }}
+        ref={dplayerElementRef}
+      ></div>
     </>
   )
 })
