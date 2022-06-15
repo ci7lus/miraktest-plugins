@@ -1,5 +1,5 @@
 import clsx from "clsx"
-import React, { useMemo, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import { useDebounce } from "react-use"
 import { atom, useRecoilValue, useRecoilState } from "recoil"
 import { syncEffect, refine as $ } from "recoil-sync"
@@ -101,6 +101,53 @@ const main: InitPlugin = {
           },
         },
         {
+          id: `${DPLAYER_PREFIX}.onController`,
+          position: "OnControllerPopup",
+          component: () => {
+            const [opacity, setOpacity] = useRecoilState(opacityAtom)
+            const [rangeOpacity, setRangeOpacity] = useState(opacity * 10)
+            useDebounce(
+              () => {
+                setOpacity(rangeOpacity / 10)
+              },
+              100,
+              [rangeOpacity]
+            )
+            useEffect(() => {
+              setRangeOpacity(opacity * 10)
+            }, [opacity])
+            return (
+              <>
+                <style>{tailwind}</style>
+                <label>
+                  <span
+                    className={clsx(
+                      "block",
+                      "mb-1",
+                      "text-sm",
+                      "text-gray-300"
+                    )}
+                  >
+                    コメント濃度
+                  </span>
+                  <input
+                    type="range"
+                    className="block mt-2 rounded-md w-full app-region-no-drag"
+                    min={0}
+                    max={10}
+                    value={rangeOpacity}
+                    onChange={(e) => {
+                      const p = parseInt(e.target.value)
+                      if (Number.isNaN(p)) return
+                      setRangeOpacity(p)
+                    }}
+                  />
+                </label>
+              </>
+            )
+          },
+        },
+        {
           id: `${DPLAYER_PREFIX}.settings`,
           position: "onSetting",
           label: DPLAYER_META.name,
@@ -119,6 +166,9 @@ const main: InitPlugin = {
               100,
               [rangeOpacity, rangeZoom]
             )
+            useEffect(() => {
+              setRangeOpacity(opacity * 10)
+            }, [opacity])
             return (
               <>
                 <style>{tailwind}</style>
