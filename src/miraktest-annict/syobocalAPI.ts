@@ -1,5 +1,5 @@
 import axios from "axios"
-import XMLParser from "fast-xml-parser"
+import { XMLParser } from "fast-xml-parser"
 
 const client = axios.create({
   baseURL: "https://cal.syoboi.jp/",
@@ -63,7 +63,9 @@ export class SyobocalAPI {
       .then((r) => {
         const {
           ProgLookupResponse,
-        }: { ProgLookupResponse: ProgLookupResponse } = XMLParser.parse(r.data)
+        }: { ProgLookupResponse: ProgLookupResponse } = new XMLParser().parse(
+          r.data
+        )
         if (ProgLookupResponse.Result.Code === 404) {
           return []
         }
