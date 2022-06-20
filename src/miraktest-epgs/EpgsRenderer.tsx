@@ -1,6 +1,7 @@
+import $ from "@recoiljs/refine"
 import React, { useEffect, useState } from "react"
 import { atom, useRecoilValue, useRecoilState, useSetRecoilState } from "recoil"
-import { syncEffect, refine as $ } from "recoil-sync"
+import { syncEffect } from "recoil-sync"
 import { ContentPlayerPlayingContent, InitPlugin } from "../@types/plugin"
 import tailwind from "../tailwind.scss"
 import { EPGStationAPI } from "./api"

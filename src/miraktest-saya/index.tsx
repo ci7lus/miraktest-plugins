@@ -1,3 +1,4 @@
+import $ from "@recoiljs/refine"
 import dayjs from "dayjs"
 import React, { useEffect, useRef, useState } from "react"
 import { Plus, X } from "react-feather"
@@ -8,7 +9,7 @@ import {
   useRecoilState,
   useSetRecoilState,
 } from "recoil"
-import { syncEffect, refine as $ } from "recoil-sync"
+import { syncEffect } from "recoil-sync"
 import ReconnectingWebSocket from "reconnecting-websocket"
 import urlJoin from "url-join"
 import { InitPlugin } from "../@types/plugin"

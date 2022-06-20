@@ -1304,6 +1304,11 @@
   dependencies:
     webpack-sources "^1.0.0"
 
+"@recoiljs/refine@0.1.1-alpha.1":
+  version "0.1.1-alpha.1"
+  resolved "https://registry.yarnpkg.com/@recoiljs/refine/-/refine-0.1.1-alpha.1.tgz#146a38c3943b7cbcd355a51567a9d9a844698509"
+  integrity sha512-yH49PrNrhLjw4//8imVSc3zzDAxo7pr3qBNERe0TmR5sccd2QT/UKicGL7SO26mc0JPV4HNE+PgE4GxYHE/Pag==
+
 "@samverschueren/stream-to-observable@^0.3.0":
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/@samverschueren/stream-to-observable/-/stream-to-observable-0.3.1.tgz#a21117b19ee9be70c379ec1877537ef2e1c63301"
@@ -7318,11 +7323,12 @@ rechoir@^0.7.0:
   dependencies:
     resolve "^1.9.0"
 
-recoil-sync@^0.0.1-alpha.2:
-  version "0.0.1-alpha.2"
-  resolved "https://registry.yarnpkg.com/recoil-sync/-/recoil-sync-0.0.1-alpha.2.tgz#e798bd6bc19b28ed59593807da380c18c5778dd9"
-  integrity sha512-zNYKV7zzI9JxTy0fZSVOSJDo2sZKvtYmmvNLBozS2JymCUHHj8tFekSVbvgLMyVpFI6EnBLhnFe1nSmZ7s3X2A==
+recoil-sync@0.1.1-alpha.1:
+  version "0.1.1-alpha.1"
+  resolved "https://registry.yarnpkg.com/recoil-sync/-/recoil-sync-0.1.1-alpha.1.tgz#c2c94a7d54c43600ac7e7fe4d14b71f0b56c6c32"
+  integrity sha512-kU7Fl+9HekhXu3bZt6LADUTKLgJqMX+lrXS7CfhGAHdATTcYbDv3RCUFwifWS0KFw3DGfeDwgJ2QMQ5Wxmh2Cg==
   dependencies:
+    "@recoiljs/refine" "0.1.1-alpha.1"
     transit-js "^0.8.874"
 
 recoil@^0.7.3:

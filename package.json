@@ -9,15 +9,14 @@
     "url": "https://github.com/ci7lus/miraktest-plugins.git"
   },
   "scripts": {
-    "dev": "yarn build:sync && webpack --color -w",
-    "build": "yarn build:sync && webpack --color",
+    "dev": "webpack --color -w",
+    "build": "webpack --color",
     "lint:prettier": "prettier --check './src/**/*.{js,ts,tsx}'",
     "format:prettier": "prettier --write './src/**/*.{js,ts,tsx}'",
     "lint:eslint": "eslint --max-warnings 0 --cache './src/**/*.{js,ts,tsx}'",
     "format:eslint": "eslint './src/**/*.{js,ts,tsx}' --cache --fix",
     "tsc": "tsc --noEmit",
-    "annict-gql": "graphql-codegen --config annict-codegen.yml",
-    "build:sync": "webpack --color -c webpack-sync.config.ts"
+    "annict-gql": "graphql-codegen --config annict-codegen.yml"
   },
   "devDependencies": {
     "@ci7lus/eslint-config": "^1.1.0",
@@ -79,7 +78,7 @@
     "react-table": "^7.8.0",
     "react-use": "^17.4.0",
     "recoil": "^0.7.3",
-    "recoil-sync": "^0.0.1-alpha.2",
+    "recoil-sync": "0.1.1-alpha.1",
     "reconnecting-websocket": "^4.4.0",
     "twitter-api-client": "^1.5.2",
     "twitter-text": "^3.1.0",

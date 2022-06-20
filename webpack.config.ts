@@ -130,12 +130,7 @@ const config: (
       },
       resolve: {
         extensions: [".ts", ".tsx", ".js", ".json"],
-        alias: {
-          "recoil-sync$": path.resolve(
-            __dirname,
-            "./dist/recoil-sync-loader.js"
-          ),
-        },
+        alias: {},
       },
       plugins: [
         new esm(),
@@ -156,6 +151,7 @@ const config: (
         recoil: "'Recoil' in globalThis?Recoil:{}",
         fs: "commonjs fs",
         os: "commonjs os",
+        "recoil-sync": "'RecoilSync' in globalThis?RecoilSync:{}",
       },
     }
     if (isAnalyzeEnabled) {
