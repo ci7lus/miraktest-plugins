@@ -1,7 +1,7 @@
 {
   "name": "miraktest-plugins",
-  "version": "1.0.0",
-  "description": "My plugins of MirakTest",
+  "version": "0.0.0",
+  "description": "My plugins for MirakTest v2",
   "author": "ci7lus <7887955+ci7lus@users.noreply.github.com>",
   "license": "MIT",
   "repository": {
