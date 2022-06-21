@@ -33,7 +33,7 @@ const meta = {
   id: _id,
   name: "Saya",
   author: "ci7lus",
-  version: "0.3.0",
+  version: "0.3.2",
   description:
     "Sayaからコメントを取得するプラグインです。対応するコメントレンダラープラグインが必要です。",
   authorUrl: "https://github.com/ci7lus",
@@ -45,12 +45,12 @@ const main: InitPlugin = {
   renderer: ({ appInfo, rpc, atoms, windowId, constants }) => {
     const settingRefine = $.object({
       baseUrl: $.voidable($.string()),
-      replaces: $.array($.array($.string())),
-      isEnabled: $.boolean(),
-      isTimeshiftEnabled: $.voidable($.boolean()),
-      isTwitterDisabled: $.voidable($.boolean()),
-      is5chDisabled: $.voidable($.boolean()),
-      isNicojkDisabled: $.voidable($.boolean()),
+      replaces: $.withDefault($.array($.array($.string())), []),
+      isEnabled: $.withDefault($.boolean(), true),
+      isTimeshiftEnabled: $.withDefault($.boolean(), true),
+      isTwitterDisabled: $.withDefault($.boolean(), false),
+      is5chDisabled: $.withDefault($.boolean(), false),
+      isNicojkDisabled: $.withDefault($.boolean(), false),
     })
     const sayaSettingAtom = atom<SayaSetting>({
       key: `${prefix}.sayaSetting`,

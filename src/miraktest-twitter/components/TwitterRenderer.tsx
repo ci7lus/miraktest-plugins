@@ -28,8 +28,8 @@ export const TwitterRenderer: InitPlugin["renderer"] = ({
     consumerSecret: $.voidable($.string()),
     accessToken: $.voidable($.string()),
     accessTokenSecret: $.voidable($.string()),
-    isContentInfoEmbedInImageEnabled: $.boolean(),
-    isReplyProhibitEnabled: $.boolean(),
+    isContentInfoEmbedInImageEnabled: $.withDefault($.boolean(), false),
+    isReplyProhibitEnabled: $.withDefault($.boolean(), false),
   })
   const settingAtom = atom<TwitterSetting>({
     key: `${TWITTER_PLUGIN_PREFIX}.setting`,

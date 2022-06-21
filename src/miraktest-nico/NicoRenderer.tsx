@@ -17,7 +17,7 @@ const meta = {
   id: _id,
   name: "ニコニコ実況",
   author: "ci7lus",
-  version: "0.3.0",
+  version: "0.3.3",
   description:
     "ニコニコ実況からコメントを取得するプラグインです。対応するコメントレンダラープラグインが必要です。",
   authorUrl: "https://github.com/ci7lus",
@@ -26,8 +26,8 @@ const meta = {
 
 export const NicoRenderer: InitPlugin["renderer"] = ({ atoms, constants }) => {
   const settingRefine = $.object({
-    isLiveEnabled: $.boolean(),
-    isTimeshiftEnabled: $.boolean(),
+    isLiveEnabled: $.withDefault($.boolean(), true),
+    isTimeshiftEnabled: $.withDefault($.boolean(), true),
     mail: $.voidable($.string()),
     pass: $.voidable($.string()),
   })

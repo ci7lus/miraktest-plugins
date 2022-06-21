@@ -28,7 +28,7 @@ const meta = {
   id: _id,
   name: "Miyou",
   author: "ci7lus",
-  version: "0.2.0",
+  version: "0.2.2",
   description:
     "Miyouからコメントを取得するプラグインです。対応するコメントレンダラープラグインが必要です。",
   authorUrl: "https://github.com/ci7lus",
@@ -38,7 +38,7 @@ const meta = {
 const main: InitPlugin = {
   renderer: ({ atoms, constants }) => {
     const settingRefine = $.object({
-      isEnabled: $.boolean(),
+      isEnabled: $.withDefault($.boolean(), true),
       mail: $.voidable($.string()),
       pass: $.voidable($.string()),
     })
