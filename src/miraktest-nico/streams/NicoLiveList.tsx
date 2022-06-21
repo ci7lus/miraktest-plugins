@@ -35,7 +35,9 @@ export const NicoLiveList = ({
     }
     if (
       isSeekable ||
-      (program && dayjs().isAfter(program?.startAt + program.duration))
+      (program &&
+        program.duration !== 1 &&
+        dayjs().isAfter(program?.startAt + program.duration))
     ) {
       console.info(
         "過去番組の再生を検出したためニコニコ実況（生）を無効化します"
