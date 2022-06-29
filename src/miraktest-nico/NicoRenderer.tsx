@@ -17,7 +17,7 @@ const meta = {
   id: _id,
   name: "ニコニコ実況",
   author: "ci7lus",
-  version: "0.3.3",
+  version: "0.3.4",
   description:
     "ニコニコ実況からコメントを取得するプラグインです。対応するコメントレンダラープラグインが必要です。",
   authorUrl: "https://github.com/ci7lus",
@@ -97,7 +97,7 @@ export const NicoRenderer: InitPlugin["renderer"] = ({ atoms, constants }) => {
             }
             axios
               .get<string>(
-                "https://cdn.jsdelivr.net/gh/SlashNephy/saya@dev/docs/definitions.yml",
+                "https://cdn.jsdelivr.net/gh/SlashNephy/saya-definitions@master/definitions.yml",
                 {
                   responseType: "text",
                 }

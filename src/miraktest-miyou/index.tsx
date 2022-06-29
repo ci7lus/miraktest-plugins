@@ -28,7 +28,7 @@ const meta = {
   id: _id,
   name: "Miyou",
   author: "ci7lus",
-  version: "0.2.2",
+  version: "0.2.3",
   description:
     "Miyouからコメントを取得するプラグインです。対応するコメントレンダラープラグインが必要です。",
   authorUrl: "https://github.com/ci7lus",
@@ -165,7 +165,7 @@ const main: InitPlugin = {
             useEffect(() => {
               axios
                 .get<string>(
-                  "https://cdn.jsdelivr.net/gh/SlashNephy/saya@dev/docs/definitions.yml",
+                  "https://cdn.jsdelivr.net/gh/SlashNephy/saya-definitions@master/definitions.yml",
                   {
                     responseType: "text",
                   }

@@ -211,7 +211,7 @@ export const AnnictRenderer: InitPlugin["renderer"] = ({
         const [arm, setArm] = useState<ARM[] | null>(null)
         useEffect(() => {
           Axios.get<string>(
-            "https://cdn.jsdelivr.net/gh/SlashNephy/saya@dev/docs/definitions.yml",
+            "https://cdn.jsdelivr.net/gh/SlashNephy/saya-definitions@master/definitions.yml",
             {
               responseType: "text",
             }
