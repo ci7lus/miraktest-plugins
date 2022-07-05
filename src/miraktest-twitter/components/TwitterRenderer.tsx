@@ -54,7 +54,7 @@ export const TwitterRenderer: InitPlugin["renderer"] = ({
     effects: [
       syncEffect({
         storeKey: constants?.recoil?.sharedKey,
-        refine: settingRefine,
+        refine: $.withDefault($.nullable($.string()), null),
       }),
     ],
   })
@@ -64,7 +64,7 @@ export const TwitterRenderer: InitPlugin["renderer"] = ({
     effects: [
       syncEffect({
         storeKey: constants?.recoil?.sharedKey,
-        refine: settingRefine,
+        refine: $.withDefault($.number(), 0),
       }),
     ],
   })
