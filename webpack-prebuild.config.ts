@@ -7,6 +7,8 @@ import EmbedLicenseInBundlePlugin from "./embedLicenseInBundlePlugin"
 const config: webpack.Configuration = {
   entry: {
     "recoil-sync-loader": "./src/recoil-sync-loader.js",
+    "recoil-loader": "./src/recoil-loader.js",
+    "react-loader": "./src/react-loader.js",
   },
   mode: "production",
   output: {

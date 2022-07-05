@@ -1,12 +1,7 @@
-import crypto from "crypto"
 import path from "path"
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import esm from "@purtuga/esm-webpack-plugin"
 import { ESBuildMinifyPlugin } from "esbuild-loader"
 import { LicenseWebpackPlugin } from "license-webpack-plugin"
-// eslint-disable-next-line import/no-unresolved
-import { TailwindConfig } from "tailwindcss/tailwind-config"
+import type { TailwindConfig } from "tailwindcss/tailwind-config"
 import webpack from "webpack"
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer"
 import EmbedLicenseInBundlePlugin from "./embedLicenseInBundlePlugin"
@@ -17,17 +12,20 @@ type Entry = {
   name: string
   dir: string
   target?: webpack.Configuration["target"]
+  externals?: webpack.Configuration["externals"]
 }
 
 const entries: Entry[] = [
   {
     name: "miraktest-sample",
     dir: "./src/miraktest-sample",
+    externals: ["os", "fs"],
   },
   {
     name: "miraktest-drpc",
     dir: "./src/miraktest-drpc",
     target: "electron-main",
+    externals: ["os", "fs"],
   },
   {
     name: "miraktest-saya",
@@ -71,8 +69,7 @@ const config: (
   _: Entry[],
   isAnalyzeEnabled: boolean
 ) => webpack.Configuration[] = (entries: Entry[], isAnalyzeEnabled: boolean) =>
-  entries.map(({ name, dir, target }) => {
-    const hash = crypto.createHash("sha1").update(dir).digest("hex")
+  entries.map(({ name, dir, target, externals }) => {
     const tailwind: TailwindConfig = Object.assign(
       { ...tailwindConfig },
       {
@@ -90,10 +87,14 @@ const config: (
       mode: "production",
       output: {
         path: path.resolve(__dirname, "dist"),
-        library: `P${hash}`,
-        libraryTarget: "var",
+        chunkFormat: "module",
+        filename: `${name}.plugin.js`,
+        library: {
+          type: "module",
+        },
+        module: true,
       },
-      devtool: "cheap-eval-source-map",
+      devtool: "eval-cheap-source-map",
       module: {
         rules: [
           {
@@ -131,31 +132,45 @@ const config: (
       resolve: {
         extensions: [".ts", ".tsx", ".js", ".json"],
         alias: {
+          // ホストがグローバルに露出しているRecoil/Recoil-Sync/Reactを用いる
           "recoil-sync$": path.resolve(
             __dirname,
             "./dist/recoil-sync-loader.js"
           ),
+          recoil$: path.resolve(__dirname, "./dist/recoil-loader.js"),
+          react$: path.resolve(__dirname, "./dist/react-loader.js"),
+        },
+        fallback: {
+          http: require.resolve("stream-http"),
+          https: require.resolve("https-browserify"),
+          crypto: require.resolve("crypto-browserify"),
+          querystring: require.resolve("querystring-es3"),
+          stream: require.resolve("stream-browserify"),
+          path: require.resolve("path-browserify"),
+          url: require.resolve("url"),
+          process: require.resolve("process"),
         },
       },
       plugins: [
-        new esm(),
         new LicenseWebpackPlugin({
           licenseTextOverrides: {
             "discord-rpc": "MIT License snek <me@gus.host>",
           },
         }) as never,
         new EmbedLicenseInBundlePlugin(),
+        new webpack.ProvidePlugin({
+          Buffer: ["buffer", "Buffer"],
+          process: "process",
+        }),
       ],
       optimization: {
         splitChunks: false,
         minimizer: [new ESBuildMinifyPlugin({ target: "es2018" })],
       },
-      // ホストがグローバルに露出しているRecoil/Recoil-Sync/Reactを用いる
-      externals: {
-        react: "'React' in globalThis?React:{}",
-        recoil: "'Recoil' in globalThis?Recoil:{}",
-        fs: "commonjs fs",
-        os: "commonjs os",
+      externals,
+      externalsType: "commonjs",
+      experiments: {
+        outputModule: true,
       },
     }
     if (isAnalyzeEnabled) {

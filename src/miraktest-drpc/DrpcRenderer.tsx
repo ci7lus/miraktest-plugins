@@ -1,5 +1,5 @@
 import $ from "@recoiljs/refine"
-import { Presence } from "discord-rpc"
+import type { Presence } from "discord-rpc"
 import React, { useEffect, useState } from "react"
 import { atom, useRecoilValue, useRecoilState } from "recoil"
 import { syncEffect } from "recoil-sync"

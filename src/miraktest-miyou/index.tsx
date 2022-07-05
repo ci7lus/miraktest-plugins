@@ -28,7 +28,7 @@ const meta = {
   id: _id,
   name: "Miyou",
   author: "ci7lus",
-  version: "0.2.3",
+  version: "0.2.4",
   description:
     "Miyouからコメントを取得するプラグインです。対応するコメントレンダラープラグインが必要です。",
   authorUrl: "https://github.com/ci7lus",

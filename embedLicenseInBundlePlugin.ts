@@ -1,4 +1,5 @@
-import { promises as fs } from "fs"
+import fs from "fs"
+import path from "path"
 
 export default class EmbedLicenseInBundlePlugin {
   public readonly name = "EmbedLicenseInBundlePlugin"
@@ -8,21 +9,27 @@ export default class EmbedLicenseInBundlePlugin {
     compiler.hooks.done.tapAsync(
       this.name,
       async (
-        stats: { compilation: { assets: { existsAt: string }[] } },
+        stats: { compilation: { assets: Record<string, {}> } },
         callback: Function
       ) => {
-        for (const asset of Object.values(stats.compilation.assets)) {
-          const { existsAt } = asset
-          if (!existsAt || !existsAt.endsWith(".licenses.txt")) {
+        for (const assetName of Object.keys(stats.compilation.assets)) {
+          if (!assetName.endsWith(".licenses.txt")) {
+            continue
+          }
+          const existsAt = path.join(path.resolve("./dist"), assetName)
+          if (!fs.existsSync(existsAt)) {
             continue
           }
           const bundlePath = existsAt.replace(".licenses.txt", ".js")
           console.info(`${existsAt} -> ${bundlePath}`)
-          const bundle = await fs.readFile(bundlePath, "utf8")
-          const license = await fs.readFile(existsAt, "utf8")
-          const newBundle = `/*\n${license}\n*/\n${bundle}`
-          await fs.writeFile(bundlePath, newBundle)
-          await fs.unlink(existsAt)
+          const bundle = await fs.promises.readFile(bundlePath, "utf8")
+          const license = await fs.promises.readFile(existsAt, "utf8")
+          const newBundle = `/*\n${license}\n*/\n${bundle}`.replace(
+            `import{createRequire as __WEBPACK_EXTERNAL_createRequire}from"module";`,
+            "const __WEBPACK_EXTERNAL_createRequire = () => (s) => require(s);"
+          )
+          await fs.promises.writeFile(bundlePath, newBundle)
+          await fs.promises.unlink(existsAt)
         }
         callback()
       }

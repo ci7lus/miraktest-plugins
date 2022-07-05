@@ -33,7 +33,7 @@ const meta = {
   id: _id,
   name: "Saya",
   author: "ci7lus",
-  version: "0.3.2",
+  version: "0.3.3",
   description:
     "Sayaからコメントを取得するプラグインです。対応するコメントレンダラープラグインが必要です。",
   authorUrl: "https://github.com/ci7lus",
