@@ -131,7 +131,7 @@ export const RecordDetail: React.VFC<{
             <div className="flex items-center mb-2">
               <Switch
                 checked={isOpenWithNewWindow}
-                onChange={(e) => setIsOpenWithNewWindow(e)}
+                onChange={() => setIsOpenWithNewWindow((prev) => !!prev)}
                 className={`${
                   isOpenWithNewWindow ? "bg-blue-600" : "bg-gray-300"
                 } relative inline-flex items-center h-6 rounded-full w-11`}
@@ -151,7 +151,7 @@ export const RecordDetail: React.VFC<{
             <div className="flex items-center mb-2">
               <Switch
                 checked={isStartAtOverride}
-                onChange={(e) => setIsStartAtOverride(e)}
+                onChange={() => setIsStartAtOverride((prev) => !!prev)}
                 className={`${
                   isStartAtOverride ? "bg-blue-600" : "bg-gray-300"
                 } relative inline-flex items-center h-6 rounded-full w-11`}
