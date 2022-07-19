@@ -334,10 +334,7 @@ export const TweetComponent: React.FC<{
               <div
                 className={clsx("flex", "space-x-4", "items-center", "mb-2")}
               >
-                <img
-                  src={user.profile_image_url_https}
-                  className={clsx("h-10")}
-                />
+                <img src={user.profile_image_url_https} className="h-10" />
                 <p>@{user.screen_name}</p>
               </div>
             ) : (
@@ -436,7 +433,7 @@ export const TweetComponent: React.FC<{
                   })
               }}
             >
-              <div className={clsx("block")}>
+              <div className="block">
                 <input
                   type="text"
                   className={clsx(
@@ -553,7 +550,7 @@ export const TweetComponent: React.FC<{
                   )
                 }}
                 key={imageUrl}
-                className={clsx("relative")}
+                className="relative"
                 onContextMenu={(e) => {
                   e.preventDefault()
                   const clickable = document.createElement("a")

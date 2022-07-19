@@ -1,6 +1,7 @@
 import $ from "@recoiljs/refine"
 import axios from "axios"
 import rax from "axios-retry"
+import clsx from "clsx"
 import React, { useEffect, useState } from "react"
 import { atom, useRecoilValue, useRecoilState } from "recoil"
 import { syncEffect } from "recoil-sync"
@@ -143,29 +144,52 @@ const main: InitPlugin = {
                     })
                   }}
                 >
-                  <label className="mb-2 block">
+                  <label className={clsx("mb-2", "block")}>
                     <span>Gyazo Access Token</span>
                     <input
                       type="text"
                       placeholder="****"
-                      className="block mt-2 form-input rounded-md w-full text-gray-900"
+                      className={clsx(
+                        "block",
+                        "mt-2",
+                        "form-input",
+                        "rounded-md",
+                        "w-full",
+                        "text-gray-900"
+                      )}
                       value={token || ""}
                       onChange={(e) => setToken(e.target.value)}
                     />
                   </label>
-                  <label className="mb-2 block">
+                  <label className={clsx("mb-2", "block")}>
                     <span>Collection Id</span>
                     <input
                       type="text"
                       placeholder="****"
-                      className="block mt-2 form-input rounded-md w-full text-gray-900"
+                      className={clsx(
+                        "block",
+                        "mt-2",
+                        "form-input",
+                        "rounded-md",
+                        "w-full",
+                        "text-gray-900"
+                      )}
                       value={collectionId || ""}
                       onChange={(e) => setCollectionId(e.target.value)}
                     />
                   </label>
                   <button
                     type="submit"
-                    className="bg-gray-100 text-gray-800 p-2 px-2 my-4 rounded-md focus:outline-none cursor-pointer"
+                    className={clsx(
+                      "bg-gray-100",
+                      "text-gray-800",
+                      "p-2",
+                      "px-2",
+                      "my-4",
+                      "rounded-md",
+                      "focus:outline-none",
+                      "cursor-pointer"
+                    )}
                   >
                     保存
                   </button>

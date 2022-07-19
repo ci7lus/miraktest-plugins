@@ -88,10 +88,19 @@ export const RecordDetail: React.VFC<{
   )
 
   return (
-    <div className="flex flex-col items-start justify-around select-text leading-loose">
+    <div
+      className={clsx(
+        "flex",
+        "flex-col",
+        "items-start",
+        "justify-around",
+        "select-text",
+        "leading-loose"
+      )}
+    >
       {0 < record.thumbnails.length ? (
         <div
-          className="w-full bg-gray-400 bg-center bg-cover"
+          className={clsx("w-full", "bg-gray-400", "bg-center", "bg-cover")}
           style={{
             aspectRatio: "16/9",
             backgroundImage: thumbnailUrl ? `url(${thumbnailUrl})` : undefined,
@@ -100,19 +109,21 @@ export const RecordDetail: React.VFC<{
       ) : (
         <></>
       )}
-      <div className="w-full p-4">
+      <div className={clsx("w-full", "p-4")}>
         {channel ? (
-          <h3 className="text-xl text-gray-600 mb-1">{channel.name}</h3>
+          <h3 className={clsx("text-xl", "text-gray-600", "mb-1")}>
+            {channel.name}
+          </h3>
         ) : (
           <></>
         )}
-        <h2 className="text-2xl mb-2">{record.name}</h2>
-        <div className="text-xl mb-2">
+        <h2 className={clsx("text-2xl", "mb-2")}>{record.name}</h2>
+        <div className={clsx("text-xl", "mb-2")}>
           {`${dayjs(record.startAt).format("YYYY/MM/DD(ddd) HH:mm")} - ${dayjs(
             record.endAt
           ).format("HH:mm")} (${duration / 60}分間)`}
         </div>
-        <div className="text-gray-600 leading-relaxed">
+        <div className={clsx("text-gray-600", "leading-relaxed")}>
           {[
             [genre1, subGenre1],
             [genre2, subGenre2],
@@ -126,9 +137,11 @@ export const RecordDetail: React.VFC<{
               </p>
             ))}
         </div>
-        <div className="w-full p-2 bg-gray-200 rounded-md my-2">
+        <div
+          className={clsx("w-full", "p-2", "bg-gray-200", "rounded-md", "my-2")}
+        >
           <Switch.Group>
-            <div className="flex items-center mb-2">
+            <div className={clsx("flex", "items-center", "mb-2")}>
               <Switch
                 checked={isOpenWithNewWindow}
                 onChange={() => setIsOpenWithNewWindow((prev) => !!prev)}
@@ -148,7 +161,7 @@ export const RecordDetail: React.VFC<{
             </div>
           </Switch.Group>
           <Switch.Group>
-            <div className="flex items-center mb-2">
+            <div className={clsx("flex", "items-center", "mb-2")}>
               <Switch
                 checked={isStartAtOverride}
                 onChange={() => setIsStartAtOverride((prev) => !!prev)}
@@ -166,21 +179,35 @@ export const RecordDetail: React.VFC<{
             </div>
           </Switch.Group>
           {isStartAtOverride && (
-            <div className={clsx("w-full")}>
-              <label className="block mt-2 w-full">
+            <div className="w-full">
+              <label className={clsx("block", "mt-2", "w-full")}>
                 <span>開始時間</span>
                 <input
                   type="datetime-local"
-                  className="block mt-1 form-input rounded-md w-full text-gray-900"
+                  className={clsx(
+                    "block",
+                    "mt-1",
+                    "form-input",
+                    "rounded-md",
+                    "w-full",
+                    "text-gray-900"
+                  )}
                   value={startAtOver || ""}
                   onChange={(e) => setStartAtOver(e.target.value)}
                 />
               </label>
-              <label className="block mt-2 w-full">
+              <label className={clsx("block", "mt-2", "w-full")}>
                 <span>長さ</span>
                 <input
                   type="number"
-                  className="block mt-1 form-input rounded-md w-full text-gray-900"
+                  className={clsx(
+                    "block",
+                    "mt-1",
+                    "form-input",
+                    "rounded-md",
+                    "w-full",
+                    "text-gray-900"
+                  )}
                   value={durationOver}
                   onChange={(e) => {
                     const p = parseInt(e.target.value)
@@ -205,7 +232,19 @@ export const RecordDetail: React.VFC<{
               <button
                 key={videoFile.id}
                 type="button"
-                className="bg-indigo-400 text-gray-100 rounded-md px-2 p-1 flex items-center justify-center space-x-1 focus:outline-none m-1"
+                className={clsx(
+                  "bg-indigo-400",
+                  "text-gray-100",
+                  "rounded-md",
+                  "px-2",
+                  "p-1",
+                  "flex",
+                  "items-center",
+                  "justify-center",
+                  "space-x-1",
+                  "focus:outline-none",
+                  "m-1"
+                )}
                 onClick={() => play(videoFile.id, isOpenWithNewWindow)}
               >
                 <Play className="flex-shrink-0" size={16} />
@@ -214,7 +253,19 @@ export const RecordDetail: React.VFC<{
             ))}
           </div>
         </div>
-        <div className="w-full bg-gray-200 whitespace-pre-wrap rounded-md p-4 md:my-2 text-sm leading-relaxed programDescription">
+        <div
+          className={clsx(
+            "w-full",
+            "bg-gray-200",
+            "whitespace-pre-wrap",
+            "rounded-md",
+            "p-4",
+            "md:my-2",
+            "text-sm",
+            "leading-relaxed",
+            "programDescription"
+          )}
+        >
           <AutoLinkedText>
             {[record.description, record.extended]
               .filter((s) => !!s)

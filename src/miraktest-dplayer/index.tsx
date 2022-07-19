@@ -133,7 +133,13 @@ const main: InitPlugin = {
                   </span>
                   <input
                     type="range"
-                    className="block mt-2 rounded-md w-full app-region-no-drag"
+                    className={clsx(
+                      "block",
+                      "mt-2",
+                      "rounded-md",
+                      "w-full",
+                      "app-region-no-drag"
+                    )}
                     min={0}
                     max={10}
                     value={rangeOpacity}
@@ -176,11 +182,16 @@ const main: InitPlugin = {
                 <div className="p-4">
                   <p className="text-lg">DPlayer 設定</p>
                   <form onSubmit={(e) => e.preventDefault()}>
-                    <label className="block mt-4">
+                    <label className={clsx("block", "mt-4")}>
                       <span>コメント濃度</span>
                       <input
                         type="range"
-                        className="block mt-2 rounded-md w-full"
+                        className={clsx(
+                          "block",
+                          "mt-2",
+                          "rounded-md",
+                          "w-full"
+                        )}
                         min={0}
                         max={10}
                         value={rangeOpacity}
@@ -192,11 +203,16 @@ const main: InitPlugin = {
                       />
                       <span>{rangeOpacity / 10}</span>
                     </label>
-                    <label className="block mt-4">
+                    <label className={clsx("block", "mt-4")}>
                       <span>表示倍率</span>
                       <input
                         type="range"
-                        className="block mt-2 rounded-md w-full"
+                        className={clsx(
+                          "block",
+                          "mt-2",
+                          "rounded-md",
+                          "w-full"
+                        )}
                         min={10}
                         max={30}
                         value={rangeZoom}
@@ -209,19 +225,37 @@ const main: InitPlugin = {
                       <span>{rangeZoom / 10}</span>
                     </label>
                   </form>
-                  <label className="mt-4 block">
+                  <label className={clsx("mt-4", "block")}>
                     <span>NG設定（正規表現）</span>
-                    <div className="flex space-x-2">
+                    <div className={clsx("flex", "space-x-2")}>
                       <input
                         type="text"
                         placeholder="(piyo)+"
-                        className="block mt-2 form-input rounded-md w-full text-gray-900"
+                        className={clsx(
+                          "block",
+                          "mt-2",
+                          "form-input",
+                          "rounded-md",
+                          "w-full",
+                          "text-gray-900"
+                        )}
                         value={addNg}
                         onChange={(e) => setAddNg(e.target.value)}
                       />
                       <button
                         type="button"
-                        className="mt-2 px-4 flex items-center justify-center text-gray-900 bg-gray-200 rounded-md focus:outline-none cursor-pointer"
+                        className={clsx(
+                          "mt-2",
+                          "px-4",
+                          "flex",
+                          "items-center",
+                          "justify-center",
+                          "text-gray-900",
+                          "bg-gray-200",
+                          "rounded-md",
+                          "focus:outline-none",
+                          "cursor-pointer"
+                        )}
                         onClick={() => {
                           setNg((replaces) => [...replaces, addNg])
                           setAddNg("")
@@ -231,10 +265,22 @@ const main: InitPlugin = {
                         +
                       </button>
                     </div>
-                    <div className="flex flex-wrap space-x-2 mt-4">
+                    <div
+                      className={clsx("flex", "flex-wrap", "space-x-2", "mt-4")}
+                    >
                       {ng.map((word, idx) => (
                         <div
-                          className="p-1 px-2 bg-gray-200 text-gray-800 rounded-md flex space-x-1 items-center justify-center"
+                          className={clsx(
+                            "p-1",
+                            "px-2",
+                            "bg-gray-200",
+                            "text-gray-800",
+                            "rounded-md",
+                            "flex",
+                            "space-x-1",
+                            "items-center",
+                            "justify-center"
+                          )}
                           key={idx}
                         >
                           <span
@@ -247,7 +293,14 @@ const main: InitPlugin = {
                           </span>
                           <span
                             title="削除する"
-                            className="flex items-center justify-center bg-gray-200 rounded-md cursor-pointer"
+                            className={clsx(
+                              "flex",
+                              "items-center",
+                              "justify-center",
+                              "bg-gray-200",
+                              "rounded-md",
+                              "cursor-pointer"
+                            )}
                             onClick={() => {
                               const copied = Object.assign([], ng)
                               ;(copied as (string | null)[])[idx] = null

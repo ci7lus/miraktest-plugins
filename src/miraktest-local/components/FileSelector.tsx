@@ -28,15 +28,27 @@ export const FileSelector: React.VFC<{
   const [isOpenWithNewWindow, setIsOpenWithNewWindow] = useState(false)
 
   return (
-    <div className="w-full h-full flex flex-col">
-      <div className="w-full bg-gray-800 text-gray-200">
-        <div className="w-full py-2 pl-4 pr-2 flex items-center justify-between">
-          <h2 className="font-semibold text-lg">ローカルファイル再生</h2>
+    <div className={clsx("w-full", "h-full", "flex", "flex-col")}>
+      <div className={clsx("w-full", "bg-gray-800", "text-gray-200")}>
+        <div
+          className={clsx(
+            "w-full",
+            "py-2",
+            "pl-4",
+            "pr-2",
+            "flex",
+            "items-center",
+            "justify-between"
+          )}
+        >
+          <h2 className={clsx("font-semibold", "text-lg")}>
+            ローカルファイル再生
+          </h2>
         </div>
       </div>
-      <div className="w-full flex overflow-auto p-4">
+      <div className={clsx("w-full", "flex", "overflow-auto", "p-4")}>
         <form
-          className={clsx("w-full")}
+          className="w-full"
           onSubmit={(e) => {
             e.preventDefault()
             if (!url) {
@@ -71,9 +83,9 @@ export const FileSelector: React.VFC<{
             }
           }}
         >
-          <label className="block w-full">
+          <label className={clsx("block", "w-full")}>
             <span>ファイルを選択</span>
-            <div className="flex justify-center flex-grow">
+            <div className={clsx("flex", "justify-center", "flex-grow")}>
               <input
                 type="text"
                 className={clsx(
@@ -107,20 +119,34 @@ export const FileSelector: React.VFC<{
             </div>
           </label>
           <div className={clsx("flex", "space-x-2", "W-full")}>
-            <label className="block mt-2">
+            <label className={clsx("block", "mt-2")}>
               <span>開始時間</span>
               <input
                 type="datetime-local"
-                className="block mt-1 form-input rounded-md w-full text-gray-900"
+                className={clsx(
+                  "block",
+                  "mt-1",
+                  "form-input",
+                  "rounded-md",
+                  "w-full",
+                  "text-gray-900"
+                )}
                 value={startAt || ""}
                 onChange={(e) => setStartAt(e.target.value)}
               />
             </label>
-            <label className="block mt-2">
+            <label className={clsx("block", "mt-2")}>
               <span>長さ</span>
               <input
                 type="number"
-                className="block mt-1 form-input rounded-md w-full text-gray-900"
+                className={clsx(
+                  "block",
+                  "mt-1",
+                  "form-input",
+                  "rounded-md",
+                  "w-full",
+                  "text-gray-900"
+                )}
                 value={duration}
                 onChange={(e) => {
                   const p = parseInt(e.target.value)
@@ -138,7 +164,16 @@ export const FileSelector: React.VFC<{
             </label>
           </div>
           <select
-            className="appearance-none border rounded py-2 px-2 mt-2 leading-tight focus:outline-none"
+            className={clsx(
+              "appearance-none",
+              "border",
+              "rounded",
+              "py-2",
+              "px-2",
+              "mt-2",
+              "leading-tight",
+              "focus:outline-none"
+            )}
             value={serviceId}
             onChange={(e) => {
               const selectedServiceId = parseInt(e.target.value)
@@ -161,7 +196,7 @@ export const FileSelector: React.VFC<{
             })}
           </select>
           <Switch.Group>
-            <div className="flex items-center mt-4">
+            <div className={clsx("flex", "items-center", "mt-4")}>
               <Switch
                 checked={isOpenWithNewWindow}
                 onChange={(e) => setIsOpenWithNewWindow(e)}
@@ -182,7 +217,17 @@ export const FileSelector: React.VFC<{
           </Switch.Group>
           <button
             type="submit"
-            className="bg-blue-500 text-gray-100 p-2 px-3 my-4 rounded-md focus:outline-none cursor-pointer active:bg-gray-200"
+            className={clsx(
+              "bg-blue-500",
+              "text-gray-100",
+              "p-2",
+              "px-3",
+              "my-4",
+              "rounded-md",
+              "focus:outline-none",
+              "cursor-pointer",
+              "active:bg-gray-200"
+            )}
           >
             再生
           </button>

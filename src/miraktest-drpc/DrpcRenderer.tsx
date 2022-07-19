@@ -1,4 +1,5 @@
 import $ from "@recoiljs/refine"
+import clsx from "clsx"
 import type { Presence } from "discord-rpc"
 import React, { useEffect, useState } from "react"
 import { atom, useRecoilValue, useRecoilState } from "recoil"
@@ -169,11 +170,11 @@ export const DrpcRenderer: InitPlugin["renderer"] = ({
                     setIsEnabled(isRichPresenceEnabled)
                   }}
                 >
-                  <label className="block mt-4">
+                  <label className={clsx("block", "mt-4")}>
                     <span>有効</span>
                     <input
                       type="checkbox"
-                      className="block mt-2 form-checkbox"
+                      className={clsx("block", "mt-2", "form-checkbox")}
                       checked={isRichPresenceEnabled || false}
                       onChange={() =>
                         setIsRichPresenceEnabled((enabled) => !enabled)
@@ -182,7 +183,17 @@ export const DrpcRenderer: InitPlugin["renderer"] = ({
                   </label>
                   <button
                     type="submit"
-                    className="bg-gray-100 text-gray-800 p-2 px-2 my-4 rounded-md focus:outline-none cursor-pointer active:bg-gray-200"
+                    className={clsx(
+                      "bg-gray-100",
+                      "text-gray-800",
+                      "p-2",
+                      "px-2",
+                      "my-4",
+                      "rounded-md",
+                      "focus:outline-none",
+                      "cursor-pointer",
+                      "active:bg-gray-200"
+                    )}
                   >
                     更新
                   </button>

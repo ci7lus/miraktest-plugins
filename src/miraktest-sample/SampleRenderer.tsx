@@ -1,4 +1,5 @@
 import $ from "@recoiljs/refine"
+import clsx from "clsx"
 import React, { useEffect } from "react"
 import { atom, useRecoilValue, useRecoilState } from "recoil"
 import { syncEffect } from "recoil-sync"
@@ -64,7 +65,7 @@ export const SampleRenderer: InitPlugin["renderer"] = ({
             <>
               <style>{tailwind}</style>
               {time ? (
-                <p className="bg-gray-900 text-gray-100">
+                <p className={clsx("bg-gray-900", "text-gray-100")}>
                   同期された感じ: {time}
                 </p>
               ) : (
@@ -84,7 +85,7 @@ export const SampleRenderer: InitPlugin["renderer"] = ({
             <>
               <style>{tailwind}</style>
               <div>
-                <p className="bg-gray-900 text-gray-100">
+                <p className={clsx("bg-gray-900", "text-gray-100")}>
                   同期された感じ: {time}
                 </p>
                 <button
@@ -118,7 +119,14 @@ export const SampleRenderer: InitPlugin["renderer"] = ({
         return (
           <>
             <style>{tailwind}</style>
-            <div className="w-full h-screen bg-gray-100 text-gray-900">
+            <div
+              className={clsx(
+                "w-full",
+                "h-screen",
+                "bg-gray-100",
+                "text-gray-900"
+              )}
+            >
               同期された感じ: {time}
             </div>
           </>

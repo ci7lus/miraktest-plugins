@@ -1,5 +1,6 @@
 import $ from "@recoiljs/refine"
 import axios from "axios"
+import clsx from "clsx"
 import React, { useEffect, useState } from "react"
 import { atom, useRecoilValue, useRecoilState } from "recoil"
 import { syncEffect } from "recoil-sync"
@@ -169,20 +170,20 @@ export const NicoRenderer: InitPlugin["renderer"] = ({ atoms, constants }) => {
                   })
                 }}
               >
-                <label className="block mt-4">
+                <label className={clsx("block", "mt-4")}>
                   <span>ニコニコ実況</span>
                   <input
                     type="checkbox"
-                    className="block mt-2 form-checkbox"
+                    className={clsx("block", "mt-2", "form-checkbox")}
                     checked={isLiveEnabled || false}
                     onChange={() => setIsLiveEnabled((enabled) => !enabled)}
                   />
                 </label>
-                <label className="block mt-4">
+                <label className={clsx("block", "mt-4")}>
                   <span>タイムシフト有効</span>
                   <input
                     type="checkbox"
-                    className="block mt-2 form-checkbox"
+                    className={clsx("block", "mt-2", "form-checkbox")}
                     checked={isTimeshiftEnabled || false}
                     onChange={() =>
                       setIsTimeshiftEnabled((enabled) => !enabled)
@@ -213,7 +214,16 @@ export const NicoRenderer: InitPlugin["renderer"] = ({ atoms, constants }) => {
                     </label>*/}
                 <button
                   type="submit"
-                  className="bg-gray-100 text-gray-800 p-2 px-2 my-4 rounded-md focus:outline-none cursor-pointer"
+                  className={clsx(
+                    "bg-gray-100",
+                    "text-gray-800",
+                    "p-2",
+                    "px-2",
+                    "my-4",
+                    "rounded-md",
+                    "focus:outline-none",
+                    "cursor-pointer"
+                  )}
                 >
                   保存
                 </button>

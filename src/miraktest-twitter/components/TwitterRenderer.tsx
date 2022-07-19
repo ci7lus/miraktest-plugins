@@ -131,41 +131,69 @@ export const TwitterRenderer: InitPlugin["renderer"] = ({
                   })
                 }}
               >
-                <label className="mb-2 block">
+                <label className={clsx("mb-2", "block")}>
                   <span>Twitter 認証情報</span>
                   <input
                     type="text"
                     placeholder="ConsumerKey"
-                    className="block mt-2 form-input rounded-md w-full text-gray-900"
+                    className={clsx(
+                      "block",
+                      "mt-2",
+                      "form-input",
+                      "rounded-md",
+                      "w-full",
+                      "text-gray-900"
+                    )}
                     value={consumerKey || ""}
                     onChange={(e) => setConsumerKey(e.target.value)}
                   />
                   <input
                     type="text"
                     placeholder="ConsumerSecret"
-                    className="block mt-2 form-input rounded-md w-full text-gray-900"
+                    className={clsx(
+                      "block",
+                      "mt-2",
+                      "form-input",
+                      "rounded-md",
+                      "w-full",
+                      "text-gray-900"
+                    )}
                     value={consumerSecret || ""}
                     onChange={(e) => setConsumerSecret(e.target.value)}
                   />
                   <input
                     type="text"
                     placeholder="AccessToken"
-                    className="block mt-2 form-input rounded-md w-full text-gray-900"
+                    className={clsx(
+                      "block",
+                      "mt-2",
+                      "form-input",
+                      "rounded-md",
+                      "w-full",
+                      "text-gray-900"
+                    )}
                     value={accessToken || ""}
                     onChange={(e) => setAccessToken(e.target.value)}
                   />
                   <input
                     type="text"
                     placeholder="AccessTokenSecret"
-                    className="block mt-2 form-input rounded-md w-full text-gray-900"
+                    className={clsx(
+                      "block",
+                      "mt-2",
+                      "form-input",
+                      "rounded-md",
+                      "w-full",
+                      "text-gray-900"
+                    )}
                     value={accessTokenSecret || ""}
                     onChange={(e) => setAccessTokenSecret(e.target.value)}
                   />
-                  <label className="block mt-4">
+                  <label className={clsx("block", "mt-4")}>
                     <span>画像に番組情報を埋め込む</span>
                     <input
                       type="checkbox"
-                      className="block mt-2 form-checkbox"
+                      className={clsx("block", "mt-2", "form-checkbox")}
                       checked={isContentInfoEmbedInImageEnabled || false}
                       onChange={() =>
                         setIsContentInfoEmbedInImageEnabled(
@@ -174,11 +202,11 @@ export const TwitterRenderer: InitPlugin["renderer"] = ({
                       }
                     />
                   </label>
-                  <label className="block mt-4">
+                  <label className={clsx("block", "mt-4")}>
                     <span>ツイートを返信禁止に設定する</span>
                     <input
                       type="checkbox"
-                      className="block mt-2 form-checkbox"
+                      className={clsx("block", "mt-2", "form-checkbox")}
                       checked={isReplyProhibitEnabled || false}
                       onChange={() =>
                         setIsReplyProhibitEnabled((enabled) => !enabled)
@@ -194,7 +222,16 @@ export const TwitterRenderer: InitPlugin["renderer"] = ({
                 </label>
                 <button
                   type="submit"
-                  className="bg-gray-100 text-gray-800 p-2 px-2 my-4 rounded-md focus:outline-none cursor-pointer"
+                  className={clsx(
+                    "bg-gray-100",
+                    "text-gray-800",
+                    "p-2",
+                    "px-2",
+                    "my-4",
+                    "rounded-md",
+                    "focus:outline-none",
+                    "cursor-pointer"
+                  )}
                 >
                   保存
                 </button>
@@ -279,7 +316,16 @@ export const TwitterRenderer: InitPlugin["renderer"] = ({
         return (
           <>
             <style>{tailwind}</style>
-            <div className="w-full h-screen bg-gray-900 text-gray-100 flex leading-loose">
+            <div
+              className={clsx(
+                "w-full",
+                "h-screen",
+                "bg-gray-900",
+                "text-gray-100",
+                "flex",
+                "leading-loose"
+              )}
+            >
               {setting.consumerKey &&
               setting.consumerSecret &&
               setting.accessToken &&
@@ -293,8 +339,16 @@ export const TwitterRenderer: InitPlugin["renderer"] = ({
                   time={time}
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center">
-                  <div className="px-4 text-center">
+                <div
+                  className={clsx(
+                    "w-full",
+                    "h-full",
+                    "flex",
+                    "items-center",
+                    "justify-center"
+                  )}
+                >
+                  <div className={clsx("px-4", "text-center")}>
                     {isCredentialFulfilled ? (
                       <h1 className="text-lg">読込中です…</h1>
                     ) : (

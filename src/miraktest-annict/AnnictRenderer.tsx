@@ -1,5 +1,6 @@
 import $ from "@recoiljs/refine"
 import Axios from "axios"
+import clsx from "clsx"
 import React, { useEffect, useState } from "react"
 import { useThrottleFn } from "react-use"
 import { atom, useRecoilValue, useRecoilState, useSetRecoilState } from "recoil"
@@ -136,17 +137,24 @@ export const AnnictRenderer: InitPlugin["renderer"] = ({
                   })
                 }}
               >
-                <label className="mb-2 block">
+                <label className={clsx("mb-2", "block")}>
                   <span>Annict のアクセストークン</span>
                   <input
                     type="text"
                     placeholder=""
-                    className="block mt-2 form-input rounded-md w-full text-gray-900"
+                    className={clsx(
+                      "block",
+                      "mt-2",
+                      "form-input",
+                      "rounded-md",
+                      "w-full",
+                      "text-gray-900"
+                    )}
                     value={accessToken || ""}
                     onChange={(e) => setAccessToken(e.target.value)}
                   />
                   <a
-                    className="text-sm text-blue-400"
+                    className={clsx("text-sm", "text-blue-400")}
                     href="https://annict.com/settings/apps"
                     target="_blank"
                   >
@@ -155,7 +163,16 @@ export const AnnictRenderer: InitPlugin["renderer"] = ({
                 </label>
                 <button
                   type="submit"
-                  className="bg-gray-100 text-gray-800 p-2 px-2 my-4 rounded-md focus:outline-none cursor-pointer"
+                  className={clsx(
+                    "bg-gray-100",
+                    "text-gray-800",
+                    "p-2",
+                    "px-2",
+                    "my-4",
+                    "rounded-md",
+                    "focus:outline-none",
+                    "cursor-pointer"
+                  )}
                 >
                   保存
                 </button>
@@ -232,7 +249,16 @@ export const AnnictRenderer: InitPlugin["renderer"] = ({
         return (
           <>
             <style>{tailwind}</style>
-            <div className="w-full h-screen bg-gray-900 text-gray-100 flex leading-loose">
+            <div
+              className={clsx(
+                "w-full",
+                "h-screen",
+                "bg-gray-900",
+                "text-gray-100",
+                "flex",
+                "leading-loose"
+              )}
+            >
               {setting.accessToken && services && sayaDefinition && arm ? (
                 <AnnictTrack
                   accessToken={setting.accessToken}
@@ -244,8 +270,16 @@ export const AnnictRenderer: InitPlugin["renderer"] = ({
                   facebookAtom={facebookAtom}
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center">
-                  <div className="px-4 text-center">
+                <div
+                  className={clsx(
+                    "w-full",
+                    "h-full",
+                    "flex",
+                    "items-center",
+                    "justify-center"
+                  )}
+                >
+                  <div className={clsx("px-4", "text-center")}>
                     {setting.accessToken ? (
                       <h1 className="text-lg">読込中です…</h1>
                     ) : (
