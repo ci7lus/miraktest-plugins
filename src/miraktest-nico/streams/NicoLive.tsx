@@ -172,7 +172,7 @@ export const NicoLiveStream = memo(
           if (isPkrFound) {
             const detail: ChatInput = {
               thread: "1",
-              no: chat.no.toString(),
+              no: chat.no?.toString() || "0",
               vpos: performance.now() / 10 + 200,
               mail: chat.mail?.split(" "),
               date: dayjs(chat.date * 1000).format(),

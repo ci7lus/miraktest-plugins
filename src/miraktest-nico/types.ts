@@ -19,7 +19,7 @@ export type NicoLogComment = {
 
 export type NicoLiveChat = {
   thread: string
-  no: number
+  no?: number
   vpos: number
   date: number
   date_usec: number
