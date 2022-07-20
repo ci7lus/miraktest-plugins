@@ -145,14 +145,28 @@ export const RecordDetail: React.VFC<{
               <Switch
                 checked={isOpenWithNewWindow}
                 onChange={() => setIsOpenWithNewWindow((prev) => !!prev)}
-                className={`${
-                  isOpenWithNewWindow ? "bg-blue-600" : "bg-gray-300"
-                } relative inline-flex items-center h-6 rounded-full w-11`}
+                className={clsx(
+                  isOpenWithNewWindow ? "bg-blue-600" : "bg-gray-300",
+                  "relative",
+                  "inline-flex",
+                  "items-center",
+                  "h-6",
+                  "rounded-full",
+                  "w-11"
+                )}
               >
                 <span
-                  className={`${
-                    isOpenWithNewWindow ? "translate-x-6" : "translate-x-1"
-                  } inline-block w-4 h-4 transform bg-white rounded-full transition ease-in-out duration-200`}
+                  className={clsx(
+                    isOpenWithNewWindow ? "translate-x-6" : "translate-x-1",
+                    "inline-block",
+                    "w-4",
+                    "h-4",
+                    "bg-white",
+                    "rounded-full",
+                    "transition",
+                    "ease-in-out",
+                    "duration-200"
+                  )}
                 />
               </Switch>
               <Switch.Label className="ml-2">
@@ -170,9 +184,17 @@ export const RecordDetail: React.VFC<{
                 } relative inline-flex items-center h-6 rounded-full w-11`}
               >
                 <span
-                  className={`${
-                    isStartAtOverride ? "translate-x-6" : "translate-x-1"
-                  } inline-block w-4 h-4 transform bg-white rounded-full transition ease-in-out duration-200`}
+                  className={clsx(
+                    isStartAtOverride ? "translate-x-6" : "translate-x-1",
+                    "inline-block",
+                    "w-4",
+                    "h-4",
+                    "bg-white",
+                    "rounded-full",
+                    "transition",
+                    "ease-in-out",
+                    "duration-200"
+                  )}
                 />
               </Switch>
               <Switch.Label className="ml-2">時間を上書きする</Switch.Label>
@@ -247,8 +269,8 @@ export const RecordDetail: React.VFC<{
                 )}
                 onClick={() => play(videoFile.id, isOpenWithNewWindow)}
               >
-                <Play className="flex-shrink-0" size={16} />
-                <span className="flex-shrink-0">{videoFile.name}</span>
+                <Play className="shrink-0" size={16} />
+                <span className="shrink-0">{videoFile.name}</span>
               </button>
             ))}
           </div>

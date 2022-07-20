@@ -1,7 +1,7 @@
 import path from "path"
 import { ESBuildMinifyPlugin } from "esbuild-loader"
 import { LicenseWebpackPlugin } from "license-webpack-plugin"
-import type { TailwindConfig } from "tailwindcss/tailwind-config"
+import type { Config } from "tailwindcss"
 import webpack from "webpack"
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer"
 import EmbedLicenseInBundlePlugin from "./embedLicenseInBundlePlugin"
@@ -70,13 +70,13 @@ const config: (
   isAnalyzeEnabled: boolean
 ) => webpack.Configuration[] = (entries: Entry[], isAnalyzeEnabled: boolean) =>
   entries.map(({ name, dir, target, externals }) => {
-    const tailwind: TailwindConfig = Object.assign(
+    const tailwind: Config = Object.assign(
       { ...tailwindConfig },
       {
-        purge: {
-          ...tailwindConfig.purge,
-          content: [path.join(dir, "**/*.{ts,tsx,js,css,scss}")],
-        },
+        content: [
+          ...tailwindConfig.content,
+          path.join(dir, "**/*.{ts,tsx,js,css,scss}"),
+        ],
       }
     )
     const config: webpack.Configuration = {
@@ -116,12 +116,12 @@ const config: (
                   importLoaders: 1,
                 },
               },
-              "sass-loader",
+              { loader: "sass-loader" },
               {
                 loader: "postcss-loader",
                 options: {
                   postcssOptions: {
-                    plugins: [["tailwindcss", tailwind], "autoprefixer"],
+                    plugins: { tailwindcss: tailwind, autoprefixer: {} },
                   },
                 },
               },

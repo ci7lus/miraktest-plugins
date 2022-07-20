@@ -152,7 +152,7 @@ export const TweetComponent: React.FC<{
           "space-x-2"
         )}
       >
-        <h1 className={clsx("text-lg", "flex-shrink-0")}>ツイート</h1>
+        <h1 className={clsx("text-lg", "shrink-0")}>ツイート</h1>
         {failed && (
           <p
             className={clsx("text-red-400", "font-semibold", "truncate")}
@@ -196,7 +196,7 @@ export const TweetComponent: React.FC<{
                     "bg-gray-700",
                     "px-1",
                     "rounded-md",
-                    "flex-shrink-0",
+                    "shrink-0",
                     (hashtag + " ").includes(tag + " ") && "opacity-50"
                   )}
                   key={tag}

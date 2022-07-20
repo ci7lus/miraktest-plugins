@@ -52,7 +52,7 @@ export const Records: React.VFC<{
               type="button"
               onClick={() => setReload(performance.now())}
               className={clsx(
-                "flex-shrink-0",
+                "shrink-0",
                 "bg-gray-900",
                 "hover:bg-gray-800",
                 "p-1",
@@ -67,20 +67,28 @@ export const Records: React.VFC<{
                   "flex",
                   "items-center",
                   "justify-center",
-                  "flex-shrink-0"
+                  "shrink-0"
                 )}
               >
                 <Switch
                   checked={isRecording}
-                  onChange={(e) => setIsRecording(e)}
+                  onChange={() => setIsRecording((prev) => !!prev)}
                   className={`${
                     isRecording ? "bg-blue-600" : "bg-gray-300"
                   } relative inline-flex items-center h-6 rounded-full w-11`}
                 >
                   <span
-                    className={`${
-                      isRecording ? "translate-x-6" : "translate-x-1"
-                    } inline-block w-4 h-4 transform bg-white rounded-full transition ease-in-out duration-200`}
+                    className={clsx(
+                      isRecording ? "translate-x-6" : "translate-x-1",
+                      "inline-block",
+                      "w-4",
+                      "h-4",
+                      "bg-white",
+                      "rounded-full",
+                      "transition",
+                      "ease-in-out",
+                      "duration-200"
+                    )}
                   />
                 </Switch>
                 <Switch.Label className="ml-2">録画中</Switch.Label>

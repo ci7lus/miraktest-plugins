@@ -85,7 +85,7 @@ export const FileSelector: React.VFC<{
         >
           <label className={clsx("block", "w-full")}>
             <span>ファイルを選択</span>
-            <div className={clsx("flex", "justify-center", "flex-grow")}>
+            <div className={clsx("flex", "justify-center", "grow")}>
               <input
                 type="text"
                 className={clsx(

@@ -1,21 +1,10 @@
 /**
- * @type {import('@types/tailwindcss/tailwind-config').TailwindConfig}
+ * @type {import('@types/tailwindcss').Config}
  */
 
 module.exports = {
-  purge: {
-    enabled: true,
-    mode: "all",
-    content: [],
-    whitelist: [],
-    whitelistPatterns: [],
-  },
-  future: {
-    removeDeprecatedGapUtilities: true,
-    purgeLayersByDefault: true,
-  },
-  darkMode: "media",
-  plugins: [require("@tailwindcss/custom-forms")],
+  content: ["./src/tailwind.scss"],
+  plugins: [require("@tailwindcss/forms")],
   theme: {
     extend: {
       transitionProperty: {
