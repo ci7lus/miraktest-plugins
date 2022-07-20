@@ -253,7 +253,7 @@ const main: InitPlugin = {
                           "text-gray-900",
                           "bg-gray-200",
                           "rounded-md",
-                          "focus:outline-none",
+
                           "cursor-pointer"
                         )}
                         onClick={() => {

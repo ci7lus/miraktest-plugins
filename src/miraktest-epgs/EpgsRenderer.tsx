@@ -131,7 +131,7 @@ export const EpgsRenderer: InitPlugin["renderer"] = ({
                     "px-2",
                     "my-4",
                     "rounded-md",
-                    "focus:outline-none",
+
                     "cursor-pointer"
                   )}
                 >

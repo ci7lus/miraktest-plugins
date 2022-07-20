@@ -494,7 +494,7 @@ export const TweetComponent: React.FC<{
                     "py-1",
                     "px-4",
                     "rounded-full",
-                    "focus:outline-none",
+
                     "disabled:opacity-50",
                     "mt-2",
                     selectedImages.length === 0 || isPosting
@@ -514,7 +514,7 @@ export const TweetComponent: React.FC<{
                     "py-1",
                     "px-4",
                     "rounded-full",
-                    "focus:outline-none",
+
                     "disabled:opacity-50",
                     "mt-2",
                     isPosting ? "opacity-50" : "opacity-100"

@@ -221,7 +221,7 @@ export const NicoRenderer: InitPlugin["renderer"] = ({ atoms, constants }) => {
                     "px-2",
                     "my-4",
                     "rounded-md",
-                    "focus:outline-none",
+
                     "cursor-pointer"
                   )}
                 >

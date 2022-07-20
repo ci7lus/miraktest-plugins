@@ -185,7 +185,6 @@ export const AnnictTrack: React.FC<{
         <div className={clsx("flex", "items-center", "space-x-2")}>
           <button
             className={clsx(
-              "focus:outline-none",
               "rounded-md",
               "bg-gray-900",
               "hover:bg-gray-800",
@@ -333,7 +332,7 @@ export const AnnictTrack: React.FC<{
                           "px-2",
                           "py-1",
                           "border",
-                          "focus:outline-none",
+
                           "transition-colors",
                           idx === 0 && "rounded-l-md",
                           ratingCount - 1 === idx && "rounded-r-md",
@@ -405,7 +404,7 @@ export const AnnictTrack: React.FC<{
                         "py-1",
                         "px-4",
                         "rounded-full",
-                        "focus:outline-none",
+
                         "disabled:opacity-50"
                       )}
                       disabled={isRecording}
@@ -427,7 +426,7 @@ export const AnnictTrack: React.FC<{
             )}
             <div className={clsx("w-full", "overflow-auto", "px-2")}>
               {work.episodes?.nodes?.map((episode) => (
-                <p
+                <a
                   onClick={() => {
                     setEpisodeId((prev) =>
                       prev === episode?.annictId
@@ -449,7 +448,7 @@ export const AnnictTrack: React.FC<{
                     {episode?.numberText || episode?.number} {episode?.title}
                   </span>
                   <span>{episode?.viewerRecordsCount}</span>
-                </p>
+                </a>
               ))}
             </div>
           </div>

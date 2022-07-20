@@ -488,7 +488,7 @@ const main: InitPlugin = {
                           "text-gray-900",
                           "bg-gray-200",
                           "rounded-md",
-                          "focus:outline-none",
+
                           "cursor-pointer"
                         )}
                         onClick={() => {
@@ -543,7 +543,7 @@ const main: InitPlugin = {
                       "px-2",
                       "my-4",
                       "rounded-md",
-                      "focus:outline-none",
+
                       "cursor-pointer"
                     )}
                   >

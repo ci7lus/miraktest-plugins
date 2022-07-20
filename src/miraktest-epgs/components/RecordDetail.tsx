@@ -264,7 +264,7 @@ export const RecordDetail: React.VFC<{
                   "items-center",
                   "justify-center",
                   "space-x-1",
-                  "focus:outline-none",
+
                   "m-1"
                 )}
                 onClick={() => play(videoFile.id, isOpenWithNewWindow)}

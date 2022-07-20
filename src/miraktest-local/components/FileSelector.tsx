@@ -89,7 +89,13 @@ export const FileSelector: React.VFC<{
               <input
                 type="text"
                 className={clsx(
-                  "block mt-1 form-input rounded-l-md w-full text-gray-900 focus:outline-none cursor-pointer"
+                  "block",
+                  "mt-1",
+                  "form-input",
+                  "rounded-l-md",
+                  "w-full",
+                  "text-gray-900",
+                  "cursor-pointer"
                 )}
                 value={url || ""}
                 onChange={(e) => setFilePath(e.target.value)}
@@ -98,7 +104,16 @@ export const FileSelector: React.VFC<{
               <button
                 type="button"
                 className={clsx(
-                  `px-4 py-2 mt-1 rounded-r-md flex items-center justify-center bg-gray-200 text-gray-900 focus:outline-none cursor-pointer`
+                  "px-4",
+                  "py-2",
+                  "mt-1",
+                  "rounded-r-md",
+                  "flex",
+                  "items-center",
+                  "justify-center",
+                  "bg-gray-200",
+                  "text-gray-900",
+                  "cursor-pointer"
                 )}
                 onClick={async () => {
                   const dialog = await requestDialog({
@@ -171,8 +186,7 @@ export const FileSelector: React.VFC<{
               "py-2",
               "px-2",
               "mt-2",
-              "leading-tight",
-              "focus:outline-none"
+              "leading-tight"
             )}
             value={serviceId}
             onChange={(e) => {
@@ -224,7 +238,7 @@ export const FileSelector: React.VFC<{
               "px-3",
               "my-4",
               "rounded-md",
-              "focus:outline-none",
+
               "cursor-pointer",
               "active:bg-gray-200"
             )}
