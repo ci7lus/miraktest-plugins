@@ -144,7 +144,7 @@ export const RecordDetail: React.VFC<{
             <div className={clsx("flex", "items-center", "mb-2")}>
               <Switch
                 checked={isOpenWithNewWindow}
-                onChange={() => setIsOpenWithNewWindow((prev) => !!prev)}
+                onChange={setIsOpenWithNewWindow}
                 className={clsx(
                   isOpenWithNewWindow ? "bg-blue-600" : "bg-gray-300",
                   "relative",
@@ -178,7 +178,7 @@ export const RecordDetail: React.VFC<{
             <div className={clsx("flex", "items-center", "mb-2")}>
               <Switch
                 checked={isStartAtOverride}
-                onChange={() => setIsStartAtOverride((prev) => !!prev)}
+                onChange={setIsStartAtOverride}
                 className={`${
                   isStartAtOverride ? "bg-blue-600" : "bg-gray-300"
                 } relative inline-flex items-center h-6 rounded-full w-11`}

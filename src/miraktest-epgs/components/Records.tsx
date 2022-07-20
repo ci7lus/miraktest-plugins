@@ -72,10 +72,16 @@ export const Records: React.VFC<{
               >
                 <Switch
                   checked={isRecording}
-                  onChange={() => setIsRecording((prev) => !!prev)}
-                  className={`${
-                    isRecording ? "bg-blue-600" : "bg-gray-300"
-                  } relative inline-flex items-center h-6 rounded-full w-11`}
+                  onChange={setIsRecording}
+                  className={clsx(
+                    isRecording ? "bg-blue-600" : "bg-gray-300",
+                    "relative",
+                    "inline-flex",
+                    "items-center",
+                    "h-6",
+                    "rounded-full",
+                    "w-11"
+                  )}
                 >
                   <span
                     className={clsx(

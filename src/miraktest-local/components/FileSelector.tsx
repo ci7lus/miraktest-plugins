@@ -213,15 +213,30 @@ export const FileSelector: React.VFC<{
             <div className={clsx("flex", "items-center", "mt-4")}>
               <Switch
                 checked={isOpenWithNewWindow}
-                onChange={(e) => setIsOpenWithNewWindow(e)}
-                className={`${
-                  isOpenWithNewWindow ? "bg-blue-600" : "bg-gray-300"
-                } relative inline-flex items-center h-6 rounded-full w-11`}
+                onChange={setIsOpenWithNewWindow}
+                className={clsx(
+                  isOpenWithNewWindow ? "bg-blue-600" : "bg-gray-300",
+                  "relative",
+                  "inline-flex",
+                  "items-center",
+                  "h-6",
+                  "rounded-full",
+                  "w-11"
+                )}
               >
                 <span
-                  className={`${
-                    isOpenWithNewWindow ? "translate-x-6" : "translate-x-1"
-                  } inline-block w-4 h-4 transform bg-white rounded-full transition ease-in-out duration-200`}
+                  className={clsx(
+                    isOpenWithNewWindow ? "translate-x-6" : "translate-x-1",
+                    "inline-block",
+                    "w-4",
+                    "h-4",
+                    "transform",
+                    "bg-white",
+                    "rounded-full",
+                    "transition",
+                    "ease-in-out",
+                    "duration-200"
+                  )}
                 />
               </Switch>
               <Switch.Label className="ml-2">
