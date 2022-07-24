@@ -1,5 +1,6 @@
 import $ from "@recoiljs/refine"
 import axios from "axios"
+import clsx from "clsx"
 import dayjs from "dayjs"
 import React, { useEffect, useState } from "react"
 import { atom, useRecoilValue, useRecoilState } from "recoil"
@@ -28,7 +29,7 @@ const meta = {
   id: _id,
   name: "Miyou",
   author: "ci7lus",
-  version: "0.2.3",
+  version: "0.2.4",
   description:
     "Miyouからコメントを取得するプラグインです。対応するコメントレンダラープラグインが必要です。",
   authorUrl: "https://github.com/ci7lus",
@@ -381,31 +382,45 @@ const main: InitPlugin = {
                     })
                   }}
                 >
-                  <label className="block mt-4">
+                  <label className={clsx("block", "mt-4")}>
                     <span>有効</span>
                     <input
                       type="checkbox"
-                      className="block mt-2 form-checkbox"
+                      className={clsx("block", "mt-2", "form-checkbox")}
                       checked={isEnabled || false}
                       onChange={() => setIsEnabled((enabled) => !enabled)}
                     />
                   </label>
-                  <label className="mt-4 block">
+                  <label className={clsx("mt-4", "block")}>
                     <span>モリタポのメールアドレス</span>
                     <input
                       type="text"
                       placeholder="miyou@miyou.tv"
-                      className="block mt-2 form-input rounded-md w-full text-gray-900"
+                      className={clsx(
+                        "block",
+                        "mt-2",
+                        "form-input",
+                        "rounded-md",
+                        "w-full",
+                        "text-gray-900"
+                      )}
                       value={mail || ""}
                       onChange={(e) => setMail(e.target.value)}
                     />
                   </label>
-                  <label className="mt-4 block">
+                  <label className={clsx("mt-4", "block")}>
                     <span>モリタポのパスワード</span>
                     <input
                       type={isHidden ? "password" : "text"}
                       placeholder="*****"
-                      className="block mt-2 form-input rounded-md w-full text-gray-900"
+                      className={clsx(
+                        "block",
+                        "mt-2",
+                        "form-input",
+                        "rounded-md",
+                        "w-full",
+                        "text-gray-900"
+                      )}
                       value={pass || ""}
                       onChange={(e) => setPass(e.target.value)}
                       onFocus={() => setIsHidden(false)}
@@ -414,7 +429,16 @@ const main: InitPlugin = {
                   </label>
                   <button
                     type="submit"
-                    className="bg-gray-100 text-gray-800 p-2 px-2 my-4 rounded-md focus:outline-none cursor-pointer"
+                    className={clsx(
+                      "bg-gray-100",
+                      "text-gray-800",
+                      "p-2",
+                      "px-2",
+                      "my-4",
+                      "rounded-md",
+
+                      "cursor-pointer"
+                    )}
                   >
                     保存
                   </button>

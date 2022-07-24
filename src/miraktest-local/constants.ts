@@ -4,7 +4,7 @@ export const LOCAL_META = {
   id: LOCAL_ID,
   name: "Local",
   author: "ci7lus",
-  version: "0.0.2",
+  version: "0.0.3",
   description: "ローカルファイルの再生を行うプラグインです。",
   authorUrl: "https://github.com/ci7lus",
   url: "https://github.com/ci7lus/miraktest-plugins/tree/master/src/miraktest-local",

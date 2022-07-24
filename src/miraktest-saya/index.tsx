@@ -1,4 +1,5 @@
 import $ from "@recoiljs/refine"
+import clsx from "clsx"
 import dayjs from "dayjs"
 import React, { useEffect, useRef, useState } from "react"
 import { Plus, X } from "react-feather"
@@ -33,7 +34,7 @@ const meta = {
   id: _id,
   name: "Saya",
   author: "ci7lus",
-  version: "0.3.2",
+  version: "0.3.3",
   description:
     "Sayaからコメントを取得するプラグインです。対応するコメントレンダラープラグインが必要です。",
   authorUrl: "https://github.com/ci7lus",
@@ -354,27 +355,27 @@ const main: InitPlugin = {
                     })
                   }}
                 >
-                  <label className="block mt-4">
+                  <label className={clsx("block", "mt-4")}>
                     <span>有効</span>
                     <input
                       type="checkbox"
-                      className="block mt-2 form-checkbox"
+                      className={clsx("block", "mt-2", "form-checkbox")}
                       checked={isEnabled || false}
                       onChange={() => setIsEnabled((enabled) => !enabled)}
                     />
                   </label>
-                  <label className="block mt-4">
+                  <label className={clsx("block", "mt-4")}>
                     <span>タイムシフト有効</span>
                     <input
                       type="checkbox"
-                      className="block mt-2 form-checkbox"
+                      className={clsx("block", "mt-2", "form-checkbox")}
                       checked={isTimeshiftEnabled || false}
                       onChange={() =>
                         setIsTimeshiftEnabled((enabled) => !enabled)
                       }
                     />
                   </label>
-                  <label className="mt-4 block">
+                  <label className={clsx("mt-4", "block")}>
                     <span>Saya の URL</span>
                     <datalist id="sayaUrlHistory">
                       {sayaHistoryUrl.map((url) => (
@@ -384,18 +385,35 @@ const main: InitPlugin = {
                     <input
                       type="text"
                       placeholder="https://saya"
-                      className="block mt-2 form-input rounded-md w-full text-gray-900"
+                      className={clsx(
+                        "block",
+                        "mt-2",
+                        "form-input",
+                        "rounded-md",
+                        "w-full",
+                        "text-gray-900"
+                      )}
                       value={url || ""}
                       onChange={(e) => setUrl(e.target.value)}
                       list="sayaUrlHistory"
                     />
                   </label>
-                  <label className="mt-4 block">
+                  <label className={clsx("mt-4", "block")}>
                     <span>放送波置換設定</span>
-                    <div className="flex flex-wrap space-x-2">
+                    <div className={clsx("flex", "flex-wrap", "space-x-2")}>
                       {(replaces || []).map(([before, after], idx) => (
                         <div
-                          className="p-1 px-2 bg-gray-200 text-gray-800 rounded-md flex space-x-1 items-center justify-center"
+                          className={clsx(
+                            "p-1",
+                            "px-2",
+                            "bg-gray-200",
+                            "text-gray-800",
+                            "rounded-md",
+                            "flex",
+                            "space-x-1",
+                            "items-center",
+                            "justify-center"
+                          )}
                           key={idx}
                         >
                           <span>
@@ -403,7 +421,14 @@ const main: InitPlugin = {
                           </span>
                           <span
                             title="削除する"
-                            className="flex items-center justify-center bg-gray-200 rounded-md cursor-pointer"
+                            className={clsx(
+                              "flex",
+                              "items-center",
+                              "justify-center",
+                              "bg-gray-200",
+                              "rounded-md",
+                              "cursor-pointer"
+                            )}
                             onClick={() => {
                               const copied = Object.assign([], replaces)
                               ;(copied as (string | null)[])[idx] = null
@@ -421,11 +446,18 @@ const main: InitPlugin = {
                       <option value="CS"></option>
                       <option value="SKY"></option>
                     </datalist>
-                    <div className="flex space-x-2">
+                    <div className={clsx("flex", "space-x-2")}>
                       <input
                         type="text"
                         placeholder="SKY"
-                        className="block mt-2 form-input rounded-md w-full text-gray-900"
+                        className={clsx(
+                          "block",
+                          "mt-2",
+                          "form-input",
+                          "rounded-md",
+                          "w-full",
+                          "text-gray-900"
+                        )}
                         value={repl1}
                         onChange={(e) => setRepl1(e.target.value)}
                         list="serviceTypes"
@@ -433,14 +465,32 @@ const main: InitPlugin = {
                       <input
                         type="text"
                         placeholder="GR"
-                        className="block mt-2 form-input rounded-md w-full text-gray-900"
+                        className={clsx(
+                          "block",
+                          "mt-2",
+                          "form-input",
+                          "rounded-md",
+                          "w-full",
+                          "text-gray-900"
+                        )}
                         value={repl2}
                         onChange={(e) => setRepl2(e.target.value)}
                         list="serviceTypes"
                       />
                       <button
                         type="button"
-                        className="mt-2 px-4 flex items-center justify-center text-gray-900 bg-gray-200 rounded-md focus:outline-none cursor-pointer"
+                        className={clsx(
+                          "mt-2",
+                          "px-4",
+                          "flex",
+                          "items-center",
+                          "justify-center",
+                          "text-gray-900",
+                          "bg-gray-200",
+                          "rounded-md",
+
+                          "cursor-pointer"
+                        )}
                         onClick={() => {
                           setReplaces((replaces) => [
                             ...replaces,
@@ -453,31 +503,31 @@ const main: InitPlugin = {
                       </button>
                     </div>
                   </label>
-                  <label className="block mt-4">
+                  <label className={clsx("block", "mt-4")}>
                     <span>Twitterを除外する</span>
                     <input
                       type="checkbox"
-                      className="block mt-2 form-checkbox"
+                      className={clsx("block", "mt-2", "form-checkbox")}
                       checked={isTwitterDisabled || false}
                       onChange={() =>
                         setIsTwitterDisabled((enabled) => !enabled)
                       }
                     />
                   </label>
-                  <label className="block mt-4">
+                  <label className={clsx("block", "mt-4")}>
                     <span>5chを除外する</span>
                     <input
                       type="checkbox"
-                      className="block mt-2 form-checkbox"
+                      className={clsx("block", "mt-2", "form-checkbox")}
                       checked={is5chDisabled || false}
                       onChange={() => setIs5chDisabled((enabled) => !enabled)}
                     />
                   </label>
-                  <label className="block mt-4">
+                  <label className={clsx("block", "mt-4")}>
                     <span>ニコニコ実況を除外する</span>
                     <input
                       type="checkbox"
-                      className="block mt-2 form-checkbox"
+                      className={clsx("block", "mt-2", "form-checkbox")}
                       checked={isNicojkDisabled || false}
                       onChange={() =>
                         setIsNicojkDisabled((enabled) => !enabled)
@@ -486,7 +536,16 @@ const main: InitPlugin = {
                   </label>
                   <button
                     type="submit"
-                    className="bg-gray-100 text-gray-800 p-2 px-2 my-4 rounded-md focus:outline-none cursor-pointer"
+                    className={clsx(
+                      "bg-gray-100",
+                      "text-gray-800",
+                      "p-2",
+                      "px-2",
+                      "my-4",
+                      "rounded-md",
+
+                      "cursor-pointer"
+                    )}
                   >
                     保存
                   </button>
@@ -542,14 +601,23 @@ const main: InitPlugin = {
           return (
             <>
               <style>{tailwind}</style>
-              <div className="w-full h-screen bg-gray-100 text-gray-900 flex flex-col">
+              <div
+                className={clsx(
+                  "w-full",
+                  "h-screen",
+                  "bg-gray-100",
+                  "text-gray-900",
+                  "flex",
+                  "flex-col"
+                )}
+              >
                 {playingContent?.service ? (
                   <>{playingContent.service.name}</>
                 ) : (
                   <p>サービスが不明です</p>
                 )}
                 <select
-                  className="form-select my-1 block w-full"
+                  className={clsx("form-select", "my-1", "block", "w-full")}
                   onChange={(e) => {
                     const playerId = parseInt(e.target.value)
                     if (Number.isNaN(playerId)) return
@@ -563,7 +631,7 @@ const main: InitPlugin = {
                     </option>
                   ))}
                 </select>
-                <div className="overflow-auto select-auto">
+                <div className={clsx("overflow-auto", "select-auto")}>
                   {comments.map((comment) => (
                     <p
                       key={`${comment.time}${comment.timeMs}`}

@@ -62,9 +62,9 @@ export const SearchWorkForm: React.FC<{
   }, [ref])
 
   return (
-    <div className={clsx("relative")} ref={ref}>
+    <div className="relative" ref={ref}>
       <form
-        className="flex items-center justify-center space-x-2"
+        className={clsx("flex", "items-center", "justify-center", "space-x-2")}
         onSubmit={(e) => {
           e.preventDefault()
           setSearchTerm(localTerm || null)
@@ -73,7 +73,14 @@ export const SearchWorkForm: React.FC<{
         <input
           type="text"
           placeholder="キーワードを入力…"
-          className="block form-input rounded-md w-full text-gray-900 pr-8"
+          className={clsx(
+            "block",
+            "form-input",
+            "rounded-md",
+            "w-full",
+            "text-gray-900",
+            "pr-8"
+          )}
           value={localTerm}
           onChange={(e) => setLocalTerm(e.target.value)}
           onKeyPress={(e) => {
