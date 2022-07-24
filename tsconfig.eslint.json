@@ -5,7 +5,7 @@
     "./webpack.config.ts",
     "./webpack-prebuild.config.ts",
     "./tailwind.config.js",
-    "./embedLicenseInBundlePlugin.ts"
+    "./PostProcessPlugin.ts"
   ],
   "exclude": ["node_modules"]
 }

@@ -4,7 +4,7 @@ import { LicenseWebpackPlugin } from "license-webpack-plugin"
 import type { Config } from "tailwindcss"
 import webpack from "webpack"
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer"
-import EmbedLicenseInBundlePlugin from "./embedLicenseInBundlePlugin"
+import PostProcessPlugin from "./PostProcessPlugin"
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const tailwindConfig = require("./tailwind.config")
 
@@ -157,7 +157,7 @@ const config: (
             "discord-rpc": "MIT License snek <me@gus.host>",
           },
         }) as never,
-        new EmbedLicenseInBundlePlugin(),
+        new PostProcessPlugin(),
         new webpack.ProvidePlugin({
           Buffer: ["buffer", "Buffer"],
           process: "process",

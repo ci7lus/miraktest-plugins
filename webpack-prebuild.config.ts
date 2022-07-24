@@ -2,7 +2,7 @@ import path from "path"
 import { ESBuildMinifyPlugin } from "esbuild-loader"
 import { LicenseWebpackPlugin } from "license-webpack-plugin"
 import webpack from "webpack"
-import EmbedLicenseInBundlePlugin from "./embedLicenseInBundlePlugin"
+import PostProcessPlugin from "./PostProcessPlugin"
 
 const config: webpack.Configuration = {
   entry: {
@@ -32,10 +32,7 @@ const config: webpack.Configuration = {
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".json"],
   },
-  plugins: [
-    new LicenseWebpackPlugin() as never,
-    new EmbedLicenseInBundlePlugin(),
-  ],
+  plugins: [new LicenseWebpackPlugin() as never, new PostProcessPlugin()],
   optimization: {
     splitChunks: false,
     minimizer: [new ESBuildMinifyPlugin({ target: "es2018" })],

@@ -1,8 +1,8 @@
 import fs from "fs"
 import path from "path"
 
-export default class EmbedLicenseInBundlePlugin {
-  public readonly name = "EmbedLicenseInBundlePlugin"
+export default class PostProcessPlugin {
+  public readonly name = "PostProcessPlugin"
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public apply(compiler: any) {
@@ -24,7 +24,10 @@ export default class EmbedLicenseInBundlePlugin {
           console.info(`${existsAt} -> ${bundlePath}`)
           const bundle = await fs.promises.readFile(bundlePath, "utf8")
           const license = await fs.promises.readFile(existsAt, "utf8")
-          const newBundle = `/*\n${license}\n*/\n${bundle}`.replace(
+          const version = bundle.match(/version: "(\d+\.\d+\.\d+)"/)?.[1]
+          const newBundle = `/*! ${assetName.replace(".licenses.txt", "")}${
+            version ? ` ${version}` : ""
+          } */\n/*!\n${license}\n*/\n${bundle}`.replace(
             `import{createRequire as __WEBPACK_EXTERNAL_createRequire}from"module";`,
             "const __WEBPACK_EXTERNAL_createRequire = () => (s) => require(s);"
           )
