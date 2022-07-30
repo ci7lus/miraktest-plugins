@@ -114,6 +114,15 @@ export const Renderer: InitPlugin["renderer"] = ({
           const setService = useSetRecoilState(
             atoms.globalContentPlayerSelectedServiceFamily(windowId)
           )
+          const position = useRecoilValue(
+            atoms.contentPlayerPlayingPositionSelector
+          )
+          const positionRef = useRefFromState(position)
+          const playingContentRef = useRefFromState(playingContent)
+          const isSeekableRef = useRefFromState(isSeekable)
+          const setPosition = useSetRecoilState(
+            atoms.contentPlayerPositionUpdateTriggerAtom
+          )
           useEffect(() => {
             const off = rpc.onCustomIpcListener(RMCN_ON_SET_STATE, (data) => {
               const { key, value } = data as { key: string; value: unknown }
@@ -142,6 +151,22 @@ export const Renderer: InitPlugin["renderer"] = ({
                     break
                   }
                   setVolume(volume)
+                  break
+                }
+                case "setRelatieMove": {
+                  const relativeMoveSizeInMs = parseInt(value as string)
+                  const duration = playingContentRef.current?.program?.duration
+                  if (
+                    Number.isNaN(relativeMoveSizeInMs) ||
+                    !duration ||
+                    !isSeekableRef.current
+                  ) {
+                    break
+                  }
+                  setPosition(
+                    (positionRef.current * duration + relativeMoveSizeInMs) /
+                      duration
+                  )
                   break
                 }
                 default: {
