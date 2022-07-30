@@ -123,6 +123,9 @@ export const Renderer: InitPlugin["renderer"] = ({
           const setPosition = useSetRecoilState(
             atoms.contentPlayerPositionUpdateTriggerAtom
           )
+          const setScreenshotTrigger = useSetRecoilState(
+            atoms.contentPlayerScreenshotTriggerAtom
+          )
           useEffect(() => {
             const off = rpc.onCustomIpcListener(RMCN_ON_SET_STATE, (data) => {
               const { key, value } = data as { key: string; value: unknown }
@@ -167,6 +170,10 @@ export const Renderer: InitPlugin["renderer"] = ({
                     (positionRef.current * duration + relativeMoveSizeInMs) /
                       duration
                   )
+                  break
+                }
+                case "takeScreenshot": {
+                  setScreenshotTrigger(performance.now())
                   break
                 }
                 default: {
