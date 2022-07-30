@@ -40,6 +40,8 @@
   視聴中の番組に関連するツイートを投稿します。
 - [Local](./src/miraktest-local/)<br />
   ローカルファイルの再生を行います。
+- [rmcn](./src/miraktest-rmcn/)<br />
+  リモコン用のWebSocketが生えます。
 
 ## ビルド
 

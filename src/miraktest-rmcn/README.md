@@ -4,7 +4,7 @@
 
 ## リモコン実装
 
-- [vivid-lapin/mirakt-remo](https://github.com/vivid-lapin/mirakt-remo): 携帯端末での仕様を想定したウェブリモコン<br />
+- [vivid-lapin/mirakt-remo](https://github.com/vivid-lapin/mirakt-remo): 携帯端末での使用を想定したウェブリモコン<br />
     <http://mirakt-remo.surge.sh>
     [![Image from Gyazo](https://i.gyazo.com/1797cd57e7d689564cf4c07589664e96.png)](https://gyazo.com/1797cd57e7d689564cf4c07589664e96)
 
