@@ -28,6 +28,12 @@ const entries: Entry[] = [
     externals: ["os", "fs"],
   },
   {
+    name: "miraktest-rmcn",
+    dir: "./src/miraktest-rmcn",
+    target: "electron-main",
+    externals: ["os", "fs"],
+  },
+  {
     name: "miraktest-saya",
     dir: "./src/miraktest-saya",
   },

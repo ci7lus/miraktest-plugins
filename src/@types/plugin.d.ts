@@ -22384,6 +22384,7 @@ declare type Preload = {
     ) => void
     onMediaChanged: (listener: () => void) => void
     onEncounteredError: (listener: () => void) => void
+    onBuffering: (listener: (percents: number) => void) => void
     onStopped: (listener: () => void) => void
     onEndReached: (listener: () => void) => void
     onPaused: (listener: () => void) => void
@@ -22435,6 +22436,7 @@ declare type Preload = {
       buttons: string[]
     ) => Promise<Electron.MessageBoxReturnValue>
     requestShellOpenPath: (path: string) => void
+    joinPath: (...paths: string[]) => string
     toggleAlwaysOnTop: () => void
     requestAppPath: (name: string) => Promise<string>
     requestCursorScreenPoint: () => Promise<Electron.Rectangle>
@@ -22456,6 +22458,10 @@ declare type Preload = {
       query: (arg: QuerySchema) => Promise<Program[]>
     }
     invoke: (channel: string, ...args: unknown[]) => Promise<unknown>
+    onCustomIpcListener: (
+      channel: string,
+      listener: (...args: unknown[]) => void
+    ) => () => void
   }
 }
 declare type MirakurunCompatibilityTypes = "Mirakurun" | "Mirakc"
@@ -22528,6 +22534,9 @@ export declare type PluginInRendererArgs = {
     globalActiveContentPlayerIdSelector: Recoil.RecoilValueReadOnly<
       number | null
     >
+    globalContentPlayerSelectedServiceFamily: (
+      n: number
+    ) => Recoil.RecoilState<Service | null>
     contentPlayerPlayingContentAtom: Recoil.RecoilState<ContentPlayerPlayingContent | null>
     contentPlayerServiceSelector: Recoil.RecoilValueReadOnly<Service | null>
     contentPlayerProgramSelector: Recoil.RecoilValueReadOnly<Program | null>
@@ -22615,10 +22624,10 @@ export declare type PluginDefineInRenderer = PluginMeta & {
   exposedAtoms: DefineAtom[]
   /** ウィンドウ間で共有する Atom（シリアライズ可能にすること）
    * @deprecated 後方互換性のためのフィールドです、同時に Atom に syncEffect も設定してください */
-  sharedAtoms: DefineAtom[]
+  sharedAtoms?: DefineAtom[]
   /** 保存する Atom（シリアライズ可能にすること）。
    * @deprecated 後方互換性のためのフィールドです、同時に Atom に syncEffect も設定してください */
-  storedAtoms: DefineAtom[]
+  storedAtoms?: DefineAtom[]
   /** コンポーネントとウィンドウは shadowRoot に展開されるので、各自独自に CSS をバンドルしないとスタイリングが初期化される点に注意する */
   components: ComponentWithPosition[]
   windows: {
