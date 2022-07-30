@@ -27,10 +27,12 @@ export default class PostProcessPlugin {
           const version = bundle.match(/version: "(\d+\.\d+\.\d+)"/)?.[1]
           const newBundle = `/*! ${assetName.replace(".licenses.txt", "")}${
             version ? ` ${version}` : ""
-          } */\n/*!\n${license}\n*/\n${bundle}`.replace(
-            `import{createRequire as __WEBPACK_EXTERNAL_createRequire}from"module";`,
-            "const __WEBPACK_EXTERNAL_createRequire = () => (s) => require(s);"
-          )
+          } */\n/*!\n${license}\n*/\n${bundle}`
+            .replace(
+              `import{createRequire as __WEBPACK_EXTERNAL_createRequire}from"module";`,
+              "const __WEBPACK_EXTERNAL_createRequire = () => (s) => require(s);"
+            )
+            .replace(/import\.meta\.url/g, "undefined")
           await fs.promises.writeFile(bundlePath, newBundle)
           await fs.promises.unlink(existsAt)
         }
