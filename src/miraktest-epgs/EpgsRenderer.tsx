@@ -1,4 +1,5 @@
 import $ from "@recoiljs/refine"
+import clsx from "clsx"
 import React, { useEffect, useState } from "react"
 import { atom, useRecoilValue, useRecoilState, useSetRecoilState } from "recoil"
 import { syncEffect } from "recoil-sync"
@@ -98,7 +99,7 @@ export const EpgsRenderer: InitPlugin["renderer"] = ({
                   })
                 }}
               >
-                <label className="mb-2 block">
+                <label className={clsx("mb-2", "block")}>
                   <span>EPGStation の URL</span>
                   <datalist id="epgsUrlHistory">
                     {urlHistory.map((url) => (
@@ -108,7 +109,14 @@ export const EpgsRenderer: InitPlugin["renderer"] = ({
                   <input
                     type="text"
                     placeholder="http://192.168.0.10:8888"
-                    className="block mt-2 form-input rounded-md w-full text-gray-900"
+                    className={clsx(
+                      "block",
+                      "mt-2",
+                      "form-input",
+                      "rounded-md",
+                      "w-full",
+                      "text-gray-900"
+                    )}
                     value={url || ""}
                     onChange={(e) => setUrl(e.target.value)}
                     list="epgsUrlHistory"
@@ -116,7 +124,16 @@ export const EpgsRenderer: InitPlugin["renderer"] = ({
                 </label>
                 <button
                   type="submit"
-                  className="bg-gray-100 text-gray-800 p-2 px-2 my-4 rounded-md focus:outline-none cursor-pointer"
+                  className={clsx(
+                    "bg-gray-100",
+                    "text-gray-800",
+                    "p-2",
+                    "px-2",
+                    "my-4",
+                    "rounded-md",
+
+                    "cursor-pointer"
+                  )}
                 >
                   保存
                 </button>
@@ -161,7 +178,16 @@ export const EpgsRenderer: InitPlugin["renderer"] = ({
           <>
             <style>{tailwind}</style>
             <style>{styles}</style>
-            <div className="w-full h-screen bg-gray-100 text-gray-900 flex leading-loose">
+            <div
+              className={clsx(
+                "w-full",
+                "h-screen",
+                "bg-gray-100",
+                "text-gray-900",
+                "flex",
+                "leading-loose"
+              )}
+            >
               {api && channels !== null ? (
                 <Records
                   api={api}
@@ -176,8 +202,16 @@ export const EpgsRenderer: InitPlugin["renderer"] = ({
                   }}
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center">
-                  <div className="text-gray-600 px-4 text-center">
+                <div
+                  className={clsx(
+                    "w-full",
+                    "h-full",
+                    "flex",
+                    "items-center",
+                    "justify-center"
+                  )}
+                >
+                  <div className={clsx("text-gray-600", "px-4", "text-center")}>
                     <h1 className="text-lg">
                       EPGStation の設定が行われていません。
                     </h1>

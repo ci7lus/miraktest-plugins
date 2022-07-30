@@ -1,3 +1,4 @@
+import clsx from "clsx"
 import React, { useEffect } from "react"
 import { useRecoilValue, useSetRecoilState } from "recoil"
 import { ContentPlayerPlayingContent, InitPlugin } from "../@types/plugin"
@@ -39,7 +40,16 @@ export const LocalRenderer: InitPlugin["renderer"] = ({
         return (
           <>
             <style>{tailwind}</style>
-            <div className="w-full h-screen bg-gray-100 text-gray-900 flex leading-loose">
+            <div
+              className={clsx(
+                "w-full",
+                "h-screen",
+                "bg-gray-100",
+                "text-gray-900",
+                "flex",
+                "leading-loose"
+              )}
+            >
               {services ? (
                 <FileSelector
                   services={services}
@@ -54,8 +64,16 @@ export const LocalRenderer: InitPlugin["renderer"] = ({
                   requestDialog={rpc.requestDialog}
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center">
-                  <div className="text-gray-600 px-4 text-center">
+                <div
+                  className={clsx(
+                    "w-full",
+                    "h-full",
+                    "flex",
+                    "items-center",
+                    "justify-center"
+                  )}
+                >
+                  <div className={clsx("text-gray-600", "px-4", "text-center")}>
                     <p>読み込み中</p>
                   </div>
                 </div>

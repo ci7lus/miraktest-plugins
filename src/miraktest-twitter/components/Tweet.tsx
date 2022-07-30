@@ -152,7 +152,7 @@ export const TweetComponent: React.FC<{
           "space-x-2"
         )}
       >
-        <h1 className={clsx("text-lg", "flex-shrink-0")}>ツイート</h1>
+        <h1 className={clsx("text-lg", "shrink-0")}>ツイート</h1>
         {failed && (
           <p
             className={clsx("text-red-400", "font-semibold", "truncate")}
@@ -196,7 +196,7 @@ export const TweetComponent: React.FC<{
                     "bg-gray-700",
                     "px-1",
                     "rounded-md",
-                    "flex-shrink-0",
+                    "shrink-0",
                     (hashtag + " ").includes(tag + " ") && "opacity-50"
                   )}
                   key={tag}
@@ -334,10 +334,7 @@ export const TweetComponent: React.FC<{
               <div
                 className={clsx("flex", "space-x-4", "items-center", "mb-2")}
               >
-                <img
-                  src={user.profile_image_url_https}
-                  className={clsx("h-10")}
-                />
+                <img src={user.profile_image_url_https} className="h-10" />
                 <p>@{user.screen_name}</p>
               </div>
             ) : (
@@ -436,7 +433,7 @@ export const TweetComponent: React.FC<{
                   })
               }}
             >
-              <div className={clsx("block")}>
+              <div className="block">
                 <input
                   type="text"
                   className={clsx(
@@ -497,7 +494,7 @@ export const TweetComponent: React.FC<{
                     "py-1",
                     "px-4",
                     "rounded-full",
-                    "focus:outline-none",
+
                     "disabled:opacity-50",
                     "mt-2",
                     selectedImages.length === 0 || isPosting
@@ -517,7 +514,7 @@ export const TweetComponent: React.FC<{
                     "py-1",
                     "px-4",
                     "rounded-full",
-                    "focus:outline-none",
+
                     "disabled:opacity-50",
                     "mt-2",
                     isPosting ? "opacity-50" : "opacity-100"
@@ -553,7 +550,7 @@ export const TweetComponent: React.FC<{
                   )
                 }}
                 key={imageUrl}
-                className={clsx("relative")}
+                className="relative"
                 onContextMenu={(e) => {
                   e.preventDefault()
                   const clickable = document.createElement("a")

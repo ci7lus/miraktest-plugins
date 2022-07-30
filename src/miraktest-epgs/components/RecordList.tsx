@@ -1,3 +1,4 @@
+import clsx from "clsx"
 import dayjs from "dayjs"
 import React, { useEffect, useMemo, useState } from "react"
 import {
@@ -113,17 +114,28 @@ export const RecordList: React.VFC<{
   }, [searchTerm, isRecording])
 
   return (
-    <div className="h-full flex flex-col">
-      <div className="w-full mx-auto px-2 py-2 overflow-auto">
+    <div className={clsx("h-full", "flex", "flex-col")}>
+      <div
+        className={clsx("w-full", "mx-auto", "px-2", "py-2", "overflow-auto")}
+      >
         {_records === null || !channels ? (
           <div
-            className="flex items-center justify-center h-full w-full"
+            className={clsx(
+              "flex",
+              "items-center",
+              "justify-center",
+              "h-full",
+              "w-full"
+            )}
             style={{ minHeight: "60vh" }}
           >
             Loading...
           </div>
         ) : (
-          <div {...getTableProps()} className="table w-full rounded-md">
+          <div
+            {...getTableProps()}
+            className={clsx("table", "w-full", "rounded-md")}
+          >
             <div className="table-header-group">
               {headerGroups.map((headerGroup) => (
                 <div
@@ -133,7 +145,12 @@ export const RecordList: React.VFC<{
                   {headerGroup.headers.map((column) => (
                     <div
                       {...column.getHeaderProps()}
-                      className={`table-cell text-center font-bold text-gray-800`}
+                      className={clsx(
+                        "table-cell",
+                        "text-center",
+                        "font-bold",
+                        "text-gray-800"
+                      )}
                     >
                       {column.render("Header") as React.ReactNode}
                     </div>
@@ -147,7 +164,11 @@ export const RecordList: React.VFC<{
                 return (
                   <a
                     role="cell block"
-                    className="table-row hover:bg-gray-200 cursor-pointer"
+                    className={clsx(
+                      "table-row",
+                      "hover:bg-gray-200",
+                      "cursor-pointer"
+                    )}
                     onClick={(e) => {
                       e.preventDefault()
                       setRecord((prev) =>
@@ -167,7 +188,12 @@ export const RecordList: React.VFC<{
                       return (
                         <span
                           {...cell.getCellProps()}
-                          className={`table-cell px-2 whitespace-pre truncate`}
+                          className={clsx(
+                            "table-cell",
+                            "px-2",
+                            "whitespace-pre",
+                            "truncate"
+                          )}
                         >
                           {cell.render("Cell") as React.ReactNode}
                         </span>
@@ -180,7 +206,16 @@ export const RecordList: React.VFC<{
           </div>
         )}
       </div>
-      <div className="px-2 my-4 flex justify-center items-center space-x-4">
+      <div
+        className={clsx(
+          "px-2",
+          "my-4",
+          "flex",
+          "justify-center",
+          "items-center",
+          "space-x-4"
+        )}
+      >
         <button
           type="button"
           onClick={() => gotoPage(0)}

@@ -181,11 +181,10 @@ export const AnnictTrack: React.FC<{
           "items-center"
         )}
       >
-        <h1 className={clsx("text-lg")}>視聴記録</h1>
+        <h1 className="text-lg">視聴記録</h1>
         <div className={clsx("flex", "items-center", "space-x-2")}>
           <button
             className={clsx(
-              "focus:outline-none",
               "rounded-md",
               "bg-gray-900",
               "hover:bg-gray-800",
@@ -213,7 +212,7 @@ export const AnnictTrack: React.FC<{
                   : undefined,
               }}
             ></div>
-            <div className={clsx("p-2")}>
+            <div className="p-2">
               <a
                 href={`https://annict.com/works/${work.annictId}`}
                 target="_blank"
@@ -250,11 +249,11 @@ export const AnnictTrack: React.FC<{
                 ))}
               </select>
               {work.seasonName ? (
-                <div className={clsx("pb-1")}>
+                <div className="pb-1">
                   <span className={clsx("text-gray-400", "text-sm", "block")}>
                     シーズン
                   </span>
-                  <p className={clsx("truncate")}>
+                  <p className="truncate">
                     {work.seasonYear}年{SEASON_LABEL[work.seasonName]}
                   </p>
                 </div>
@@ -262,7 +261,7 @@ export const AnnictTrack: React.FC<{
                 <></>
               )}
               {work.twitterHashtag ? (
-                <div className={clsx("pb-1")}>
+                <div className="pb-1">
                   <span className={clsx("text-gray-400", "text-sm", "block")}>
                     ハッシュタグ
                   </span>
@@ -333,7 +332,7 @@ export const AnnictTrack: React.FC<{
                           "px-2",
                           "py-1",
                           "border",
-                          "focus:outline-none",
+
                           "transition-colors",
                           idx === 0 && "rounded-l-md",
                           ratingCount - 1 === idx && "rounded-r-md",
@@ -364,7 +363,7 @@ export const AnnictTrack: React.FC<{
                     onChange={(e) => setComment(e.target.value)}
                   ></textarea>
                   <div className="mb-2">
-                    <label className="inline-flex items-center">
+                    <label className={clsx("inline-flex", "items-center")}>
                       <input
                         type="checkbox"
                         className="form-checkbox"
@@ -375,7 +374,9 @@ export const AnnictTrack: React.FC<{
                       />
                       <span className="ml-2">Twitter</span>
                     </label>
-                    <label className="inline-flex items-center ml-6">
+                    <label
+                      className={clsx("inline-flex", "items-center", "ml-6")}
+                    >
                       <input
                         type="checkbox"
                         className="form-checkbox"
@@ -403,7 +404,7 @@ export const AnnictTrack: React.FC<{
                         "py-1",
                         "px-4",
                         "rounded-full",
-                        "focus:outline-none",
+
                         "disabled:opacity-50"
                       )}
                       disabled={isRecording}
@@ -425,7 +426,7 @@ export const AnnictTrack: React.FC<{
             )}
             <div className={clsx("w-full", "overflow-auto", "px-2")}>
               {work.episodes?.nodes?.map((episode) => (
-                <p
+                <a
                   onClick={() => {
                     setEpisodeId((prev) =>
                       prev === episode?.annictId
@@ -443,11 +444,11 @@ export const AnnictTrack: React.FC<{
                     "transition-colors"
                   )}
                 >
-                  <span className={clsx("truncate")}>
+                  <span className="truncate">
                     {episode?.numberText || episode?.number} {episode?.title}
                   </span>
                   <span>{episode?.viewerRecordsCount}</span>
-                </p>
+                </a>
               ))}
             </div>
           </div>

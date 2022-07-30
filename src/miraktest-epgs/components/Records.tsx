@@ -25,10 +25,20 @@ export const Records: React.VFC<{
   const [isRecording, setIsRecording] = useState(false)
 
   return (
-    <div className="w-full h-full flex flex-col">
-      <div className="w-full bg-gray-800 text-gray-200">
-        <div className="w-full py-2 pl-4 pr-2 flex items-center justify-between">
-          <h2 className="font-semibold text-lg">録画番組</h2>
+    <div className={clsx("w-full", "h-full", "flex", "flex-col")}>
+      <div className={clsx("w-full", "bg-gray-800", "text-gray-200")}>
+        <div
+          className={clsx(
+            "w-full",
+            "py-2",
+            "pl-4",
+            "pr-2",
+            "flex",
+            "items-center",
+            "justify-between"
+          )}
+        >
+          <h2 className={clsx("font-semibold", "text-lg")}>録画番組</h2>
           <div
             className={clsx(
               "w-1/2",
@@ -42,7 +52,7 @@ export const Records: React.VFC<{
               type="button"
               onClick={() => setReload(performance.now())}
               className={clsx(
-                "flex-shrink-0",
+                "shrink-0",
                 "bg-gray-900",
                 "hover:bg-gray-800",
                 "p-1",
@@ -52,25 +62,52 @@ export const Records: React.VFC<{
               <RotateCw size={20} />
             </button>
             <Switch.Group>
-              <div className="flex items-center justify-center flex-shrink-0">
+              <div
+                className={clsx(
+                  "flex",
+                  "items-center",
+                  "justify-center",
+                  "shrink-0"
+                )}
+              >
                 <Switch
                   checked={isRecording}
-                  onChange={(e) => setIsRecording(e)}
-                  className={`${
-                    isRecording ? "bg-blue-600" : "bg-gray-300"
-                  } relative inline-flex items-center h-6 rounded-full w-11`}
+                  onChange={setIsRecording}
+                  className={clsx(
+                    isRecording ? "bg-blue-600" : "bg-gray-300",
+                    "relative",
+                    "inline-flex",
+                    "items-center",
+                    "h-6",
+                    "rounded-full",
+                    "w-11"
+                  )}
                 >
                   <span
-                    className={`${
-                      isRecording ? "translate-x-6" : "translate-x-1"
-                    } inline-block w-4 h-4 transform bg-white rounded-full transition ease-in-out duration-200`}
+                    className={clsx(
+                      isRecording ? "translate-x-6" : "translate-x-1",
+                      "inline-block",
+                      "w-4",
+                      "h-4",
+                      "bg-white",
+                      "rounded-full",
+                      "transition",
+                      "ease-in-out",
+                      "duration-200"
+                    )}
                   />
                 </Switch>
                 <Switch.Label className="ml-2">録画中</Switch.Label>
               </div>
             </Switch.Group>
             <form
-              className="flex items-center justify-center space-x-2 w-full"
+              className={clsx(
+                "flex",
+                "items-center",
+                "justify-center",
+                "space-x-2",
+                "w-full"
+              )}
               onSubmit={(e) => {
                 e.preventDefault()
                 setSearchTerm(localTerm || null)
@@ -80,7 +117,13 @@ export const Records: React.VFC<{
               <input
                 type="text"
                 placeholder="キーワードを入力…"
-                className="block form-input rounded-md w-full text-gray-900"
+                className={clsx(
+                  "block",
+                  "form-input",
+                  "rounded-md",
+                  "w-full",
+                  "text-gray-900"
+                )}
                 value={localTerm}
                 onChange={(e) => setLocalTerm(e.target.value)}
                 onKeyPress={(e) => {
@@ -94,7 +137,7 @@ export const Records: React.VFC<{
           </div>
         </div>
       </div>
-      <div className="w-full flex overflow-auto">
+      <div className={clsx("w-full", "flex", "overflow-auto")}>
         <div className={record ? "w-2/3" : "w-full"}>
           <RecordList
             api={api}
@@ -106,7 +149,7 @@ export const Records: React.VFC<{
           />
         </div>
         {record ? (
-          <div className="w-1/3 h-full overflow-auto">
+          <div className={clsx("w-1/3", "h-full", "overflow-auto")}>
             <RecordDetail
               api={api}
               record={record}
