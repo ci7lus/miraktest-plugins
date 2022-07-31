@@ -109,6 +109,9 @@ export const Renderer: InitPlugin["renderer"] = ({
           const services = useRecoilValue(atoms.mirakurunServicesSelector)
           const servicesRef = useRefFromState(services)
           useEffect(() => {
+            if (!services) {
+              return
+            }
             rpc.invoke(RMCN_SET_SERVICES, services)
           }, [services])
           const setService = useSetRecoilState(
