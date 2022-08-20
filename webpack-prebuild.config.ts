@@ -31,8 +31,26 @@ const config: webpack.Configuration = {
   },
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".json"],
+    fallback: {
+      http: require.resolve("stream-http"),
+      https: require.resolve("https-browserify"),
+      crypto: require.resolve("crypto-browserify"),
+      querystring: require.resolve("querystring-es3"),
+      stream: require.resolve("stream-browserify"),
+      path: require.resolve("path-browserify"),
+      url: require.resolve("url"),
+      process: require.resolve("process"),
+      buffer: require.resolve("buffer"),
+    },
   },
-  plugins: [new LicenseWebpackPlugin() as never, new PostProcessPlugin()],
+  plugins: [
+    new LicenseWebpackPlugin() as never,
+    new PostProcessPlugin(),
+    new webpack.ProvidePlugin({
+      Buffer: ["buffer", "Buffer"],
+      process: "process/browser",
+    }),
+  ],
   optimization: {
     splitChunks: false,
     minimizer: [new ESBuildMinifyPlugin({ target: "es2018" })],

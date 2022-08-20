@@ -69,6 +69,11 @@ const entries: Entry[] = [
     name: "miraktest-local",
     dir: "./src/miraktest-local",
   },
+  {
+    name: "miraktest-gdrive",
+    dir: "./src/miraktest-gdrive",
+    target: "electron-main",
+  },
 ]
 
 const config: (
@@ -161,6 +166,7 @@ const config: (
         new LicenseWebpackPlugin({
           licenseTextOverrides: {
             "discord-rpc": "MIT License snek <me@gus.host>",
+            jsbn: "Copyright (c) 2003-2005 Tom Wu <tjw@cs.Stanford.EDU>",
           },
         }) as never,
         new PostProcessPlugin(),
