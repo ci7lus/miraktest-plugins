@@ -53,6 +53,10 @@ jobs:
 
     needs: lint
 
+    env:
+      GDRIVE_CLIENT_ID: ${{ secrets.GDRIVE_CLIENT_ID }}
+      GDRIVE_CLIENT_SECRET: ${{ secrets.GDRIVE_CLIENT_SECRET }}
+
     steps:
       - uses: actions/checkout@v2
         with:
