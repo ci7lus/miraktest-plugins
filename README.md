@@ -42,6 +42,8 @@
   ローカルファイルの再生を行います。
 - [rmcn](./src/miraktest-rmcn/)<br />
   リモコン用のWebSocketが生えます。
+- [GDrive](./src/miraktest-gdrive/)<br />
+  Google Drive上の動画ファイルの再生を行えます。
 
 ## ビルド
 
