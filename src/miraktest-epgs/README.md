@@ -1,6 +1,6 @@
 # miraktest-epgs
 
-[l3tnun/EPGStation](https://github.com/l3tnun/EPGStation) との連携を行うプラグインです。<br />
+[l3tnun/EPGStation](https://github.com/l3tnun/EPGStation)(v2) との連携を行うプラグインです。<br />
 録画番組の再生が可能になります。
 
 ## サンプルイメージ

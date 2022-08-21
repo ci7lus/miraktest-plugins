@@ -27,7 +27,7 @@
 - [DPlayer](./src/miraktest-dplayer)<br />
   (v1 標準機能代替) Saya プラグインと連携し、コメントを表示します。
 - [EPGStation](./src/miraktest-epgs)<br />
-  EPGStation と連携し、録画番組を再生します。
+  EPGStation(v2) と連携し、録画番組を再生します。
 - [Annict](./src/miraktest-annict)<br />
   Annict と連携し、視聴中のアニメを記録します。
 - [Miyou](./src/miraktest-miyou)<br />
