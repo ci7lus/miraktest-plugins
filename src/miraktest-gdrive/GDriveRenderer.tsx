@@ -102,30 +102,7 @@ export const GDriveRenderer: InitPlugin["renderer"] = ({
             <>
               <style>{tailwind}</style>
               <div className="p-4">
-                <p className="text-lg">Google Drive</p>
-                {port && (
-                  <>
-                    <h3 className={clsx("text-base", "mt-4")}>
-                      プロキシのポート
-                    </h3>
-                    <input
-                      type="text"
-                      className={clsx(
-                        "block",
-                        "mt-2",
-                        "form-input",
-                        "rounded-md",
-                        "w-full",
-                        "text-gray-900"
-                      )}
-                      disabled={true}
-                      value={port}
-                      onClick={(e) => {
-                        e.currentTarget.select()
-                      }}
-                    />
-                  </>
-                )}
+                <p className="text-xl">Google Drive</p>
                 <form
                   onSubmit={(e) => {
                     e.preventDefault()
@@ -173,25 +150,18 @@ export const GDriveRenderer: InitPlugin["renderer"] = ({
                       onBlur={() => setFocusingSensitive(false)}
                     />
                   </label>
-                  <label className={clsx("block", "mt-4")}>
-                    <span>アクセストークン</span>
-                    <input
-                      type={focusingSensitive ? "text" : "password"}
-                      placeholder=""
-                      className={clsx(
-                        "block",
-                        "mt-2",
-                        "form-input",
-                        "rounded-md",
-                        "w-full",
-                        "text-gray-900"
-                      )}
-                      value={accessToken || ""}
-                      onChange={(e) => setAccessToken(e.target.value)}
-                      onFocus={() => setFocusingSensitive(true)}
-                      onBlur={() => setFocusingSensitive(false)}
-                    />
-                  </label>
+                  <span
+                    className={clsx(
+                      "block",
+                      "text-sm",
+                      "text-gray-300",
+                      "mt-2"
+                    )}
+                  >
+                    クライアントIDとクライアントシークレットを空欄にするとデフォルトのものが使用されます。
+                    カスタムのクライアント ID を使用する場合には、Google Drive
+                    API を有効化してください。
+                  </span>
                   <label className={clsx("block", "mt-4")}>
                     <span>リフレッシュトークン</span>
                     <input
@@ -211,6 +181,35 @@ export const GDriveRenderer: InitPlugin["renderer"] = ({
                       onBlur={() => setFocusingSensitive(false)}
                     />
                   </label>
+                  <label className={clsx("block", "mt-4")}>
+                    <span>アクセストークン</span>
+                    <input
+                      type={focusingSensitive ? "text" : "password"}
+                      placeholder=""
+                      className={clsx(
+                        "block",
+                        "mt-2",
+                        "form-input",
+                        "rounded-md",
+                        "w-full",
+                        "text-gray-900"
+                      )}
+                      value={accessToken || ""}
+                      onChange={(e) => setAccessToken(e.target.value)}
+                      onFocus={() => setFocusingSensitive(true)}
+                      onBlur={() => setFocusingSensitive(false)}
+                    />
+                  </label>
+                  <span
+                    className={clsx(
+                      "block",
+                      "text-sm",
+                      "text-gray-300",
+                      "mt-2"
+                    )}
+                  >
+                    アクセストークンが失効した場合はリフレッシュトークンを用いて更新されるため、通常は変更する必要はありません。連携を解除するなどしてリフレッシュトークンを失効させた場合は、下のボタンから再度連携を行えます。
+                  </span>
                   <button
                     type="submit"
                     className={clsx(
@@ -228,7 +227,8 @@ export const GDriveRenderer: InitPlugin["renderer"] = ({
                     更新
                   </button>
                 </form>
-                <div className="my-4">
+                <div className="mb-4">
+                  <p className={clsx("text-lg", "mb-2")}>連携の更新</p>
                   <button
                     type="button"
                     className={clsx(
@@ -267,6 +267,18 @@ export const GDriveRenderer: InitPlugin["renderer"] = ({
                     Googleアカウントでログイン
                   </button>
                 </div>
+                {port && (
+                  <span
+                    className={clsx(
+                      "block",
+                      "text-sm",
+                      "text-gray-300",
+                      "mt-2"
+                    )}
+                  >
+                    プロキシに使用しているポート: {port}
+                  </span>
+                )}
               </div>
             </>
           )
