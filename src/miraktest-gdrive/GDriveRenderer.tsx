@@ -314,7 +314,7 @@ export const GDriveRenderer: InitPlugin["renderer"] = ({
           setSessionError(null)
           const params = new URLSearchParams()
           params.set("client_id", useClientId)
-          params.set("client_secret", useClientId)
+          params.set("client_secret", useClientSecret)
           params.set("grant_type", "refresh_token")
           params.set("refresh_token", refreshToken)
           const result = await fetch("https://oauth2.googleapis.com/token", {
