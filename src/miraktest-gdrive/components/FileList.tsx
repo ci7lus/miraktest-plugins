@@ -33,10 +33,11 @@ const columns = [
 ]
 
 export const FileList: React.FC<{
+  api: typeof gapi.client.drive
   searchTerm: string | null
   setFile: React.Dispatch<React.SetStateAction<File | null>>
   reload: number
-}> = ({ searchTerm, setFile, reload }) => {
+}> = ({ api, searchTerm, setFile, reload }) => {
   const [_records, setFiles] = useState<File[] | null>(null)
   const data = useMemo(() => _records || [], [_records])
 
@@ -63,8 +64,11 @@ export const FileList: React.FC<{
         orderBy: "modifiedTime desc",
         fields:
           "nextPageToken, files(id, name, createdTime, modifiedTime, size, thumbnailLink, videoMediaMetadata(width, height, durationMillis), webContentLink, exportLinks)",
+        corpora: "allDrives",
         supportsAllDrives: true,
         includeTeamDriveItems: true,
+        supportsTeamDrives: true,
+        includeItemsFromAllDrives: true,
       }
       return arg
     },
@@ -73,7 +77,7 @@ export const FileList: React.FC<{
 
   useEffect(() => {
     setIsLoading(true)
-    gapi.client.drive.files
+    api.files
       .list(argument())
       .then((result) => {
         setFiles(result.result.files || [])
@@ -91,7 +95,7 @@ export const FileList: React.FC<{
       return
     }
     setIsLoading(true)
-    gapi.client.drive.files
+    api.files
       .list(argument(moreToken))
       .then((result) => {
         setFiles((prev) => [...(prev || []), ...(result.result.files || [])])

@@ -6,6 +6,7 @@ import { FileDetail } from "./FileDetail"
 import { FileList } from "./FileList"
 
 export const FileSelector: React.FC<{
+  api: typeof gapi.client.drive
   services: Service[]
   setPlayingContent: React.Dispatch<
     React.SetStateAction<ContentPlayerPlayingContent | null>
@@ -14,6 +15,7 @@ export const FileSelector: React.FC<{
   port: number
   accessToken: string
 }> = ({
+  api,
   services,
   setPlayingContent,
   openContentPlayer,
@@ -104,6 +106,7 @@ export const FileSelector: React.FC<{
       <div className={clsx("w-full", "flex", "overflow-auto")}>
         <div className={file ? "w-2/3" : "w-full"}>
           <FileList
+            api={api}
             searchTerm={searchTerm || null}
             setFile={setFile}
             reload={reload}
@@ -118,6 +121,7 @@ export const FileSelector: React.FC<{
               openContentPlayer={openContentPlayer}
               port={port}
               accessToken={accessToken}
+              key={file.id}
             />
           </div>
         ) : (

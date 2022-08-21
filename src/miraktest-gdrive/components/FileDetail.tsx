@@ -1,14 +1,13 @@
 import { Switch } from "@headlessui/react"
 import clsx from "clsx"
 import dayjs from "dayjs"
-import React, { useCallback, useEffect, useMemo, useState } from "react"
+import React, { useCallback, useState } from "react"
 import { Play } from "react-feather"
 import {
   ContentPlayerPlayingContent,
   Program,
   Service,
 } from "../../@types/plugin"
-import { AutoLinkedText } from "../../shared/AutoLinkedText"
 
 import "dayjs/locale/ja"
 dayjs.locale("ja")
@@ -31,28 +30,17 @@ export const FileDetail: React.FC<{
   accessToken,
 }) => {
   const [isOpenWithNewWindow, setIsOpenWithNewWindow] = useState(false)
-  const durationMills = useMemo(
-    () => parseInt(file.videoMediaMetadata?.durationMillis || "1800000"), // 30分
-    [file]
+  const durationMills = parseInt(
+    file.videoMediaMetadata?.durationMillis || "1800000" // 30分
   )
   const [startAtOver, setStartAtOver] = useState(
     dayjs(file.modifiedTime)
       .subtract(durationMills, "ms")
       .format("YYYY-MM-DDTHH:mm")
   )
-  useEffect(() => {
-    setStartAtOver(
-      dayjs(file.modifiedTime)
-        .subtract(durationMills, "ms")
-        .format("YYYY-MM-DDTHH:mm")
-    )
-  }, [file])
   const [durationOver, setDurationOver] = useState(
     Math.ceil(durationMills / 1000 / 60)
   )
-  useEffect(() => {
-    setDurationOver(Math.ceil(durationMills / 1000 / 60))
-  }, [durationMills])
   const [serviceId, setServiceId] = useState(0)
 
   const play = useCallback(() => {
@@ -67,11 +55,10 @@ export const FileDetail: React.FC<{
       name: file.name,
       description: file.description,
     }
-    const service = services.find((service) => service.id === serviceId)
+    const service = services.find((service) => service.serviceId === serviceId)
     const url = new URL(`http://localhost`)
     url.port = port.toString()
     url.pathname = `/file/${file.id}`
-    url.searchParams.set("access_token", accessToken)
     const payload = {
       contentType: "GoogleDrive",
       url: url.href,
@@ -83,7 +70,16 @@ export const FileDetail: React.FC<{
     } else {
       setPlayingContent(payload)
     }
-  }, [file, startAtOver, durationOver, isOpenWithNewWindow, port, accessToken])
+  }, [
+    file,
+    startAtOver,
+    durationOver,
+    isOpenWithNewWindow,
+    port,
+    accessToken,
+    services,
+    serviceId,
+  ])
 
   return (
     <div
@@ -264,23 +260,6 @@ export const FileDetail: React.FC<{
             </button>
           </div>
         </form>
-        <div
-          className={clsx(
-            "w-full",
-            "bg-gray-200",
-            "whitespace-pre-wrap",
-            "rounded-md",
-            "p-4",
-            "md:my-2",
-            "text-sm",
-            "leading-relaxed",
-            "programDescription"
-          )}
-        >
-          <AutoLinkedText>
-            {[file.description].filter((s) => !!s).join("\n\n")}
-          </AutoLinkedText>
-        </div>
       </div>
     </div>
   )

@@ -11,3 +11,5 @@ export const GDRIVE_META = {
 }
 export const GDRIVE_WINDOW_ID = `${GDRIVE_ID}.gdrive`
 export const GDRIVE_GET_PORT = `${GDRIVE_PREFIX}.getPort`
+export const GDRIVE_SET_CRED = `${GDRIVE_PREFIX}.setCred`
+export const GDRIVE_SET_ACCESS_TOKEN = `${GDRIVE_PREFIX}.setAccessToken`

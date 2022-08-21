@@ -1,5 +1,6 @@
 import path from "path"
 import { ESBuildMinifyPlugin } from "esbuild-loader"
+import { encode } from "js-base64"
 import { LicenseWebpackPlugin } from "license-webpack-plugin"
 import type { Config } from "tailwindcss"
 import webpack from "webpack"
@@ -173,6 +174,19 @@ const config: (
         new webpack.ProvidePlugin({
           Buffer: ["buffer", "Buffer"],
           process: "process",
+        }),
+        new webpack.DefinePlugin({
+          "process.env.GDRIVE_CRED": JSON.stringify(
+            Array.from(
+              encode(
+                `${process.env.GDRIVE_CLIENT_ID || ""},${
+                  process.env.GDRIVE_CLIENT_SECRET || ""
+                }`
+              )
+            )
+              .reverse()
+              .join("")
+          ),
         }),
       ],
       optimization: {

@@ -1,10 +1,24 @@
 import { Server } from "net"
+import { URLSearchParams } from "url"
 import Router from "@koa/router"
 import axios from "axios"
 import getPort from "get-port"
 import Koa from "koa"
 import { InitPlugin } from "../@types/plugin"
-import { GDRIVE_GET_PORT, GDRIVE_META, GDRIVE_WINDOW_ID } from "./constants"
+import {
+  GDRIVE_GET_PORT,
+  GDRIVE_META,
+  GDRIVE_SET_ACCESS_TOKEN,
+  GDRIVE_SET_CRED,
+  GDRIVE_WINDOW_ID,
+} from "./constants"
+
+type OAuth2Cred = {
+  clientId: string
+  clientSecret: string
+  challenge: string
+  redirectUri: string
+}
 
 export const Main: InitPlugin["main"] = async ({ packages, functions }) => {
   let server: Server | null = null
@@ -12,14 +26,32 @@ export const Main: InitPlugin["main"] = async ({ packages, functions }) => {
     ...GDRIVE_META,
     setup: async () => {
       const port = await getPort({ port: 10172 })
+      let oauth2Cred: OAuth2Cred | null = null
+      let oauth2CredSender:
+        | Parameters<typeof packages.Electron.browserWindow.fromWebContents>[0]
+        | null = null
       packages.Electron.ipcMain.handle(GDRIVE_GET_PORT, () => port)
+      packages.Electron.ipcMain.handle(
+        GDRIVE_SET_CRED,
+        (event, data: OAuth2Cred) => {
+          oauth2CredSender = event.sender
+          oauth2Cred = data
+        }
+      )
+      let oauth2AccessToken: string | null = null
+      packages.Electron.ipcMain.handle(GDRIVE_SET_ACCESS_TOKEN, (_, token) => {
+        oauth2AccessToken = token
+      })
       const koa = new Koa()
       const router = new Router()
       router.use(async (ctx, next) => {
         ctx.set("Access-Control-Allow-Origin", "*")
-        await next()
+        try {
+          await next()
+        } catch (error) {
+          console.error(error)
+        }
       })
-
       router.options("(.*)", async (ctx) => {
         ctx.set("Access-Control-Allow-Methods", "OPTIONS, GET")
         ctx.set("Access-Control-Allow-Headers", "*")
@@ -31,18 +63,58 @@ export const Main: InitPlugin["main"] = async ({ packages, functions }) => {
         ctx.body = ""
         ctx.status = 204
       })
-      koa.onerror = (err) => {
+      koa.on("error", (err) => {
         console.error(err, "koa error")
-      }
+      })
+      router.get("/oauth2redirect", async (ctx) => {
+        if (!oauth2Cred || !oauth2CredSender) {
+          ctx.status = 500
+          ctx.body = "oauth2Cred is null"
+          return
+        }
+        const code = ctx.query.code
+        if (typeof code !== "string") {
+          ctx.status = 400
+          ctx.body = "code is not string"
+          return
+        }
+        const params = new URLSearchParams()
+        params.set("code", code)
+        params.set("code_verifier", oauth2Cred.challenge)
+        params.set("client_id", oauth2Cred.clientId)
+        params.set("client_secret", oauth2Cred.clientSecret)
+        params.set("redirect_uri", oauth2Cred.redirectUri)
+        params.set("grant_type", "authorization_code")
+        const req = await axios.post<{
+          access_token: string
+          refresh_token: string
+        }>("https://oauth2.googleapis.com/token", params, {
+          validateStatus: () => true,
+        })
+        if (
+          (req.status === 200 && typeof req.data.access_token === "string") ||
+          typeof req.data.refresh_token === "string"
+        ) {
+          oauth2CredSender.send(GDRIVE_SET_CRED, req.data)
+          ctx.body = "success"
+        } else {
+          ctx.body = "maybe failed"
+        }
+        console.info(req.data)
+        ctx.status = 200
+      })
       router.get("/file/:id", async (ctx) => {
         const id = ctx.params.id
-        const accessToken = ctx.request.query.access_token
-        if (typeof id !== "string" || typeof accessToken !== "string") {
-          console.warn("[gdrive] access_token or id missing")
+        if (typeof id !== "string") {
+          console.warn("[gdrive] idd missing")
           ctx.status = 400
           return
         }
-
+        if (!oauth2AccessToken) {
+          console.warn("[gdrive] oauth2AccessToken is null")
+          ctx.status = 500
+          return
+        }
         const targetUrl = `https://www.googleapis.com/drive/v3/files/${id}?alt=media`
         const cancelToken = axios.CancelToken.source()
         const req = await axios.get(targetUrl, {
@@ -50,14 +122,14 @@ export const Main: InitPlugin["main"] = async ({ packages, functions }) => {
             "user-agent": ctx.request.headers["user-agent"],
             accept: "*/*",
             range: ctx.request.headers.range,
-            authorization: `Bearer ${accessToken}`,
+            authorization: `Bearer ${oauth2AccessToken}`,
           },
           validateStatus: () => true,
           responseType: "stream",
           cancelToken: cancelToken.token,
         })
-        ctx.onerror = (err) => console.error(err)
-        ctx.req.on("error", (err) => console.error(err))
+        ctx.onerror = (err) => console.error(err, "ctx.onerror")
+        ctx.req.on("error", (err) => console.error(err, "ctx.req.on.error"))
         ctx.body = req.data
         console.info(
           "[gdrive] file proxing:",
@@ -78,7 +150,7 @@ export const Main: InitPlugin["main"] = async ({ packages, functions }) => {
             }
           }
           ctx.req.once("close", () => {
-            cancelToken.cancel()
+            setTimeout(() => cancelToken.cancel(), 1000)
           })
         } else {
           console.info("[gdrive] Request failed!: ", req.status)
@@ -99,6 +171,8 @@ export const Main: InitPlugin["main"] = async ({ packages, functions }) => {
         server.close()
       }
       packages.Electron.ipcMain.removeHandler(GDRIVE_GET_PORT)
+      packages.Electron.ipcMain.removeHandler(GDRIVE_SET_CRED)
+      packages.Electron.ipcMain.removeHandler(GDRIVE_SET_ACCESS_TOKEN)
     },
     appMenu: {
       label: "Google Drive",
