@@ -1,6 +1,6 @@
 # miraktest-gdrive
 
-Google Drive上の動画ファイルの再生を行うためのプラグインです。
+Google Drive上の動画ファイルの再生を行うためのプラグインです。v2.0.0-rc2以上が必要です。
 
 ## サンプルイメージ
 
