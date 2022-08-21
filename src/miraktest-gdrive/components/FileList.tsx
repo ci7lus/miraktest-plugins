@@ -63,7 +63,7 @@ export const FileList: React.FC<{
         }mimeType contains 'video/' and trashed = false`,
         orderBy: "modifiedTime desc",
         fields:
-          "nextPageToken, files(id, name, createdTime, modifiedTime, size, thumbnailLink, videoMediaMetadata(width, height, durationMillis), webContentLink, exportLinks)",
+          "nextPageToken, files(id, name, modifiedTime, size, thumbnailLink, videoMediaMetadata(width, height, durationMillis))",
         corpora: "allDrives",
         supportsAllDrives: true,
         includeTeamDriveItems: true,
@@ -77,9 +77,13 @@ export const FileList: React.FC<{
 
   useEffect(() => {
     setIsLoading(true)
+    let isCanceled = false
     api.files
       .list(argument())
       .then((result) => {
+        if (isCanceled) {
+          return
+        }
         setFiles(result.result.files || [])
         setMoreToken(result.result.nextPageToken || null)
         setIsLoading(false)
@@ -89,6 +93,9 @@ export const FileList: React.FC<{
         console.error("ファイルの取得に失敗しました")
         setIsLoading(false)
       })
+    return () => {
+      isCanceled = true
+    }
   }, [searchTerm, reload])
   const handleLoadMore = useCallback(() => {
     if (!moreToken) {

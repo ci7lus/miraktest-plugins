@@ -44,6 +44,9 @@ export const FileDetail: React.FC<{
   const [serviceId, setServiceId] = useState(0)
 
   const play = useCallback(() => {
+    // それっぽい文字列を取り出す
+    const spl = file.name?.replace(/\[.{3,}?\]/g, "").split(".") || []
+    spl.pop()
     const program: Program = {
       id: -1,
       eventId: -1,
@@ -52,8 +55,7 @@ export const FileDetail: React.FC<{
       startAt: dayjs(startAtOver).unix() * 1000,
       duration: durationOver * 1000 * 60 - 3000,
       isFree: true,
-      name: file.name,
-      description: file.description,
+      name: spl.join(""),
     }
     const service = services.find((service) => service.serviceId === serviceId)
     const url = new URL(`http://localhost`)
