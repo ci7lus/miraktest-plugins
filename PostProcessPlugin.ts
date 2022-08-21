@@ -33,6 +33,10 @@ export default class PostProcessPlugin {
               "const __WEBPACK_EXTERNAL_createRequire = () => (s) => require(s);"
             )
             .replace(/import\.meta\.url/g, "undefined")
+            .replace(
+              '__WEBPACK_EXTERNAL_createRequire(n.url)("fs")',
+              '{...__WEBPACK_EXTERNAL_createRequire(n.url)("fs"),ReadStream:class ReadStream{},WriteStream:class WriteStream{}}'
+            )
           await fs.promises.writeFile(bundlePath, newBundle)
           await fs.promises.unlink(existsAt)
         }

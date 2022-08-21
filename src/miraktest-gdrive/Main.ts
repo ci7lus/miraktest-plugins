@@ -46,11 +46,7 @@ export const Main: InitPlugin["main"] = async ({ packages, functions }) => {
       const router = new Router()
       router.use(async (ctx, next) => {
         ctx.set("Access-Control-Allow-Origin", "*")
-        try {
-          await next()
-        } catch (error) {
-          console.error(error)
-        }
+        await next()
       })
       router.options("(.*)", async (ctx) => {
         ctx.set("Access-Control-Allow-Methods", "OPTIONS, GET")
@@ -62,9 +58,6 @@ export const Main: InitPlugin["main"] = async ({ packages, functions }) => {
         }
         ctx.body = ""
         ctx.status = 204
-      })
-      koa.on("error", (err) => {
-        console.error(err, "koa error")
       })
       router.get("/oauth2redirect", async (ctx) => {
         if (!oauth2Cred || !oauth2CredSender) {
@@ -128,8 +121,6 @@ export const Main: InitPlugin["main"] = async ({ packages, functions }) => {
           responseType: "stream",
           cancelToken: cancelToken.token,
         })
-        ctx.onerror = (err) => console.error(err, "ctx.onerror")
-        ctx.req.on("error", (err) => console.error(err, "ctx.req.on.error"))
         ctx.body = req.data
         console.info(
           "[gdrive] file proxing:",
@@ -150,7 +141,7 @@ export const Main: InitPlugin["main"] = async ({ packages, functions }) => {
             }
           }
           ctx.req.once("close", () => {
-            setTimeout(() => cancelToken.cancel(), 1000)
+            cancelToken.cancel()
           })
         } else {
           console.info("[gdrive] Request failed!: ", req.status)
