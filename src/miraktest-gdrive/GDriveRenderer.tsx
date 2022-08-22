@@ -18,6 +18,9 @@ import {
 import { GDRIVE_CLIENT_ID, GDRIVE_CLIENT_SECRET } from "./cred"
 import { generateRandomString } from "./utils"
 
+const INSUFFICIENT_MESSAGE =
+  "認証に必要な情報が不足しています。本体アプリケーションはv2.0.0-rc.2以上が必要です。"
+
 const refine = $.withDefault(
   $.object({
     accessToken: $.string(),
@@ -88,7 +91,9 @@ export const GDriveRenderer: InitPlugin["renderer"] = ({
           const [refreshToken, setRefreshToken] = useState(setting.refreshToken)
           const [clientId, setClientId] = useState(setting.clientId)
           const [clientSecret, setClientSecret] = useState(setting.clientSecret)
-          const [port, setPort] = useState(0)
+          const useClientId = clientId || GDRIVE_CLIENT_ID
+          const useClientSecret = clientSecret || GDRIVE_CLIENT_SECRET
+          const [port, setPort] = useState<number | null>(null)
           useEffect(() => {
             setAccessToken(setting.accessToken)
             setRefreshToken(setting.refreshToken)
@@ -97,8 +102,28 @@ export const GDriveRenderer: InitPlugin["renderer"] = ({
           }, [setting])
           useEffect(() => {
             rpc.invoke(GDRIVE_GET_PORT).then((port) => setPort(port as number))
+            const off = rpc.onCustomIpcListener(GDRIVE_SET_CRED, (data) => {
+              setTimeout(() => {
+                const { access_token, refresh_token } = data as {
+                  access_token?: string
+                  refresh_token?: string
+                }
+                console.info("[gdrive] credential data:", data)
+                if (access_token) {
+                  setAccessToken(access_token)
+                }
+                if (refresh_token) {
+                  setRefreshToken(refresh_token)
+                }
+              }, 1000)
+            })
+            return () => {
+              off()
+            }
           }, [])
           const [focusingSensitive, setFocusingSensitive] = useState(false)
+          const isLoginButtonDisabled =
+            !port || !useClientId || !useClientSecret
           return (
             <>
               <style>{tailwind}</style>
@@ -237,15 +262,20 @@ export const GDriveRenderer: InitPlugin["renderer"] = ({
                       "rounded-md",
                       "bg-gray-200",
                       "text-gray-800",
-                      "font-semibold"
+                      "font-semibold",
+                      isLoginButtonDisabled && [
+                        "cursor-not-allowed",
+                        "bg-gray-400",
+                      ]
                     )}
                     onClick={async () => {
+                      if (isLoginButtonDisabled) {
+                        alert(INSUFFICIENT_MESSAGE)
+                        return
+                      }
                       const url = new URL(
                         "https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=$CLIENT_ID&redirect_uri=$REDIRECT_URI&scope=$SCOPE"
                       )
-                      const useClientId = clientId || GDRIVE_CLIENT_ID
-                      const useClientSecret =
-                        clientSecret || GDRIVE_CLIENT_SECRET
                       url.searchParams.set("client_id", useClientId)
                       const redirectUri = `http://127.0.0.1:${port}/oauth2redirect`
                       url.searchParams.set("redirect_uri", redirectUri)
@@ -275,18 +305,18 @@ export const GDriveRenderer: InitPlugin["renderer"] = ({
                     Googleアカウントでログイン
                   </button>
                 </div>
-                {port && (
-                  <span
-                    className={clsx(
-                      "block",
-                      "text-sm",
-                      "text-gray-300",
-                      "mt-2"
-                    )}
-                  >
-                    プロキシに使用しているポート: {port}
-                  </span>
-                )}
+                <span
+                  className={clsx("block", "text-sm", "text-gray-300", "mt-2")}
+                >
+                  プロキシに使用しているポート:{" "}
+                  {port ? (
+                    port
+                  ) : (
+                    <span className="text-red-500">
+                      プロキシが起動していません
+                    </span>
+                  )}
+                </span>
               </div>
             </>
           )
@@ -434,6 +464,7 @@ export const GDriveRenderer: InitPlugin["renderer"] = ({
             off()
           }
         }, [])
+        const isLoginButtonDisabled = !port || !useClientId || !useClientSecret
 
         return (
           <>
@@ -483,9 +514,17 @@ export const GDriveRenderer: InitPlugin["renderer"] = ({
                           "p-4",
                           "rounded-md",
                           "bg-gray-200",
-                          "font-semibold"
+                          "font-semibold",
+                          isLoginButtonDisabled && [
+                            "cursor-not-allowed",
+                            "bg-gray-400",
+                          ]
                         )}
                         onClick={async () => {
+                          if (isLoginButtonDisabled) {
+                            alert(INSUFFICIENT_MESSAGE)
+                            return
+                          }
                           const url = new URL(
                             "https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=$CLIENT_ID&redirect_uri=$REDIRECT_URI&scope=$SCOPE"
                           )
