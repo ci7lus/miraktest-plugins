@@ -252,7 +252,7 @@ export const GDriveRenderer: InitPlugin["renderer"] = ({
                         "scope",
                         "https://www.googleapis.com/auth/drive.readonly"
                       )
-                      const challenge = generateRandomString(10)
+                      const challenge = generateRandomString(43)
                       url.searchParams.set("code_challenge", challenge)
                       url.searchParams.set("code_challenge_method", "plain")
                       rpc.invoke(GDRIVE_SET_CRED, {
@@ -488,7 +488,7 @@ export const GDriveRenderer: InitPlugin["renderer"] = ({
                             "scope",
                             "https://www.googleapis.com/auth/drive.readonly"
                           )
-                          const challenge = generateRandomString(10)
+                          const challenge = generateRandomString(43)
                           url.searchParams.set("code_challenge", challenge)
                           url.searchParams.set("code_challenge_method", "plain")
                           rpc.invoke(GDRIVE_SET_CRED, {
