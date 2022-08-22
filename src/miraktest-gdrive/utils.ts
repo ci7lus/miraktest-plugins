@@ -1,5 +1,3 @@
-import { createHash } from "crypto"
-
 export const generateRandomString = (length = 6) => {
   let result = ""
   const characters =
@@ -9,15 +7,4 @@ export const generateRandomString = (length = 6) => {
     result += characters.charAt(Math.floor(Math.random() * charactersLength))
   }
   return result
-}
-
-export const generateS256CodeChallenge = (verifier: string) => {
-  return (
-    createHash("sha256")
-      .update(verifier, "utf8")
-      // base64url 形式 (https://datatracker.ietf.org/doc/html/rfc4648#section-5) でダイジェストを生成
-      .digest("base64url")
-      // Base64 のパディングを削除
-      .replace(/=+$/, "")
-  )
 }

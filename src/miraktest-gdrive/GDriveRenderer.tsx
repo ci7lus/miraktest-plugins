@@ -7,6 +7,7 @@ import { ContentPlayerPlayingContent, InitPlugin } from "../@types/plugin"
 import tailwind from "../tailwind.scss"
 import { FileSelector } from "./components/FileSelector"
 import {
+  GDRIVE_CALC_S256,
   GDRIVE_GET_PORT,
   GDRIVE_META,
   GDRIVE_PREFIX,
@@ -15,7 +16,7 @@ import {
   GDRIVE_WINDOW_ID,
 } from "./constants"
 import { GDRIVE_CLIENT_ID, GDRIVE_CLIENT_SECRET } from "./cred"
-import { generateRandomString, generateS256CodeChallenge } from "./utils"
+import { generateRandomString } from "./utils"
 
 const refine = $.withDefault(
   $.object({
@@ -238,7 +239,7 @@ export const GDriveRenderer: InitPlugin["renderer"] = ({
                       "text-gray-800",
                       "font-semibold"
                     )}
-                    onClick={() => {
+                    onClick={async () => {
                       const url = new URL(
                         "https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=$CLIENT_ID&redirect_uri=$REDIRECT_URI&scope=$SCOPE"
                       )
@@ -253,8 +254,14 @@ export const GDriveRenderer: InitPlugin["renderer"] = ({
                         "https://www.googleapis.com/auth/drive.readonly"
                       )
                       const verifier = generateRandomString(43)
-                      const challenge = generateS256CodeChallenge(verifier)
-                      url.searchParams.set("code_challenge", challenge)
+                      const challenge = await rpc.invoke(
+                        GDRIVE_CALC_S256,
+                        verifier
+                      )
+                      url.searchParams.set(
+                        "code_challenge",
+                        challenge as string
+                      )
                       url.searchParams.set("code_challenge_method", "S256")
                       rpc.invoke(GDRIVE_SET_CRED, {
                         clientId: useClientId,
@@ -478,7 +485,7 @@ export const GDriveRenderer: InitPlugin["renderer"] = ({
                           "bg-gray-200",
                           "font-semibold"
                         )}
-                        onClick={() => {
+                        onClick={async () => {
                           const url = new URL(
                             "https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=$CLIENT_ID&redirect_uri=$REDIRECT_URI&scope=$SCOPE"
                           )
@@ -490,8 +497,14 @@ export const GDriveRenderer: InitPlugin["renderer"] = ({
                             "https://www.googleapis.com/auth/drive.readonly"
                           )
                           const verifier = generateRandomString(43)
-                          const challenge = generateS256CodeChallenge(verifier)
-                          url.searchParams.set("code_challenge", challenge)
+                          const challenge = await rpc.invoke(
+                            GDRIVE_CALC_S256,
+                            verifier
+                          )
+                          url.searchParams.set(
+                            "code_challenge",
+                            challenge as string
+                          )
                           url.searchParams.set("code_challenge_method", "S256")
                           rpc.invoke(GDRIVE_SET_CRED, {
                             clientId: useClientId,

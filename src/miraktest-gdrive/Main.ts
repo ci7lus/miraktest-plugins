@@ -1,3 +1,4 @@
+import { createHash } from "crypto"
 import { Server } from "net"
 import { URLSearchParams } from "url"
 import Router from "@koa/router"
@@ -6,6 +7,7 @@ import getPort from "get-port"
 import Koa from "koa"
 import { InitPlugin } from "../@types/plugin"
 import {
+  GDRIVE_CALC_S256,
   GDRIVE_GET_PORT,
   GDRIVE_META,
   GDRIVE_SET_ACCESS_TOKEN,
@@ -37,6 +39,16 @@ export const Main: InitPlugin["main"] = async ({ packages, functions }) => {
           oauth2CredSender = event.sender
           oauth2Cred = data
         }
+      )
+      packages.Electron.ipcMain.handle(
+        GDRIVE_CALC_S256,
+        (_, verifier: string) =>
+          createHash("sha256")
+            .update(verifier, "utf8")
+            // base64url 形式 (https://datatracker.ietf.org/doc/html/rfc4648#section-5) でダイジェストを生成
+            .digest("base64url")
+            // Base64 のパディングを削除
+            .replace(/=+$/, "")
       )
       let oauth2AccessToken: string | null = null
       packages.Electron.ipcMain.handle(GDRIVE_SET_ACCESS_TOKEN, (_, token) => {
@@ -164,6 +176,7 @@ export const Main: InitPlugin["main"] = async ({ packages, functions }) => {
       packages.Electron.ipcMain.removeHandler(GDRIVE_GET_PORT)
       packages.Electron.ipcMain.removeHandler(GDRIVE_SET_CRED)
       packages.Electron.ipcMain.removeHandler(GDRIVE_SET_ACCESS_TOKEN)
+      packages.Electron.ipcMain.removeHandler(GDRIVE_CALC_S256)
     },
     appMenu: {
       label: "Google Drive",
