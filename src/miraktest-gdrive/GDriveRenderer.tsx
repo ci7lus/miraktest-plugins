@@ -15,7 +15,7 @@ import {
   GDRIVE_WINDOW_ID,
 } from "./constants"
 import { GDRIVE_CLIENT_ID, GDRIVE_CLIENT_SECRET } from "./cred"
-import { generateRandomString, generateS256CodeChallenge } from './utils'
+import { generateRandomString, generateS256CodeChallenge } from "./utils"
 
 const refine = $.withDefault(
   $.object({
