@@ -16,7 +16,7 @@ import {
 type OAuth2Cred = {
   clientId: string
   clientSecret: string
-  challenge: string
+  verifier: string
   redirectUri: string
 }
 
@@ -73,7 +73,7 @@ export const Main: InitPlugin["main"] = async ({ packages, functions }) => {
         }
         const params = new URLSearchParams()
         params.set("code", code)
-        params.set("code_verifier", oauth2Cred.challenge)
+        params.set("code_verifier", oauth2Cred.verifier)
         params.set("client_id", oauth2Cred.clientId)
         params.set("client_secret", oauth2Cred.clientSecret)
         params.set("redirect_uri", oauth2Cred.redirectUri)

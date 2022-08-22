@@ -15,7 +15,7 @@ import {
   GDRIVE_WINDOW_ID,
 } from "./constants"
 import { GDRIVE_CLIENT_ID, GDRIVE_CLIENT_SECRET } from "./cred"
-import { generateRandomString } from "./utils"
+import { generateRandomString, generateS256CodeChallenge } from './utils'
 
 const refine = $.withDefault(
   $.object({
@@ -252,13 +252,14 @@ export const GDriveRenderer: InitPlugin["renderer"] = ({
                         "scope",
                         "https://www.googleapis.com/auth/drive.readonly"
                       )
-                      const challenge = generateRandomString(43)
+                      const verifier = generateRandomString(43)
+                      const challenge = generateS256CodeChallenge(verifier)
                       url.searchParams.set("code_challenge", challenge)
-                      url.searchParams.set("code_challenge_method", "plain")
+                      url.searchParams.set("code_challenge_method", "S256")
                       rpc.invoke(GDRIVE_SET_CRED, {
                         clientId: useClientId,
                         clientSecret: useClientSecret,
-                        challenge,
+                        verifier,
                         redirectUri,
                       })
                       window.open(url.href, "_blank")
@@ -488,13 +489,14 @@ export const GDriveRenderer: InitPlugin["renderer"] = ({
                             "scope",
                             "https://www.googleapis.com/auth/drive.readonly"
                           )
-                          const challenge = generateRandomString(43)
+                          const verifier = generateRandomString(43)
+                          const challenge = generateS256CodeChallenge(verifier)
                           url.searchParams.set("code_challenge", challenge)
-                          url.searchParams.set("code_challenge_method", "plain")
+                          url.searchParams.set("code_challenge_method", "S256")
                           rpc.invoke(GDRIVE_SET_CRED, {
                             clientId: useClientId,
                             clientSecret: useClientSecret,
-                            challenge,
+                            verifier,
                             redirectUri,
                           })
                           window.open(url.href, "_blank")
