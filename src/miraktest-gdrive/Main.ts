@@ -1,4 +1,5 @@
 import { createHash } from "crypto"
+import type { IncomingMessage } from "http"
 import { Server } from "net"
 import { URLSearchParams } from "url"
 import Router from "@koa/router"
@@ -122,7 +123,7 @@ export const Main: InitPlugin["main"] = async ({ packages, functions }) => {
         }
         const targetUrl = `https://www.googleapis.com/drive/v3/files/${id}?alt=media`
         const cancelToken = axios.CancelToken.source()
-        const req = await axios.get(targetUrl, {
+        const req = await axios.get<IncomingMessage>(targetUrl, {
           headers: {
             "user-agent": ctx.request.headers["user-agent"],
             accept: "*/*",
@@ -152,6 +153,9 @@ export const Main: InitPlugin["main"] = async ({ packages, functions }) => {
               ctx.set(key, value as never)
             }
           }
+          req.data.once("close", () => {
+            ctx.res.end()
+          })
           ctx.req.once("close", () => {
             cancelToken.cancel()
           })
