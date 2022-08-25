@@ -173,6 +173,7 @@ export const EpgsRenderer: InitPlugin["renderer"] = ({
         useEffect(() => {
           rpc.setWindowTitle(`EPGStation 録画一覧 - ${appInfo.name}`)
         }, [])
+        const services = useRecoilValue(atoms.mirakurunServicesSelector)
 
         return (
           <>
@@ -188,7 +189,7 @@ export const EpgsRenderer: InitPlugin["renderer"] = ({
                 "leading-loose"
               )}
             >
-              {api && channels !== null ? (
+              {api && channels !== null && services ? (
                 <Records
                   api={api}
                   channels={channels}
@@ -200,6 +201,7 @@ export const EpgsRenderer: InitPlugin["renderer"] = ({
                       playingContent,
                     })
                   }}
+                  services={services}
                 />
               ) : (
                 <div

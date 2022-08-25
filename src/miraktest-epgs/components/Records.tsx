@@ -2,20 +2,21 @@ import { Switch } from "@headlessui/react"
 import clsx from "clsx"
 import React, { useState } from "react"
 import { RotateCw, Search } from "react-feather"
-import { ContentPlayerPlayingContent } from "../../@types/plugin"
+import { ContentPlayerPlayingContent, Service } from "../../@types/plugin"
 import { EPGStationAPI } from "../api"
 import type { EPGSChannel, EPGSProgramRecord } from "../types"
 import { RecordDetail } from "./RecordDetail"
 import { RecordList } from "./RecordList"
 
-export const Records: React.VFC<{
+export const Records: React.FC<{
   api: EPGStationAPI
   channels: EPGSChannel[]
   setPlayingContent: React.Dispatch<
     React.SetStateAction<ContentPlayerPlayingContent | null>
   >
   openContentPlayer: (_: ContentPlayerPlayingContent) => Promise<number>
-}> = ({ api, channels, setPlayingContent, openContentPlayer }) => {
+  services: Service[]
+}> = ({ api, channels, setPlayingContent, openContentPlayer, services }) => {
   const [searchTerm, setSearchTerm] = useState<string | null>(null)
   const [localTerm, setLocalTerm] = useState<string>("")
 
@@ -156,6 +157,8 @@ export const Records: React.VFC<{
               channels={channels}
               setPlayingContent={setPlayingContent}
               openContentPlayer={openContentPlayer}
+              services={services}
+              key={record.id}
             />
           </div>
         ) : (

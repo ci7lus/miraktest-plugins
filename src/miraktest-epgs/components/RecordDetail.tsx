@@ -4,7 +4,7 @@ import dayjs from "dayjs"
 import React, { useCallback, useEffect, useState } from "react"
 import { Play } from "react-feather"
 import { useRecoilState } from "recoil"
-import { ContentPlayerPlayingContent } from "../../@types/plugin"
+import { ContentPlayerPlayingContent, Service } from "../../@types/plugin"
 import { AutoLinkedText } from "../../shared/AutoLinkedText"
 import { EPGStationAPI } from "../api"
 import { thumbnailFamily } from "../atom"
@@ -18,7 +18,7 @@ import { EPGSChannel, EPGSProgramRecord } from "../types"
 import "dayjs/locale/ja"
 dayjs.locale("ja")
 
-export const RecordDetail: React.VFC<{
+export const RecordDetail: React.FC<{
   api: EPGStationAPI
   record: EPGSProgramRecord
   channels: EPGSChannel[]
@@ -26,7 +26,15 @@ export const RecordDetail: React.VFC<{
     React.SetStateAction<ContentPlayerPlayingContent | null>
   >
   openContentPlayer: (_: ContentPlayerPlayingContent) => Promise<number>
-}> = ({ api, record, channels, setPlayingContent, openContentPlayer }) => {
+  services: Service[]
+}> = ({
+  api,
+  record,
+  channels,
+  setPlayingContent,
+  openContentPlayer,
+  services,
+}) => {
   const thumbnail = [...record.thumbnails].shift()
   const [thumbnailUrl, setThunbnailUrl] = useRecoilState(
     thumbnailFamily(thumbnail || 0)
@@ -47,6 +55,8 @@ export const RecordDetail: React.VFC<{
   const [startAtOver, setStartAtOver] = useState(
     dayjs(record.startAt).format("YYYY-MM-DDTHH:mm")
   )
+  const [isServiceOverride, setIsServiceOverride] = useState(false)
+  const [serviceIdOver, setServiceIdOver] = useState(-1)
   const [durationOver, setDurationOver] = useState(duration / 60)
 
   useEffect(() => {
@@ -66,7 +76,11 @@ export const RecordDetail: React.VFC<{
     (videoId: number, isNewWindow: boolean) => {
       const url = api.getVideoUrl({ videoId })
       const program = convertProgramRecordToProgram(record, channel)
-      const service = channel ? convertChannelToService(channel) : undefined
+      const service =
+        isServiceOverride && 0 < serviceIdOver
+          ? services.find((service) => service.serviceId === serviceIdOver)
+          : undefined ||
+            (channel ? convertChannelToService(channel) : undefined)
       if (isStartAtOverride) {
         program.startAt = dayjs(startAtOver).unix() * 1000
         program.duration = durationOver * 1000 * 60
@@ -84,7 +98,15 @@ export const RecordDetail: React.VFC<{
         setPlayingContent(payload)
       }
     },
-    [record, isStartAtOverride, startAtOver, durationOver]
+    [
+      record,
+      isStartAtOverride,
+      startAtOver,
+      durationOver,
+      isServiceOverride,
+      serviceIdOver,
+      services,
+    ]
   )
 
   return (
@@ -246,6 +268,69 @@ export const RecordDetail: React.VFC<{
                 ) : (
                   <span>無効な日付</span>
                 )}
+              </label>
+            </div>
+          )}
+          <Switch.Group>
+            <div className={clsx("flex", "items-center", "mb-2")}>
+              <Switch
+                checked={isServiceOverride}
+                onChange={setIsServiceOverride}
+                className={`${
+                  isServiceOverride ? "bg-blue-600" : "bg-gray-300"
+                } relative inline-flex items-center h-6 rounded-full w-11`}
+              >
+                <span
+                  className={clsx(
+                    isServiceOverride ? "translate-x-6" : "translate-x-1",
+                    "inline-block",
+                    "w-4",
+                    "h-4",
+                    "bg-white",
+                    "rounded-full",
+                    "transition",
+                    "ease-in-out",
+                    "duration-200"
+                  )}
+                />
+              </Switch>
+              <Switch.Label className="ml-2">サービスを上書きする</Switch.Label>
+            </div>
+          </Switch.Group>
+          {isServiceOverride && (
+            <div className="w-full">
+              <label className={clsx("block", "mt-2", "w-full")}>
+                <span className={clsx("block", "mb-1")}>サービス</span>
+                <select
+                  className={clsx(
+                    "appearance-none",
+                    "border",
+                    "rounded",
+                    "p-2",
+                    "mb-4",
+                    "leading-tight"
+                  )}
+                  value={serviceIdOver}
+                  onChange={(e) => {
+                    const selectedServiceId = parseInt(e.target.value)
+                    if (Number.isNaN(selectedServiceId)) {
+                      setServiceIdOver(-1)
+                      return
+                    }
+                    setServiceIdOver(selectedServiceId)
+                  }}
+                >
+                  <option value="-1" defaultChecked>
+                    選択解除
+                  </option>
+                  {services.map((service) => {
+                    return (
+                      <option key={service.id} value={service.serviceId}>
+                        {service.name}
+                      </option>
+                    )
+                  })}
+                </select>
               </label>
             </div>
           )}
