@@ -9,8 +9,9 @@
     "url": "https://github.com/ci7lus/miraktest-plugins.git"
   },
   "scripts": {
-    "dev": "yarn build:sync && webpack --color -w",
-    "build": "yarn build:sync && webpack --color",
+    "postinstall": "yarn build:sync",
+    "dev": "webpack --color -w",
+    "build": "webpack --color",
     "lint:prettier": "prettier --check './src/**/*.{js,ts,tsx}'",
     "format:prettier": "prettier --write './src/**/*.{js,ts,tsx}'",
     "lint:eslint": "eslint --max-warnings 0 --cache './src/**/*.{js,ts,tsx}'",
