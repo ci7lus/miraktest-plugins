@@ -63,8 +63,10 @@ export const KakologStream = ({
     const endAt = program.startAt + program.duration
     const end = Math.min(start + 600_000, endAt)
     if (lastStartAt !== program.startAt) {
+      // 番組が変わった
       setLastStartAt(program.startAt)
       setComments([])
+      setLog([])
     }
     setPeriod([start, end])
   }, [program, time])
