@@ -10,7 +10,7 @@ export type NicoLogComment = {
   no: string
   vpos: string
   date: string
-  date_usec: string
+  date_usec?: string
   mail: string
   user_id: string
   anonymity: string

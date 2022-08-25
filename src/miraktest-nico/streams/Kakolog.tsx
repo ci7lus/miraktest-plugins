@@ -111,14 +111,15 @@ export const KakologStream = ({
               ...data.packet.map((packet) => {
                 const { chat } = packet
                 const date = parseInt(chat.date)
-                const date_usec = parseInt(chat.date_usec)
+                const date_usec = parseInt(chat.date_usec || "NaN")
                 return {
                   ...packet.chat,
                   no: parseInt(chat.no),
                   date,
                   date_usec,
                   vpos: parseInt(chat.vpos),
-                  time: date * 1000 + date_usec / 1000,
+                  // TODO: vpos合わせ 朝4時リセット
+                  time: date * 1000 + (date_usec ? date_usec / 1000 : 0),
                 }
               }),
             ].sort((a, b) => a.time - b.time)
