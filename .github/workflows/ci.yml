@@ -11,6 +11,12 @@ on:
       - LICENSE
       - "**.md"
   pull_request:
+  workflow_dispatch:
+    inputs:
+      release:
+        type: boolean
+        required: true
+        default: true
 
 jobs:
   lint:
@@ -88,13 +94,14 @@ jobs:
           name: dist
           path: dist
       - name: Get Time
+        if: ${{ github.event.inputs.release }}
         id: time
         uses: nanzm/get-time-action@v1.1
         with:
           timeZone: 9
-          format: "YYYYMMDDHH"
+          format: "YYYYMMDDHHmm"
       - name: Release
-        if: github.ref == 'refs/heads/master'
+        if: ${{ github.event.inputs.release && github.ref == 'refs/heads/master' }}
         uses: softprops/action-gh-release@v1
         with:
           files: dist/*.plugin.*
