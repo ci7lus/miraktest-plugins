@@ -118,8 +118,11 @@ export const KakologStream = ({
                   date,
                   date_usec,
                   vpos: parseInt(chat.vpos),
-                  // TODO: vpos合わせ 朝4時リセット
-                  time: date * 1000 + (date_usec ? date_usec / 1000 : 0),
+                  time:
+                    date * 1000 +
+                    (Number.isFinite(date_usec)
+                      ? date_usec / 1000
+                      : parseInt(chat.vpos.slice(-3) || "0")),
                 }
               }),
             ].sort((a, b) => a.time - b.time)
@@ -165,7 +168,7 @@ export const KakologStream = ({
           continue
         }
         if (program.startAt + timeRef.current - 1000 < comment.time) {
-          await wait(500)
+          await wait(100)
           continue
         }
         const text = trimCommentForFlow(comment.content)
@@ -189,6 +192,7 @@ export const KakologStream = ({
             colorCode: color,
             position: position,
             size,
+            userId: comment.user_id,
           }
           const event = new CustomEvent(PECORE_ID, {
             bubbles: false,
