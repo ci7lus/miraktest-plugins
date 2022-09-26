@@ -62,9 +62,9 @@ export const SearchWorkForm: React.FC<{
   }, [ref])
 
   return (
-    <div className="relative" ref={ref}>
+    <div className={clsx("relative", "grow")} ref={ref}>
       <form
-        className={clsx("flex", "items-center", "justify-center", "space-x-2")}
+        className={clsx("flex", "items-center", "justify-center", "space-x-8")}
         onSubmit={(e) => {
           e.preventDefault()
           setSearchTerm(localTerm || null)
@@ -79,7 +79,9 @@ export const SearchWorkForm: React.FC<{
             "rounded-md",
             "w-full",
             "text-gray-900",
-            "pr-8"
+            "pr-8",
+            "grow",
+            "max-w-6xl"
           )}
           value={localTerm}
           onChange={(e) => setLocalTerm(e.target.value)}

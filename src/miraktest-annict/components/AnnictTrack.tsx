@@ -178,11 +178,15 @@ export const AnnictTrack: React.FC<{
           "bg-gray-800",
           "flex",
           "justify-between",
-          "items-center"
+          "items-center",
+          "space-x-4"
         )}
       >
         <h1 className="text-lg">視聴記録</h1>
-        <div className={clsx("flex", "items-center", "space-x-2")}>
+        <div
+          className={clsx("flex", "items-center", "space-x-4", "grow")}
+          style={{ maxWidth: "50vw" }}
+        >
           <button
             className={clsx(
               "rounded-md",
@@ -190,7 +194,8 @@ export const AnnictTrack: React.FC<{
               "hover:bg-gray-800",
               "p-1",
               "cursor-pointer",
-              "transition-colors"
+              "transition-colors",
+              "shrink-0"
             )}
             title="番組情報から取得"
             onClick={() => setLinkedAt(performance.now())}
