@@ -44,6 +44,35 @@ type ProgLookupResponse =
       }
     }
 
+type TitleItem = {
+  Title: string
+  ShortTitle?: string
+  TitleYomi?: string
+  TitleEN?: string
+  FirstYear: number
+  FirstMonth: number
+}
+
+type TitleLookupResponse =
+  | {
+      TitleItems: {
+        TitleItem: TitleItem[]
+      }
+      Result: {
+        Code: 200
+        Message: ""
+      }
+    }
+  | {
+      TitleItems: {
+        TitleItem: TitleItem[]
+      }
+      Result: {
+        Code: 404
+        Message: "条件に一致するデータは存在しません"
+      }
+    }
+
 export class SyobocalAPI {
   static async ProgLookup(params: {
     TID?: string
@@ -70,6 +99,26 @@ export class SyobocalAPI {
           return []
         }
         return [ProgLookupResponse.ProgItems.ProgItem].flat()
+      })
+  }
+  static async TitleLookup(params: { TID?: string }) {
+    return client
+      .get<string>("db.php", {
+        params: {
+          Command: "TitleLookup",
+          ...params,
+        },
+      })
+      .then((r) => {
+        const {
+          TitleLookupResponse,
+        }: {
+          TitleLookupResponse: TitleLookupResponse
+        } = new XMLParser().parse(r.data)
+        if (TitleLookupResponse.Result.Code === 404) {
+          return []
+        }
+        return [TitleLookupResponse.TitleItems.TitleItem].flat()
       })
   }
 }

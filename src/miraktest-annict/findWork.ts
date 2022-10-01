@@ -10,6 +10,18 @@ import { ARM } from "./types"
 dayjs.extend(isSameOrAfter)
 dayjs.extend(isSameOrBefore)
 
+export const getAnnictSeasonByMonth = (n: number) => {
+  if (n <= 3) {
+    return "winter"
+  } else if (n <= 6) {
+    return "spring"
+  } else if (n <= 9) {
+    return "summer"
+  } else {
+    return "autumn"
+  }
+}
+
 export const detectProgramInfo = async ({
   rest,
   channel,
@@ -64,6 +76,36 @@ export const detectProgramInfo = async ({
             title: syobocalProgram.SubTitle,
             number: syobocalProgram.Count,
           },
+        }
+      } else {
+        const workReq = await SyobocalAPI.TitleLookup({
+          TID: syobocalProgram.TID.toString(),
+        })
+        const syobocalWork = workReq.slice(0).shift()
+        if (!syobocalWork) {
+          return
+        }
+        const season = getAnnictSeasonByMonth(syobocalWork.FirstMonth)
+        for (const term of [
+          syobocalWork.Title,
+          syobocalWork.TitleYomi,
+          syobocalWork.ShortTitle,
+          syobocalWork.TitleEN,
+        ].filter((s): s is string => !!s)) {
+          const annictWorkSearchReq = await rest.getWorks({
+            filter_title: [term],
+            filter_season: [`${syobocalWork.FirstYear}-${season}`],
+          })
+          const annictWork = annictWorkSearchReq.data.works.slice(0).shift()
+          if (annictWork) {
+            return {
+              annictId: annictWork.id,
+              episode: {
+                title: syobocalProgram.SubTitle,
+                number: syobocalProgram.Count,
+              },
+            }
+          }
         }
       }
     } else {

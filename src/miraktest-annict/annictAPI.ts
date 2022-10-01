@@ -1,5 +1,6 @@
 import axios from "axios"
 import { MeProgramsGetRequestQuery } from "./annict.js/types/me/programs"
+import { WorksGetRequestQuery } from "./annict.js/types/works"
 import { getSdk } from "./gql"
 import { GraphQLClient } from "./graphqlRequestLoader"
 
@@ -11,6 +12,21 @@ export class AnnictRESTAPI {
       baseURL: "https://api.annict.com/v1",
       params: {
         access_token: this.accessToken,
+      },
+    })
+  }
+
+  async getWorks(params: Partial<WorksGetRequestQuery>) {
+    return this.client.get<{
+      works: {
+        id: number
+        title: string
+      }[]
+    }>("works", {
+      params: {
+        ...params,
+        filter_title: params.filter_title?.join(","),
+        filter_season: params.filter_season?.join(","),
       },
     })
   }
