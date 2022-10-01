@@ -85,7 +85,9 @@ export const detectProgramInfo = async ({
         if (!syobocalWork) {
           return
         }
-        const season = getAnnictSeasonByMonth(syobocalWork.FirstMonth)
+        const season = `${syobocalWork.FirstYear}-${getAnnictSeasonByMonth(
+          syobocalWork.FirstMonth
+        )}`
         for (const term of [
           syobocalWork.Title,
           syobocalWork.TitleYomi,
@@ -93,8 +95,8 @@ export const detectProgramInfo = async ({
           syobocalWork.TitleEN,
         ].filter((s): s is string => !!s)) {
           const annictWorkSearchReq = await rest.getWorks({
-            filter_title: [term],
-            filter_season: [`${syobocalWork.FirstYear}-${season}`],
+            filter_title: [term.replace(/\(\d+\)/g, "")],
+            filter_season: [season],
           })
           const annictWork = annictWorkSearchReq.data.works.slice(0).shift()
           if (annictWork) {
