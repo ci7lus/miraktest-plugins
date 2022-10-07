@@ -3,6 +3,7 @@ import isSameOrAfter from "dayjs/plugin/isSameOrAfter"
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore"
 import { Program } from "../@types/plugin"
 import { SayaDefinitionChannel } from "../miraktest-saya/types"
+import { wait } from "../shared/utils"
 import { AnnictRESTAPI } from "./annictAPI"
 import { SyobocalAPI } from "./syobocalAPI"
 import { ARM } from "./types"
@@ -88,25 +89,32 @@ export const detectProgramInfo = async ({
         const season = `${syobocalWork.FirstYear}-${getAnnictSeasonByMonth(
           syobocalWork.FirstMonth
         )}`
-        for (const term of [
-          syobocalWork.Title,
-          syobocalWork.TitleYomi,
-          syobocalWork.ShortTitle,
-          syobocalWork.TitleEN,
-        ].filter((s): s is string => !!s)) {
-          const annictWorkSearchReq = await rest.getWorks({
-            filter_title: [term.replace(/\(\d+\)/g, "")],
-            filter_season: [season],
-          })
-          const annictWork = annictWorkSearchReq.data.works.slice(0).shift()
-          if (annictWork) {
-            return {
-              annictId: annictWork.id,
-              episode: {
-                title: syobocalProgram.SubTitle,
-                number: syobocalProgram.Count,
-              },
+        for (const seasonSpec of [
+          season,
+          `${syobocalWork.FirstYear}-all`,
+          null,
+        ]) {
+          for (const term of [
+            syobocalWork.Title,
+            syobocalWork.TitleYomi,
+            syobocalWork.ShortTitle,
+            syobocalWork.TitleEN,
+          ].filter((s): s is string => !!s)) {
+            const annictWorkSearchReq = await rest.getWorks({
+              filter_title: [term.replace(/\(\d+\)/g, "")],
+              filter_season: seasonSpec !== null ? [seasonSpec] : undefined,
+            })
+            const annictWork = annictWorkSearchReq.data.works.slice(0).shift()
+            if (annictWork) {
+              return {
+                annictId: annictWork.id,
+                episode: {
+                  title: syobocalProgram.SubTitle,
+                  number: syobocalProgram.Count,
+                },
+              }
             }
+            await wait(100)
           }
         }
       }
