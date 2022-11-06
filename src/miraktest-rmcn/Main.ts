@@ -1,6 +1,8 @@
 import { Server } from "net"
 import { networkInterfaces } from "os"
 import Router from "@koa/router"
+import Bonjour from "bonjour-service"
+import type { Service as BonjourServcie } from "bonjour-service"
 import { eventmit } from "eventmit"
 import getPort from "get-port"
 import Koa from "koa"
@@ -20,20 +22,39 @@ import {
 
 export const Main: InitPlugin["main"] = async ({ appInfo, packages }) => {
   let server: Server | null = null
+  let bonjour: Bonjour | null = null
   return {
     ...RMCN_META,
     setup: async () => {
+      let service: BonjourServcie | null = null
       const port = await getPort({ port: 10171 }) // TODO: Configurable
+      try {
+        bonjour = new Bonjour()
+        service = bonjour.publish({
+          name: "miraktest-rmcn",
+          host: "miraktest-rmcn.local",
+          type: "http",
+          port,
+          txt: appInfo,
+        })
+        console.info("[rmcn] Published Bonjour service:", service)
+      } catch (error) {
+        console.warn(error, "[rmcn] Bonjour not supported")
+      }
       packages.Electron.ipcMain.handle(RMCN_GET_PORT, () => {
         let ip = "unknown"
-        try {
-          const addr = Object.values(networkInterfaces())
-            .flat()
-            .find((i) => i && i.family === "IPv4" && !i.internal)?.address
-          if (addr) {
-            ip = addr
-          }
-        } catch {}
+        if (service && service.host) {
+          ip = service.host
+        } else {
+          try {
+            const addr = Object.values(networkInterfaces())
+              .flat()
+              .find((i) => i && i.family === "IPv4" && !i.internal)?.address
+            if (addr) {
+              ip = addr
+            }
+          } catch {}
+        }
         return `${ip}:${port}`
       })
       type ContentPlayerState = {
@@ -159,6 +180,9 @@ export const Main: InitPlugin["main"] = async ({ appInfo, packages }) => {
     destroy: () => {
       if (server) {
         server.close()
+      }
+      if (bonjour) {
+        bonjour.destroy()
       }
       packages.Electron.ipcMain.removeHandler(RMCN_GET_PORT)
       packages.Electron.ipcMain.removeHandler(RMCN_SET_CP_STATE)
