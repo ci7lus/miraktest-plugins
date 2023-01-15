@@ -122,11 +122,20 @@ export const FileSelector: React.VFC<{
                   if (dialog.canceled) {
                     return
                   }
-                  const path = dialog.filePaths.slice(0).shift()
+                  const path = dialog.filePaths.at(0)
                   if (!path) {
                     return
                   }
-                  setFilePath("file://" + path)
+                  // Windows なら file:///C:\path\to\file.m2ts、Linux / Mac なら file:///path/to/file.m2ts になるように加工する。パスの要素それぞれに対してパーセントエンコードをする
+                  const url =
+                    "file:///" +
+                    path
+                      .replaceAll(/\\/g, "/")
+                      .split("/")
+                      .filter((p) => p !== "")
+                      .map((p) => encodeURIComponent(p))
+                      .join("/")
+                  setFilePath(url)
                 }}
               >
                 <File className="pointer-events-none" size="1.75rem" />
