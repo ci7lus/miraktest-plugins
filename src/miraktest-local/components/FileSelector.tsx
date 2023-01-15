@@ -122,11 +122,14 @@ export const FileSelector: React.VFC<{
                   if (dialog.canceled) {
                     return
                   }
-                  const path = dialog.filePaths.slice(0).shift()
+                  const path = dialog.filePaths.at(0)
                   if (!path) {
                     return
                   }
-                  setFilePath("file://" + path)
+                  setFilePath(
+                    // Windows なら file:///C:\path\to\file.m2ts、Linux / Mac なら file:///path/to/file.m2ts になるように加工する
+                    "file:///" + path.at(0) === "/" ? path.slice(1) : path
+                  )
                 }}
               >
                 <File className="pointer-events-none" size="1.75rem" />
