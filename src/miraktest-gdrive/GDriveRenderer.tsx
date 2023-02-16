@@ -436,7 +436,7 @@ export const GDriveRenderer: InitPlugin["renderer"] = ({
           }
         }, [])
         useEffect(() => {
-          if (isSignedIn && accessToken) {
+          if (isSignedIn && accessToken && driveClient) {
             // @ts-expect-error miss type
             gapi.auth.setToken({ access_token: accessToken })
             setIsReady(true)
