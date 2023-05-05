@@ -5,9 +5,9 @@ import clsx from "clsx"
 import React, { useEffect, useState } from "react"
 import { atom, useRecoilValue, useRecoilState } from "recoil"
 import { syncEffect } from "recoil-sync"
+import { GyazoSetting } from "./types"
 import { InitPlugin } from "../@types/plugin"
 import tailwind from "../tailwind.scss"
-import { GyazoSetting } from "./types"
 
 const _id = "io.github.ci7lus.miraktest-plugins.gyazo"
 const prefix = "plugins.ci7lus.gyazo"
@@ -15,7 +15,7 @@ const meta = {
   id: _id,
   name: "Gyazo",
   author: "ci7lus",
-  version: "0.1.3",
+  version: "0.1.4",
   description: "スクリーンショットをGyazoにアップロードするプラグインです。",
   authorUrl: "https://github.com/ci7lus",
   url: "https://github.com/ci7lus/miraktest-plugins/tree/master/src/miraktest-gyazo",

@@ -2,11 +2,11 @@ import { Switch } from "@headlessui/react"
 import clsx from "clsx"
 import React, { useState } from "react"
 import { RotateCw, Search } from "react-feather"
+import { RecordDetail } from "./RecordDetail"
+import { RecordList } from "./RecordList"
 import { ContentPlayerPlayingContent, Service } from "../../@types/plugin"
 import { EPGStationAPI } from "../api"
 import type { EPGSChannel, EPGSProgramRecord } from "../types"
-import { RecordDetail } from "./RecordDetail"
-import { RecordList } from "./RecordList"
 
 export const Records: React.FC<{
   api: EPGStationAPI

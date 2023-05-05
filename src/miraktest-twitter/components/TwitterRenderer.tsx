@@ -6,6 +6,7 @@ import { useThrottleFn } from "react-use"
 import { atom, useRecoilValue, useRecoilState, useSetRecoilState } from "recoil"
 import { syncEffect } from "recoil-sync"
 import YAML from "yaml"
+import { TweetComponent } from "./Tweet"
 import { InitPlugin } from "../../@types/plugin"
 import tailwind from "../../tailwind.scss"
 import {
@@ -14,7 +15,6 @@ import {
   TWITTER_TWEET_WINDOW_ID,
 } from "../constants"
 import { TwitterSetting, SayaDefinition } from "../types"
-import { TweetComponent } from "./Tweet"
 
 export const TwitterRenderer: InitPlugin["renderer"] = ({
   appInfo,

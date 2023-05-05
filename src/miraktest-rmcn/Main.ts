@@ -8,17 +8,17 @@ import getPort from "get-port"
 import Koa from "koa"
 import ws from "koa-easy-ws"
 import {
-  ContentPlayerPlayingContent,
-  InitPlugin,
-  Service,
-} from "../@types/plugin"
-import {
   RMCN_GET_PORT,
   RMCN_META,
   RMCN_ON_SET_STATE,
   RMCN_SET_CP_STATE,
   RMCN_SET_SERVICES,
 } from "./constants"
+import {
+  ContentPlayerPlayingContent,
+  InitPlugin,
+  Service,
+} from "../@types/plugin"
 
 export const Main: InitPlugin["main"] = async ({ appInfo, packages }) => {
   let server: Server | null = null

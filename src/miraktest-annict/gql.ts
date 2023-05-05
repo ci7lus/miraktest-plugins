@@ -3,6 +3,7 @@ import { GraphQLClient } from "graphql-request"
 import * as Dom from "graphql-request/dist/types.dom"
 import gql from "graphql-tag"
 export type Maybe<T> = T | null
+export type InputMaybe<T> = Maybe<T>
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K]
 }
@@ -107,10 +108,10 @@ export type Channel = Node & {
 }
 
 export type ChannelprogramsArgs = {
-  after: Maybe<Scalars["String"]>
-  before: Maybe<Scalars["String"]>
-  first: Maybe<Scalars["Int"]>
-  last: Maybe<Scalars["Int"]>
+  after: InputMaybe<Scalars["String"]>
+  before: InputMaybe<Scalars["String"]>
+  first: InputMaybe<Scalars["Int"]>
+  last: InputMaybe<Scalars["Int"]>
 }
 
 export type ChannelConnection = {
@@ -136,10 +137,10 @@ export type ChannelGroup = Node & {
 }
 
 export type ChannelGroupchannelsArgs = {
-  after: Maybe<Scalars["String"]>
-  before: Maybe<Scalars["String"]>
-  first: Maybe<Scalars["Int"]>
-  last: Maybe<Scalars["Int"]>
+  after: InputMaybe<Scalars["String"]>
+  before: InputMaybe<Scalars["String"]>
+  first: InputMaybe<Scalars["Int"]>
+  last: InputMaybe<Scalars["Int"]>
 }
 
 export type Character = Node & {
@@ -197,12 +198,12 @@ export enum CharacterOrderField {
 }
 
 export type CreateRecordInput = {
-  clientMutationId: Maybe<Scalars["String"]>
-  comment: Maybe<Scalars["String"]>
+  clientMutationId: InputMaybe<Scalars["String"]>
+  comment: InputMaybe<Scalars["String"]>
   episodeId: Scalars["ID"]
-  ratingState: Maybe<RatingState>
-  shareFacebook: Maybe<Scalars["Boolean"]>
-  shareTwitter: Maybe<Scalars["Boolean"]>
+  ratingState: InputMaybe<RatingState>
+  shareFacebook: InputMaybe<Scalars["Boolean"]>
+  shareTwitter: InputMaybe<Scalars["Boolean"]>
 }
 
 export type CreateRecordPayload = {
@@ -213,15 +214,15 @@ export type CreateRecordPayload = {
 
 export type CreateReviewInput = {
   body: Scalars["String"]
-  clientMutationId: Maybe<Scalars["String"]>
-  ratingAnimationState: Maybe<RatingState>
-  ratingCharacterState: Maybe<RatingState>
-  ratingMusicState: Maybe<RatingState>
-  ratingOverallState: Maybe<RatingState>
-  ratingStoryState: Maybe<RatingState>
-  shareFacebook: Maybe<Scalars["Boolean"]>
-  shareTwitter: Maybe<Scalars["Boolean"]>
-  title: Maybe<Scalars["String"]>
+  clientMutationId: InputMaybe<Scalars["String"]>
+  ratingAnimationState: InputMaybe<RatingState>
+  ratingCharacterState: InputMaybe<RatingState>
+  ratingMusicState: InputMaybe<RatingState>
+  ratingOverallState: InputMaybe<RatingState>
+  ratingStoryState: InputMaybe<RatingState>
+  shareFacebook: InputMaybe<Scalars["Boolean"]>
+  shareTwitter: InputMaybe<Scalars["Boolean"]>
+  title: InputMaybe<Scalars["String"]>
   workId: Scalars["ID"]
 }
 
@@ -232,7 +233,7 @@ export type CreateReviewPayload = {
 }
 
 export type DeleteRecordInput = {
-  clientMutationId: Maybe<Scalars["String"]>
+  clientMutationId: InputMaybe<Scalars["String"]>
   recordId: Scalars["ID"]
 }
 
@@ -243,7 +244,7 @@ export type DeleteRecordPayload = {
 }
 
 export type DeleteReviewInput = {
-  clientMutationId: Maybe<Scalars["String"]>
+  clientMutationId: InputMaybe<Scalars["String"]>
   reviewId: Scalars["ID"]
 }
 
@@ -273,12 +274,12 @@ export type Episode = Node & {
 }
 
 export type EpisoderecordsArgs = {
-  after: Maybe<Scalars["String"]>
-  before: Maybe<Scalars["String"]>
-  first: Maybe<Scalars["Int"]>
-  hasComment: Maybe<Scalars["Boolean"]>
-  last: Maybe<Scalars["Int"]>
-  orderBy: Maybe<RecordOrder>
+  after: InputMaybe<Scalars["String"]>
+  before: InputMaybe<Scalars["String"]>
+  first: InputMaybe<Scalars["Int"]>
+  hasComment: InputMaybe<Scalars["Boolean"]>
+  last: InputMaybe<Scalars["Int"]>
+  orderBy: InputMaybe<RecordOrder>
 }
 
 export type EpisodeConnection = {
@@ -323,10 +324,10 @@ export type MultipleRecord = Node & {
 }
 
 export type MultipleRecordrecordsArgs = {
-  after: Maybe<Scalars["String"]>
-  before: Maybe<Scalars["String"]>
-  first: Maybe<Scalars["Int"]>
-  last: Maybe<Scalars["Int"]>
+  after: InputMaybe<Scalars["String"]>
+  before: InputMaybe<Scalars["String"]>
+  first: InputMaybe<Scalars["Int"]>
+  last: InputMaybe<Scalars["Int"]>
 }
 
 export type Mutation = {
@@ -542,53 +543,53 @@ export type QuerynodesArgs = {
 }
 
 export type QuerysearchCharactersArgs = {
-  after: Maybe<Scalars["String"]>
-  annictIds: Maybe<Array<Scalars["Int"]>>
-  before: Maybe<Scalars["String"]>
-  first: Maybe<Scalars["Int"]>
-  last: Maybe<Scalars["Int"]>
-  names: Maybe<Array<Scalars["String"]>>
-  orderBy: Maybe<CharacterOrder>
+  after: InputMaybe<Scalars["String"]>
+  annictIds: InputMaybe<Array<Scalars["Int"]>>
+  before: InputMaybe<Scalars["String"]>
+  first: InputMaybe<Scalars["Int"]>
+  last: InputMaybe<Scalars["Int"]>
+  names: InputMaybe<Array<Scalars["String"]>>
+  orderBy: InputMaybe<CharacterOrder>
 }
 
 export type QuerysearchEpisodesArgs = {
-  after: Maybe<Scalars["String"]>
-  annictIds: Maybe<Array<Scalars["Int"]>>
-  before: Maybe<Scalars["String"]>
-  first: Maybe<Scalars["Int"]>
-  last: Maybe<Scalars["Int"]>
-  orderBy: Maybe<EpisodeOrder>
+  after: InputMaybe<Scalars["String"]>
+  annictIds: InputMaybe<Array<Scalars["Int"]>>
+  before: InputMaybe<Scalars["String"]>
+  first: InputMaybe<Scalars["Int"]>
+  last: InputMaybe<Scalars["Int"]>
+  orderBy: InputMaybe<EpisodeOrder>
 }
 
 export type QuerysearchOrganizationsArgs = {
-  after: Maybe<Scalars["String"]>
-  annictIds: Maybe<Array<Scalars["Int"]>>
-  before: Maybe<Scalars["String"]>
-  first: Maybe<Scalars["Int"]>
-  last: Maybe<Scalars["Int"]>
-  names: Maybe<Array<Scalars["String"]>>
-  orderBy: Maybe<OrganizationOrder>
+  after: InputMaybe<Scalars["String"]>
+  annictIds: InputMaybe<Array<Scalars["Int"]>>
+  before: InputMaybe<Scalars["String"]>
+  first: InputMaybe<Scalars["Int"]>
+  last: InputMaybe<Scalars["Int"]>
+  names: InputMaybe<Array<Scalars["String"]>>
+  orderBy: InputMaybe<OrganizationOrder>
 }
 
 export type QuerysearchPeopleArgs = {
-  after: Maybe<Scalars["String"]>
-  annictIds: Maybe<Array<Scalars["Int"]>>
-  before: Maybe<Scalars["String"]>
-  first: Maybe<Scalars["Int"]>
-  last: Maybe<Scalars["Int"]>
-  names: Maybe<Array<Scalars["String"]>>
-  orderBy: Maybe<PersonOrder>
+  after: InputMaybe<Scalars["String"]>
+  annictIds: InputMaybe<Array<Scalars["Int"]>>
+  before: InputMaybe<Scalars["String"]>
+  first: InputMaybe<Scalars["Int"]>
+  last: InputMaybe<Scalars["Int"]>
+  names: InputMaybe<Array<Scalars["String"]>>
+  orderBy: InputMaybe<PersonOrder>
 }
 
 export type QuerysearchWorksArgs = {
-  after: Maybe<Scalars["String"]>
-  annictIds: Maybe<Array<Scalars["Int"]>>
-  before: Maybe<Scalars["String"]>
-  first: Maybe<Scalars["Int"]>
-  last: Maybe<Scalars["Int"]>
-  orderBy: Maybe<WorkOrder>
-  seasons: Maybe<Array<Scalars["String"]>>
-  titles: Maybe<Array<Scalars["String"]>>
+  after: InputMaybe<Scalars["String"]>
+  annictIds: InputMaybe<Array<Scalars["Int"]>>
+  before: InputMaybe<Scalars["String"]>
+  first: InputMaybe<Scalars["Int"]>
+  last: InputMaybe<Scalars["Int"]>
+  orderBy: InputMaybe<WorkOrder>
+  seasons: InputMaybe<Array<Scalars["String"]>>
+  titles: InputMaybe<Array<Scalars["String"]>>
 }
 
 export type QueryuserArgs = {
@@ -705,11 +706,11 @@ export type Series = Node & {
 }
 
 export type SeriesworksArgs = {
-  after: Maybe<Scalars["String"]>
-  before: Maybe<Scalars["String"]>
-  first: Maybe<Scalars["Int"]>
-  last: Maybe<Scalars["Int"]>
-  orderBy: Maybe<SeriesWorkOrder>
+  after: InputMaybe<Scalars["String"]>
+  before: InputMaybe<Scalars["String"]>
+  first: InputMaybe<Scalars["Int"]>
+  last: InputMaybe<Scalars["Int"]>
+  orderBy: InputMaybe<SeriesWorkOrder>
 }
 
 export type SeriesConnection = {
@@ -809,12 +810,12 @@ export enum StatusState {
 }
 
 export type UpdateRecordInput = {
-  clientMutationId: Maybe<Scalars["String"]>
-  comment: Maybe<Scalars["String"]>
-  ratingState: Maybe<RatingState>
+  clientMutationId: InputMaybe<Scalars["String"]>
+  comment: InputMaybe<Scalars["String"]>
+  ratingState: InputMaybe<RatingState>
   recordId: Scalars["ID"]
-  shareFacebook: Maybe<Scalars["Boolean"]>
-  shareTwitter: Maybe<Scalars["Boolean"]>
+  shareFacebook: InputMaybe<Scalars["Boolean"]>
+  shareTwitter: InputMaybe<Scalars["Boolean"]>
 }
 
 export type UpdateRecordPayload = {
@@ -825,16 +826,16 @@ export type UpdateRecordPayload = {
 
 export type UpdateReviewInput = {
   body: Scalars["String"]
-  clientMutationId: Maybe<Scalars["String"]>
+  clientMutationId: InputMaybe<Scalars["String"]>
   ratingAnimationState: RatingState
   ratingCharacterState: RatingState
   ratingMusicState: RatingState
   ratingOverallState: RatingState
   ratingStoryState: RatingState
   reviewId: Scalars["ID"]
-  shareFacebook: Maybe<Scalars["Boolean"]>
-  shareTwitter: Maybe<Scalars["Boolean"]>
-  title: Maybe<Scalars["String"]>
+  shareFacebook: InputMaybe<Scalars["Boolean"]>
+  shareTwitter: InputMaybe<Scalars["Boolean"]>
+  title: InputMaybe<Scalars["String"]>
 }
 
 export type UpdateReviewPayload = {
@@ -844,7 +845,7 @@ export type UpdateReviewPayload = {
 }
 
 export type UpdateStatusInput = {
-  clientMutationId: Maybe<Scalars["String"]>
+  clientMutationId: InputMaybe<Scalars["String"]>
   state: StatusState
   workId: Scalars["ID"]
 }
@@ -888,63 +889,63 @@ export type User = Node & {
 }
 
 export type UseractivitiesArgs = {
-  after: Maybe<Scalars["String"]>
-  before: Maybe<Scalars["String"]>
-  first: Maybe<Scalars["Int"]>
-  last: Maybe<Scalars["Int"]>
-  orderBy: Maybe<ActivityOrder>
+  after: InputMaybe<Scalars["String"]>
+  before: InputMaybe<Scalars["String"]>
+  first: InputMaybe<Scalars["Int"]>
+  last: InputMaybe<Scalars["Int"]>
+  orderBy: InputMaybe<ActivityOrder>
 }
 
 export type UserfollowersArgs = {
-  after: Maybe<Scalars["String"]>
-  before: Maybe<Scalars["String"]>
-  first: Maybe<Scalars["Int"]>
-  last: Maybe<Scalars["Int"]>
+  after: InputMaybe<Scalars["String"]>
+  before: InputMaybe<Scalars["String"]>
+  first: InputMaybe<Scalars["Int"]>
+  last: InputMaybe<Scalars["Int"]>
 }
 
 export type UserfollowingArgs = {
-  after: Maybe<Scalars["String"]>
-  before: Maybe<Scalars["String"]>
-  first: Maybe<Scalars["Int"]>
-  last: Maybe<Scalars["Int"]>
+  after: InputMaybe<Scalars["String"]>
+  before: InputMaybe<Scalars["String"]>
+  first: InputMaybe<Scalars["Int"]>
+  last: InputMaybe<Scalars["Int"]>
 }
 
 export type UserfollowingActivitiesArgs = {
-  after: Maybe<Scalars["String"]>
-  before: Maybe<Scalars["String"]>
-  first: Maybe<Scalars["Int"]>
-  last: Maybe<Scalars["Int"]>
-  orderBy: Maybe<ActivityOrder>
+  after: InputMaybe<Scalars["String"]>
+  before: InputMaybe<Scalars["String"]>
+  first: InputMaybe<Scalars["Int"]>
+  last: InputMaybe<Scalars["Int"]>
+  orderBy: InputMaybe<ActivityOrder>
 }
 
 export type UserprogramsArgs = {
-  after: Maybe<Scalars["String"]>
-  before: Maybe<Scalars["String"]>
-  first: Maybe<Scalars["Int"]>
-  last: Maybe<Scalars["Int"]>
-  orderBy: Maybe<ProgramOrder>
-  unwatched: Maybe<Scalars["Boolean"]>
+  after: InputMaybe<Scalars["String"]>
+  before: InputMaybe<Scalars["String"]>
+  first: InputMaybe<Scalars["Int"]>
+  last: InputMaybe<Scalars["Int"]>
+  orderBy: InputMaybe<ProgramOrder>
+  unwatched: InputMaybe<Scalars["Boolean"]>
 }
 
 export type UserrecordsArgs = {
-  after: Maybe<Scalars["String"]>
-  before: Maybe<Scalars["String"]>
-  first: Maybe<Scalars["Int"]>
-  hasComment: Maybe<Scalars["Boolean"]>
-  last: Maybe<Scalars["Int"]>
-  orderBy: Maybe<RecordOrder>
+  after: InputMaybe<Scalars["String"]>
+  before: InputMaybe<Scalars["String"]>
+  first: InputMaybe<Scalars["Int"]>
+  hasComment: InputMaybe<Scalars["Boolean"]>
+  last: InputMaybe<Scalars["Int"]>
+  orderBy: InputMaybe<RecordOrder>
 }
 
 export type UserworksArgs = {
-  after: Maybe<Scalars["String"]>
-  annictIds: Maybe<Array<Scalars["Int"]>>
-  before: Maybe<Scalars["String"]>
-  first: Maybe<Scalars["Int"]>
-  last: Maybe<Scalars["Int"]>
-  orderBy: Maybe<WorkOrder>
-  seasons: Maybe<Array<Scalars["String"]>>
-  state: Maybe<StatusState>
-  titles: Maybe<Array<Scalars["String"]>>
+  after: InputMaybe<Scalars["String"]>
+  annictIds: InputMaybe<Array<Scalars["Int"]>>
+  before: InputMaybe<Scalars["String"]>
+  first: InputMaybe<Scalars["Int"]>
+  last: InputMaybe<Scalars["Int"]>
+  orderBy: InputMaybe<WorkOrder>
+  seasons: InputMaybe<Array<Scalars["String"]>>
+  state: InputMaybe<StatusState>
+  titles: InputMaybe<Array<Scalars["String"]>>
 }
 
 export type UserConnection = {
@@ -995,51 +996,51 @@ export type Work = Node & {
 }
 
 export type WorkcastsArgs = {
-  after: Maybe<Scalars["String"]>
-  before: Maybe<Scalars["String"]>
-  first: Maybe<Scalars["Int"]>
-  last: Maybe<Scalars["Int"]>
-  orderBy: Maybe<CastOrder>
+  after: InputMaybe<Scalars["String"]>
+  before: InputMaybe<Scalars["String"]>
+  first: InputMaybe<Scalars["Int"]>
+  last: InputMaybe<Scalars["Int"]>
+  orderBy: InputMaybe<CastOrder>
 }
 
 export type WorkepisodesArgs = {
-  after: Maybe<Scalars["String"]>
-  before: Maybe<Scalars["String"]>
-  first: Maybe<Scalars["Int"]>
-  last: Maybe<Scalars["Int"]>
-  orderBy: Maybe<EpisodeOrder>
+  after: InputMaybe<Scalars["String"]>
+  before: InputMaybe<Scalars["String"]>
+  first: InputMaybe<Scalars["Int"]>
+  last: InputMaybe<Scalars["Int"]>
+  orderBy: InputMaybe<EpisodeOrder>
 }
 
 export type WorkprogramsArgs = {
-  after: Maybe<Scalars["String"]>
-  before: Maybe<Scalars["String"]>
-  first: Maybe<Scalars["Int"]>
-  last: Maybe<Scalars["Int"]>
-  orderBy: Maybe<ProgramOrder>
+  after: InputMaybe<Scalars["String"]>
+  before: InputMaybe<Scalars["String"]>
+  first: InputMaybe<Scalars["Int"]>
+  last: InputMaybe<Scalars["Int"]>
+  orderBy: InputMaybe<ProgramOrder>
 }
 
 export type WorkreviewsArgs = {
-  after: Maybe<Scalars["String"]>
-  before: Maybe<Scalars["String"]>
-  first: Maybe<Scalars["Int"]>
-  hasBody: Maybe<Scalars["Boolean"]>
-  last: Maybe<Scalars["Int"]>
-  orderBy: Maybe<ReviewOrder>
+  after: InputMaybe<Scalars["String"]>
+  before: InputMaybe<Scalars["String"]>
+  first: InputMaybe<Scalars["Int"]>
+  hasBody: InputMaybe<Scalars["Boolean"]>
+  last: InputMaybe<Scalars["Int"]>
+  orderBy: InputMaybe<ReviewOrder>
 }
 
 export type WorkseriesListArgs = {
-  after: Maybe<Scalars["String"]>
-  before: Maybe<Scalars["String"]>
-  first: Maybe<Scalars["Int"]>
-  last: Maybe<Scalars["Int"]>
+  after: InputMaybe<Scalars["String"]>
+  before: InputMaybe<Scalars["String"]>
+  first: InputMaybe<Scalars["Int"]>
+  last: InputMaybe<Scalars["Int"]>
 }
 
 export type WorkstaffsArgs = {
-  after: Maybe<Scalars["String"]>
-  before: Maybe<Scalars["String"]>
-  first: Maybe<Scalars["Int"]>
-  last: Maybe<Scalars["Int"]>
-  orderBy: Maybe<StaffOrder>
+  after: InputMaybe<Scalars["String"]>
+  before: InputMaybe<Scalars["String"]>
+  first: InputMaybe<Scalars["Int"]>
+  last: InputMaybe<Scalars["Int"]>
+  orderBy: InputMaybe<StaffOrder>
 }
 
 export type WorkConnection = {
@@ -1117,9 +1118,9 @@ export type EpisodeFragment = {
   __typename?: "Episode"
   id: string
   annictId: number
-  number: number | null | undefined
-  numberText: string | null | undefined
-  title: string | null | undefined
+  number: number | null
+  numberText: string | null
+  title: string | null
   viewerDidTrack: boolean
   viewerRecordsCount: number
 }
@@ -1138,88 +1139,56 @@ export type WorkFragment = {
   annictId: number
   title: string
   media: Media
-  twitterUsername: string | null | undefined
-  twitterHashtag: string | null | undefined
-  officialSiteUrl: string | null | undefined
-  seasonName: SeasonName | null | undefined
-  seasonYear: number | null | undefined
+  twitterUsername: string | null
+  twitterHashtag: string | null
+  officialSiteUrl: string | null
+  seasonName: SeasonName | null
+  seasonYear: number | null
   episodesCount: number
   noEpisodes: boolean
-  titleKana: string | null | undefined
-  viewerStatusState: StatusState | null | undefined
-  image:
-    | {
-        __typename?: "WorkImage"
-        recommendedImageUrl: string | null | undefined
+  titleKana: string | null
+  viewerStatusState: StatusState | null
+  image: { __typename?: "WorkImage"; recommendedImageUrl: string | null } | null
+  casts: {
+    __typename?: "CastConnection"
+    nodes: Array<{
+      __typename?: "Cast"
+      annictId: number
+      id: string
+      name: string
+      character: {
+        __typename?: "Character"
+        id: string
+        annictId: number
+        name: string
       }
-    | null
-    | undefined
-  casts:
-    | {
-        __typename?: "CastConnection"
-        nodes:
-          | Array<
-              | {
-                  __typename?: "Cast"
-                  annictId: number
-                  id: string
-                  name: string
-                  character: {
-                    __typename?: "Character"
-                    id: string
-                    annictId: number
-                    name: string
-                  }
-                  person: {
-                    __typename?: "Person"
-                    id: string
-                    annictId: number
-                    name: string
-                    nameEn: string
-                    nameKana: string
-                  }
-                }
-              | null
-              | undefined
-            >
-          | null
-          | undefined
+      person: {
+        __typename?: "Person"
+        id: string
+        annictId: number
+        name: string
+        nameEn: string
+        nameKana: string
       }
-    | null
-    | undefined
-  episodes:
-    | {
-        __typename?: "EpisodeConnection"
-        nodes:
-          | Array<
-              | {
-                  __typename?: "Episode"
-                  id: string
-                  annictId: number
-                  number: number | null | undefined
-                  numberText: string | null | undefined
-                  title: string | null | undefined
-                  viewerDidTrack: boolean
-                  viewerRecordsCount: number
-                }
-              | null
-              | undefined
-            >
-          | null
-          | undefined
-      }
-    | null
-    | undefined
-  seriesList:
-    | {
-        __typename?: "SeriesConnection"
-        nodes:
-          | Array<{ __typename?: "Series"; name: string } | null | undefined>
-          | null
-          | undefined
-      }
-    | null
-    | undefined
+    } | null> | null
+  } | null
+  episodes: {
+    __typename?: "EpisodeConnection"
+    nodes: Array<{
+      __typename?: "Episode"
+      id: string
+      annictId: number
+      number: number | null
+      numberText: string | null
+      title: string | null
+      viewerDidTrack: boolean
+      viewerRecordsCount: number
+    } | null> | null
+  } | null
+  seriesList: {
+    __typename?: "SeriesConnection"
+    nodes: Array<{ __typename?: "Series"; name: string } | null> | null
+  } | null
 }
 
 export type WorkQueryVariables = Exact<{
@@ -1228,112 +1197,69 @@ export type WorkQueryVariables = Exact<{
 
 export type WorkQuery = {
   __typename?: "Query"
-  searchWorks:
-    | {
-        __typename?: "WorkConnection"
-        nodes:
-          | Array<
-              | {
-                  __typename?: "Work"
-                  id: string
-                  annictId: number
-                  title: string
-                  media: Media
-                  twitterUsername: string | null | undefined
-                  twitterHashtag: string | null | undefined
-                  officialSiteUrl: string | null | undefined
-                  seasonName: SeasonName | null | undefined
-                  seasonYear: number | null | undefined
-                  episodesCount: number
-                  noEpisodes: boolean
-                  titleKana: string | null | undefined
-                  viewerStatusState: StatusState | null | undefined
-                  image:
-                    | {
-                        __typename?: "WorkImage"
-                        recommendedImageUrl: string | null | undefined
-                      }
-                    | null
-                    | undefined
-                  casts:
-                    | {
-                        __typename?: "CastConnection"
-                        nodes:
-                          | Array<
-                              | {
-                                  __typename?: "Cast"
-                                  annictId: number
-                                  id: string
-                                  name: string
-                                  character: {
-                                    __typename?: "Character"
-                                    id: string
-                                    annictId: number
-                                    name: string
-                                  }
-                                  person: {
-                                    __typename?: "Person"
-                                    id: string
-                                    annictId: number
-                                    name: string
-                                    nameEn: string
-                                    nameKana: string
-                                  }
-                                }
-                              | null
-                              | undefined
-                            >
-                          | null
-                          | undefined
-                      }
-                    | null
-                    | undefined
-                  episodes:
-                    | {
-                        __typename?: "EpisodeConnection"
-                        nodes:
-                          | Array<
-                              | {
-                                  __typename?: "Episode"
-                                  id: string
-                                  annictId: number
-                                  number: number | null | undefined
-                                  numberText: string | null | undefined
-                                  title: string | null | undefined
-                                  viewerDidTrack: boolean
-                                  viewerRecordsCount: number
-                                }
-                              | null
-                              | undefined
-                            >
-                          | null
-                          | undefined
-                      }
-                    | null
-                    | undefined
-                  seriesList:
-                    | {
-                        __typename?: "SeriesConnection"
-                        nodes:
-                          | Array<
-                              | { __typename?: "Series"; name: string }
-                              | null
-                              | undefined
-                            >
-                          | null
-                          | undefined
-                      }
-                    | null
-                    | undefined
-                }
-              | null
-              | undefined
-            >
-          | null
-          | undefined
-      }
-    | null
-    | undefined
+  searchWorks: {
+    __typename?: "WorkConnection"
+    nodes: Array<{
+      __typename?: "Work"
+      id: string
+      annictId: number
+      title: string
+      media: Media
+      twitterUsername: string | null
+      twitterHashtag: string | null
+      officialSiteUrl: string | null
+      seasonName: SeasonName | null
+      seasonYear: number | null
+      episodesCount: number
+      noEpisodes: boolean
+      titleKana: string | null
+      viewerStatusState: StatusState | null
+      image: {
+        __typename?: "WorkImage"
+        recommendedImageUrl: string | null
+      } | null
+      casts: {
+        __typename?: "CastConnection"
+        nodes: Array<{
+          __typename?: "Cast"
+          annictId: number
+          id: string
+          name: string
+          character: {
+            __typename?: "Character"
+            id: string
+            annictId: number
+            name: string
+          }
+          person: {
+            __typename?: "Person"
+            id: string
+            annictId: number
+            name: string
+            nameEn: string
+            nameKana: string
+          }
+        } | null> | null
+      } | null
+      episodes: {
+        __typename?: "EpisodeConnection"
+        nodes: Array<{
+          __typename?: "Episode"
+          id: string
+          annictId: number
+          number: number | null
+          numberText: string | null
+          title: string | null
+          viewerDidTrack: boolean
+          viewerRecordsCount: number
+        } | null> | null
+      } | null
+      seriesList: {
+        __typename?: "SeriesConnection"
+        nodes: Array<{ __typename?: "Series"; name: string } | null> | null
+      } | null
+    } | null> | null
+  } | null
 }
 
 export type searchWorksByTermQueryVariables = Exact<{
@@ -1342,112 +1268,69 @@ export type searchWorksByTermQueryVariables = Exact<{
 
 export type searchWorksByTermQuery = {
   __typename?: "Query"
-  searchWorks:
-    | {
-        __typename?: "WorkConnection"
-        nodes:
-          | Array<
-              | {
-                  __typename?: "Work"
-                  id: string
-                  annictId: number
-                  title: string
-                  media: Media
-                  twitterUsername: string | null | undefined
-                  twitterHashtag: string | null | undefined
-                  officialSiteUrl: string | null | undefined
-                  seasonName: SeasonName | null | undefined
-                  seasonYear: number | null | undefined
-                  episodesCount: number
-                  noEpisodes: boolean
-                  titleKana: string | null | undefined
-                  viewerStatusState: StatusState | null | undefined
-                  image:
-                    | {
-                        __typename?: "WorkImage"
-                        recommendedImageUrl: string | null | undefined
-                      }
-                    | null
-                    | undefined
-                  casts:
-                    | {
-                        __typename?: "CastConnection"
-                        nodes:
-                          | Array<
-                              | {
-                                  __typename?: "Cast"
-                                  annictId: number
-                                  id: string
-                                  name: string
-                                  character: {
-                                    __typename?: "Character"
-                                    id: string
-                                    annictId: number
-                                    name: string
-                                  }
-                                  person: {
-                                    __typename?: "Person"
-                                    id: string
-                                    annictId: number
-                                    name: string
-                                    nameEn: string
-                                    nameKana: string
-                                  }
-                                }
-                              | null
-                              | undefined
-                            >
-                          | null
-                          | undefined
-                      }
-                    | null
-                    | undefined
-                  episodes:
-                    | {
-                        __typename?: "EpisodeConnection"
-                        nodes:
-                          | Array<
-                              | {
-                                  __typename?: "Episode"
-                                  id: string
-                                  annictId: number
-                                  number: number | null | undefined
-                                  numberText: string | null | undefined
-                                  title: string | null | undefined
-                                  viewerDidTrack: boolean
-                                  viewerRecordsCount: number
-                                }
-                              | null
-                              | undefined
-                            >
-                          | null
-                          | undefined
-                      }
-                    | null
-                    | undefined
-                  seriesList:
-                    | {
-                        __typename?: "SeriesConnection"
-                        nodes:
-                          | Array<
-                              | { __typename?: "Series"; name: string }
-                              | null
-                              | undefined
-                            >
-                          | null
-                          | undefined
-                      }
-                    | null
-                    | undefined
-                }
-              | null
-              | undefined
-            >
-          | null
-          | undefined
-      }
-    | null
-    | undefined
+  searchWorks: {
+    __typename?: "WorkConnection"
+    nodes: Array<{
+      __typename?: "Work"
+      id: string
+      annictId: number
+      title: string
+      media: Media
+      twitterUsername: string | null
+      twitterHashtag: string | null
+      officialSiteUrl: string | null
+      seasonName: SeasonName | null
+      seasonYear: number | null
+      episodesCount: number
+      noEpisodes: boolean
+      titleKana: string | null
+      viewerStatusState: StatusState | null
+      image: {
+        __typename?: "WorkImage"
+        recommendedImageUrl: string | null
+      } | null
+      casts: {
+        __typename?: "CastConnection"
+        nodes: Array<{
+          __typename?: "Cast"
+          annictId: number
+          id: string
+          name: string
+          character: {
+            __typename?: "Character"
+            id: string
+            annictId: number
+            name: string
+          }
+          person: {
+            __typename?: "Person"
+            id: string
+            annictId: number
+            name: string
+            nameEn: string
+            nameKana: string
+          }
+        } | null> | null
+      } | null
+      episodes: {
+        __typename?: "EpisodeConnection"
+        nodes: Array<{
+          __typename?: "Episode"
+          id: string
+          annictId: number
+          number: number | null
+          numberText: string | null
+          title: string | null
+          viewerDidTrack: boolean
+          viewerRecordsCount: number
+        } | null> | null
+      } | null
+      seriesList: {
+        __typename?: "SeriesConnection"
+        nodes: Array<{ __typename?: "Series"; name: string } | null> | null
+      } | null
+    } | null> | null
+  } | null
 }
 
 export type updateWorkStatusMutationVariables = Exact<{
@@ -1457,32 +1340,26 @@ export type updateWorkStatusMutationVariables = Exact<{
 
 export type updateWorkStatusMutation = {
   __typename?: "Mutation"
-  updateStatus:
-    | {
-        __typename?: "UpdateStatusPayload"
-        clientMutationId: string | null | undefined
-      }
-    | null
-    | undefined
+  updateStatus: {
+    __typename?: "UpdateStatusPayload"
+    clientMutationId: string | null
+  } | null
 }
 
 export type createRecordMutationVariables = Exact<{
   episodeId: Scalars["ID"]
-  comment: Maybe<Scalars["String"]>
-  ratingState: Maybe<RatingState>
-  shareTwitter: Maybe<Scalars["Boolean"]>
-  shareFacebook: Maybe<Scalars["Boolean"]>
+  comment: InputMaybe<Scalars["String"]>
+  ratingState: InputMaybe<RatingState>
+  shareTwitter: InputMaybe<Scalars["Boolean"]>
+  shareFacebook: InputMaybe<Scalars["Boolean"]>
 }>
 
 export type createRecordMutation = {
   __typename?: "Mutation"
-  createRecord:
-    | {
-        __typename?: "CreateRecordPayload"
-        clientMutationId: string | null | undefined
-      }
-    | null
-    | undefined
+  createRecord: {
+    __typename?: "CreateRecordPayload"
+    clientMutationId: string | null
+  } | null
 }
 
 export const StaffFragmentDoc = gql`
@@ -1620,10 +1497,15 @@ export const createRecordDocument = gql`
 
 export type SdkFunctionWrapper = <T>(
   action: (requestHeaders?: Record<string, string>) => Promise<T>,
-  operationName: string
+  operationName: string,
+  operationType?: string
 ) => Promise<T>
 
-const defaultWrapper: SdkFunctionWrapper = (action, _operationName) => action()
+const defaultWrapper: SdkFunctionWrapper = (
+  action,
+  _operationName,
+  _operationType
+) => action()
 
 export function getSdk(
   client: GraphQLClient,
@@ -1640,7 +1522,8 @@ export function getSdk(
             ...requestHeaders,
             ...wrappedRequestHeaders,
           }),
-        "Work"
+        "Work",
+        "query"
       )
     },
     searchWorksByTerm(
@@ -1654,7 +1537,8 @@ export function getSdk(
             variables,
             { ...requestHeaders, ...wrappedRequestHeaders }
           ),
-        "searchWorksByTerm"
+        "searchWorksByTerm",
+        "query"
       )
     },
     updateWorkStatus(
@@ -1668,7 +1552,8 @@ export function getSdk(
             variables,
             { ...requestHeaders, ...wrappedRequestHeaders }
           ),
-        "updateWorkStatus"
+        "updateWorkStatus",
+        "mutation"
       )
     },
     createRecord(
@@ -1682,7 +1567,8 @@ export function getSdk(
             variables,
             { ...requestHeaders, ...wrappedRequestHeaders }
           ),
-        "createRecord"
+        "createRecord",
+        "mutation"
       )
     },
   }

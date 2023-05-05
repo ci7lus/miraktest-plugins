@@ -4,7 +4,7 @@ export const DRPC_META = {
   id: DRPC_ID,
   name: "Discord RPC",
   author: "ci7lus",
-  version: "0.2.2",
+  version: "0.2.3",
   description: "表示中の番組を Discord に共有します",
   authorUrl: "https://github.com/ci7lus",
   url: "https://github.com/ci7lus/miraktest-plugins/tree/master/src/miraktest-drpc",

@@ -1,8 +1,8 @@
 import fs from "fs"
 import os from "os"
 import path from "path"
-import { InitPlugin } from "../@types/plugin"
 import { SAMPLE_META, SAMPLE_WINDOW_ID } from "./constants"
+import { InitPlugin } from "../@types/plugin"
 
 const main: InitPlugin = {
   renderer:

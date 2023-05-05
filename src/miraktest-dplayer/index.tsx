@@ -4,10 +4,10 @@ import React, { useEffect, useMemo, useState } from "react"
 import { useDebounce } from "react-use"
 import { atom, useRecoilValue, useRecoilState } from "recoil"
 import { syncEffect } from "recoil-sync"
-import { InitPlugin } from "../@types/plugin"
-import tailwind from "../tailwind.scss"
 import { DPlayerWrapper } from "./components/DPlayerWrapper"
 import { DPLAYER_META, DPLAYER_PREFIX } from "./constants"
+import { InitPlugin } from "../@types/plugin"
+import tailwind from "../tailwind.scss"
 
 /**
  * MirakTest DPlayer Plugin

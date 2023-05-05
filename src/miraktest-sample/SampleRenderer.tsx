@@ -3,9 +3,9 @@ import clsx from "clsx"
 import React, { useEffect } from "react"
 import { atom, useRecoilValue, useRecoilState } from "recoil"
 import { syncEffect } from "recoil-sync"
+import { SAMPLE_PREFIX, SAMPLE_META, SAMPLE_WINDOW_ID } from "./constants"
 import { InitPlugin } from "../@types/plugin"
 import tailwind from "../tailwind.scss"
-import { SAMPLE_PREFIX, SAMPLE_META, SAMPLE_WINDOW_ID } from "./constants"
 
 export const SampleRenderer: InitPlugin["renderer"] = ({
   atoms,

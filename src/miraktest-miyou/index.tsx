@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react"
 import { atom, useRecoilValue, useRecoilState } from "recoil"
 import { syncEffect } from "recoil-sync"
 import YAML from "yaml"
+import { MiyouComment, MiyouSetting } from "./types"
 import { InitPlugin } from "../@types/plugin"
 import { DPLAYER_COMMENT_EVENT } from "../miraktest-dplayer/constants"
 import { DPlayerCommentPayload } from "../miraktest-dplayer/types"
@@ -14,7 +15,6 @@ import { SayaDefinition } from "../miraktest-saya/types"
 import { ChatInput, PECORE_ID } from "../pecore"
 import { useRefFromState, wait } from "../shared/utils"
 import tailwind from "../tailwind.scss"
-import { MiyouComment, MiyouSetting } from "./types"
 
 /**
  * MirakTest Miyou Plugin
@@ -29,7 +29,7 @@ const meta = {
   id: _id,
   name: "Miyou",
   author: "ci7lus",
-  version: "0.2.5",
+  version: "0.2.6",
   description:
     "Miyouからコメントを取得するプラグインです。対応するコメントレンダラープラグインが必要です。",
   authorUrl: "https://github.com/ci7lus",

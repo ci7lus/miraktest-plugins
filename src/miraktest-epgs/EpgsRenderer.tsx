@@ -3,14 +3,14 @@ import clsx from "clsx"
 import React, { useEffect, useMemo, useState } from "react"
 import { atom, useRecoilValue, useRecoilState, useSetRecoilState } from "recoil"
 import { syncEffect } from "recoil-sync"
-import { ContentPlayerPlayingContent, InitPlugin } from "../@types/plugin"
-import { DEFAULT_SERVICES } from "../shared/services"
-import tailwind from "../tailwind.scss"
 import { EPGStationAPI } from "./api"
 import { Records } from "./components/Records"
 import { EPGS_PREFIX, EPGS_META, EPGS_RECORDS_WINDOW_ID } from "./constants"
 import styles from "./index.scss"
 import { EPGSChannel, EPGStationSetting } from "./types"
+import { ContentPlayerPlayingContent, InitPlugin } from "../@types/plugin"
+import { DEFAULT_SERVICES } from "../shared/services"
+import tailwind from "../tailwind.scss"
 
 export const EpgsRenderer: InitPlugin["renderer"] = ({
   appInfo,

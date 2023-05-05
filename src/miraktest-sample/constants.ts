@@ -4,7 +4,7 @@ export const SAMPLE_META = {
   id: SAMPLE_ID,
   name: "SamplePlugin",
   author: "ci7lus",
-  version: "0.2.1",
+  version: "0.2.2",
   description: " 読み込み確認用プラグイン",
   authorUrl: "https://github.com/ci7lus",
   url: "https://github.com/ci7lus/miraktest-plugins/tree/master/src/miraktest-sample",

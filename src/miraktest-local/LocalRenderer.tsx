@@ -1,11 +1,11 @@
 import clsx from "clsx"
 import React, { useEffect, useMemo } from "react"
 import { useRecoilValue, useSetRecoilState } from "recoil"
+import { FileSelector } from "./components/FileSelector"
+import { LOCAL_META, Local_RECORDS_WINDOW_ID } from "./constants"
 import { ContentPlayerPlayingContent, InitPlugin } from "../@types/plugin"
 import { DEFAULT_SERVICES } from "../shared/services"
 import tailwind from "../tailwind.scss"
-import { FileSelector } from "./components/FileSelector"
-import { LOCAL_META, Local_RECORDS_WINDOW_ID } from "./constants"
 
 export const LocalRenderer: InitPlugin["renderer"] = ({
   appInfo,
