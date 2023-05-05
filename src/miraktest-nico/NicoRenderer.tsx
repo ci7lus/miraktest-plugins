@@ -5,12 +5,12 @@ import React, { useEffect, useState } from "react"
 import { atom, useRecoilValue, useRecoilState } from "recoil"
 import { syncEffect } from "recoil-sync"
 import YAML from "yaml"
-import { InitPlugin } from "../@types/plugin"
-import { SayaDefinition } from "../miraktest-saya/types"
-import tailwind from "../tailwind.scss"
 import { KakologStream } from "./streams/Kakolog"
 import { NicoLiveList } from "./streams/NicoLiveList"
 import { NicoSetting } from "./types"
+import { InitPlugin } from "../@types/plugin"
+import { SayaDefinition } from "../miraktest-saya/types"
+import tailwind from "../tailwind.scss"
 
 const _id = "io.github.ci7lus.miraktest-plugins.nico"
 const prefix = "plugins.ci7lus.nico"
@@ -18,7 +18,7 @@ const meta = {
   id: _id,
   name: "ニコニコ実況",
   author: "ci7lus",
-  version: "0.3.8",
+  version: "0.3.9",
   description:
     "ニコニコ実況からコメントを取得するプラグインです。対応するコメントレンダラープラグインが必要です。",
   authorUrl: "https://github.com/ci7lus",

@@ -1,0 +1,1476 @@
+[
+  {
+    "id": 3273601024,
+    "serviceId": 1024,
+    "networkId": 32736,
+    "name": "ＮＨＫ総合１・東京",
+    "type": 1,
+    "channel": {
+      "type": "GR",
+      "channel": "27"
+    }
+  },
+  {
+    "id": 3273601025,
+    "serviceId": 1025,
+    "networkId": 32736,
+    "name": "ＮＨＫ総合２・東京",
+    "type": 1,
+    "channel": {
+      "type": "GR",
+      "channel": "27"
+    }
+  },
+  {
+    "id": 3273701032,
+    "serviceId": 1032,
+    "networkId": 32737,
+    "name": "ＮＨＫＥテレ１東京",
+    "type": 1,
+    "channel": {
+      "type": "GR",
+      "channel": "26"
+    }
+  },
+  {
+    "id": 3273701033,
+    "serviceId": 1033,
+    "networkId": 32737,
+    "name": "ＮＨＫＥテレ２東京",
+    "type": 1,
+    "channel": {
+      "type": "GR",
+      "channel": "26"
+    }
+  },
+  {
+    "id": 3273701034,
+    "serviceId": 1034,
+    "networkId": 32737,
+    "name": "ＮＨＫＥテレ３東京",
+    "type": 1,
+    "channel": {
+      "type": "GR",
+      "channel": "26"
+    }
+  },
+  {
+    "id": 3273801040,
+    "serviceId": 1040,
+    "networkId": 32738,
+    "name": "日テレ１",
+    "type": 1,
+    "channel": {
+      "type": "GR",
+      "channel": "25"
+    }
+  },
+  {
+    "id": 3273801041,
+    "serviceId": 1041,
+    "networkId": 32738,
+    "name": "日テレ２",
+    "type": 1,
+    "channel": {
+      "type": "GR",
+      "channel": "25"
+    }
+  },
+  {
+    "id": 3273801424,
+    "serviceId": 1424,
+    "networkId": 32738,
+    "name": "日本テレビ",
+    "type": 192,
+    "channel": {
+      "type": "GR",
+      "channel": "25"
+    }
+  },
+  {
+    "id": 3274101064,
+    "serviceId": 1064,
+    "networkId": 32741,
+    "name": "テレビ朝日",
+    "type": 1,
+    "channel": {
+      "type": "GR",
+      "channel": "24"
+    }
+  },
+  {
+    "id": 3274101065,
+    "serviceId": 1065,
+    "networkId": 32741,
+    "name": "テレビ朝日",
+    "type": 1,
+    "channel": {
+      "type": "GR",
+      "channel": "24"
+    }
+  },
+  {
+    "id": 3274101066,
+    "serviceId": 1066,
+    "networkId": 32741,
+    "name": "テレビ朝日",
+    "type": 1,
+    "channel": {
+      "type": "GR",
+      "channel": "24"
+    }
+  },
+  {
+    "id": 3274101448,
+    "serviceId": 1448,
+    "networkId": 32741,
+    "name": "テレビ朝日",
+    "type": 192,
+    "channel": {
+      "type": "GR",
+      "channel": "24"
+    }
+  },
+  {
+    "id": 3273901048,
+    "serviceId": 1048,
+    "networkId": 32739,
+    "name": "ＴＢＳ１",
+    "type": 1,
+    "channel": {
+      "type": "GR",
+      "channel": "22"
+    }
+  },
+  {
+    "id": 3273901049,
+    "serviceId": 1049,
+    "networkId": 32739,
+    "name": "ＴＢＳ２",
+    "type": 1,
+    "channel": {
+      "type": "GR",
+      "channel": "22"
+    }
+  },
+  {
+    "id": 3273901183,
+    "serviceId": 1183,
+    "networkId": 32739,
+    "name": "Ｇガイド",
+    "type": 192,
+    "channel": {
+      "type": "GR",
+      "channel": "22"
+    }
+  },
+  {
+    "id": 3273901432,
+    "serviceId": 1432,
+    "networkId": 32739,
+    "name": "ＴＢＳ",
+    "type": 192,
+    "channel": {
+      "type": "GR",
+      "channel": "22"
+    }
+  },
+  {
+    "id": 3274201072,
+    "serviceId": 1072,
+    "networkId": 32742,
+    "name": "テレビ東京１",
+    "type": 1,
+    "channel": {
+      "type": "GR",
+      "channel": "23"
+    }
+  },
+  {
+    "id": 3274201073,
+    "serviceId": 1073,
+    "networkId": 32742,
+    "name": "テレビ東京２",
+    "type": 1,
+    "channel": {
+      "type": "GR",
+      "channel": "23"
+    }
+  },
+  {
+    "id": 3274201074,
+    "serviceId": 1074,
+    "networkId": 32742,
+    "name": "テレビ東京３",
+    "type": 1,
+    "channel": {
+      "type": "GR",
+      "channel": "23"
+    }
+  },
+  {
+    "id": 3274001056,
+    "serviceId": 1056,
+    "networkId": 32740,
+    "name": "フジテレビ",
+    "type": 1,
+    "channel": {
+      "type": "GR",
+      "channel": "21"
+    }
+  },
+  {
+    "id": 3274001057,
+    "serviceId": 1057,
+    "networkId": 32740,
+    "name": "フジテレビ",
+    "type": 1,
+    "channel": {
+      "type": "GR",
+      "channel": "21"
+    }
+  },
+  {
+    "id": 3274001058,
+    "serviceId": 1058,
+    "networkId": 32740,
+    "name": "フジテレビ",
+    "type": 1,
+    "channel": {
+      "type": "GR",
+      "channel": "21"
+    }
+  },
+  {
+    "id": 3274001440,
+    "serviceId": 1440,
+    "networkId": 32740,
+    "name": "フジテレビ",
+    "type": 192,
+    "channel": {
+      "type": "GR",
+      "channel": "21"
+    }
+  },
+  {
+    "id": 3239123608,
+    "serviceId": 23608,
+    "networkId": 32391,
+    "name": "ＴＯＫＹＯ　ＭＸ１",
+    "type": 1,
+    "channel": {
+      "type": "GR",
+      "channel": "16"
+    }
+  },
+  {
+    "id": 3239123609,
+    "serviceId": 23609,
+    "networkId": 32391,
+    "name": "ＴＯＫＹＯ　ＭＸ１",
+    "type": 1,
+    "channel": {
+      "type": "GR",
+      "channel": "16"
+    }
+  },
+  {
+    "id": 3239123610,
+    "serviceId": 23610,
+    "networkId": 32391,
+    "name": "ＴＯＫＹＯ　ＭＸ２",
+    "type": 1,
+    "channel": {
+      "type": "GR",
+      "channel": "16"
+    }
+  },
+  {
+    "id": 400101,
+    "serviceId": 101,
+    "networkId": 4,
+    "name": "ＮＨＫＢＳ１",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS15_0"
+    }
+  },
+  {
+    "id": 400102,
+    "serviceId": 102,
+    "networkId": 4,
+    "name": "ＮＨＫＢＳ１",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS15_0"
+    }
+  },
+  {
+    "id": 400103,
+    "serviceId": 103,
+    "networkId": 4,
+    "name": "ＮＨＫＢＳプレミアム",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS03_1"
+    }
+  },
+  {
+    "id": 400104,
+    "serviceId": 104,
+    "networkId": 4,
+    "name": "ＮＨＫＢＳプレミアム",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS03_1"
+    }
+  },
+  {
+    "id": 400141,
+    "serviceId": 141,
+    "networkId": 4,
+    "name": "ＢＳ日テレ",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS13_0"
+    }
+  },
+  {
+    "id": 400142,
+    "serviceId": 142,
+    "networkId": 4,
+    "name": "ＢＳ日テレ",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS13_0"
+    }
+  },
+  {
+    "id": 400143,
+    "serviceId": 143,
+    "networkId": 4,
+    "name": "ＢＳ日テレ",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS13_0"
+    }
+  },
+  {
+    "id": 400151,
+    "serviceId": 151,
+    "networkId": 4,
+    "name": "ＢＳ朝日１",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS01_0"
+    }
+  },
+  {
+    "id": 400152,
+    "serviceId": 152,
+    "networkId": 4,
+    "name": "ＢＳ朝日２",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS01_0"
+    }
+  },
+  {
+    "id": 400153,
+    "serviceId": 153,
+    "networkId": 4,
+    "name": "ＢＳ朝日３",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS01_0"
+    }
+  },
+  {
+    "id": 400161,
+    "serviceId": 161,
+    "networkId": 4,
+    "name": "ＢＳ－ＴＢＳ",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS01_1"
+    }
+  },
+  {
+    "id": 400162,
+    "serviceId": 162,
+    "networkId": 4,
+    "name": "ＢＳ－ＴＢＳ",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS01_1"
+    }
+  },
+  {
+    "id": 400163,
+    "serviceId": 163,
+    "networkId": 4,
+    "name": "ＢＳ－ＴＢＳ",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS01_1"
+    }
+  },
+  {
+    "id": 400171,
+    "serviceId": 171,
+    "networkId": 4,
+    "name": "ＢＳテレ東",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS01_2"
+    }
+  },
+  {
+    "id": 400172,
+    "serviceId": 172,
+    "networkId": 4,
+    "name": "ＢＳテレ東２",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS01_2"
+    }
+  },
+  {
+    "id": 400173,
+    "serviceId": 173,
+    "networkId": 4,
+    "name": "ＢＳテレ東３",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS01_2"
+    }
+  },
+  {
+    "id": 400181,
+    "serviceId": 181,
+    "networkId": 4,
+    "name": "ＢＳフジ・１８１",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS13_1"
+    }
+  },
+  {
+    "id": 400182,
+    "serviceId": 182,
+    "networkId": 4,
+    "name": "ＢＳフジ・１８２",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS13_1"
+    }
+  },
+  {
+    "id": 400183,
+    "serviceId": 183,
+    "networkId": 4,
+    "name": "ＢＳフジ・１８３",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS13_1"
+    }
+  },
+  {
+    "id": 400191,
+    "serviceId": 191,
+    "networkId": 4,
+    "name": "ＷＯＷＯＷプライム",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS03_0"
+    }
+  },
+  {
+    "id": 400192,
+    "serviceId": 192,
+    "networkId": 4,
+    "name": "ＷＯＷＯＷライブ",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS05_0"
+    }
+  },
+  {
+    "id": 400193,
+    "serviceId": 193,
+    "networkId": 4,
+    "name": "ＷＯＷＯＷシネマ",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS05_1"
+    }
+  },
+  {
+    "id": 400200,
+    "serviceId": 200,
+    "networkId": 4,
+    "name": "スターチャンネル１",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS09_1"
+    }
+  },
+  {
+    "id": 400201,
+    "serviceId": 201,
+    "networkId": 4,
+    "name": "スターチャンネル２",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS15_1"
+    }
+  },
+  {
+    "id": 400202,
+    "serviceId": 202,
+    "networkId": 4,
+    "name": "スターチャンネル３",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS15_1"
+    }
+  },
+  {
+    "id": 400211,
+    "serviceId": 211,
+    "networkId": 4,
+    "name": "ＢＳ１１イレブン",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS09_0"
+    }
+  },
+  {
+    "id": 400222,
+    "serviceId": 222,
+    "networkId": 4,
+    "name": "ＢＳ１２トゥエルビ",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS09_2"
+    }
+  },
+  {
+    "id": 400234,
+    "serviceId": 234,
+    "networkId": 4,
+    "name": "グリーンチャンネル",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS21_2"
+    }
+  },
+  {
+    "id": 400236,
+    "serviceId": 236,
+    "networkId": 4,
+    "name": "ＢＳアニマックス",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS13_2"
+    }
+  },
+  {
+    "id": 400242,
+    "serviceId": 242,
+    "networkId": 4,
+    "name": "Ｊ　ＳＰＯＲＴＳ　１",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS19_1"
+    }
+  },
+  {
+    "id": 400243,
+    "serviceId": 243,
+    "networkId": 4,
+    "name": "Ｊ　ＳＰＯＲＴＳ　２",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS19_2"
+    }
+  },
+  {
+    "id": 400244,
+    "serviceId": 244,
+    "networkId": 4,
+    "name": "Ｊ　ＳＰＯＲＴＳ　３",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS19_3"
+    }
+  },
+  {
+    "id": 400245,
+    "serviceId": 245,
+    "networkId": 4,
+    "name": "Ｊ　ＳＰＯＲＴＳ　４",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS19_0"
+    }
+  },
+  {
+    "id": 400251,
+    "serviceId": 251,
+    "networkId": 4,
+    "name": "ＢＳ釣りビジョン",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS11_1"
+    }
+  },
+  {
+    "id": 400252,
+    "serviceId": 252,
+    "networkId": 4,
+    "name": "ＷＯＷＯＷプラス",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS21_0"
+    }
+  },
+  {
+    "id": 400255,
+    "serviceId": 255,
+    "networkId": 4,
+    "name": "日本映画専門ｃｈ",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS21_1"
+    }
+  },
+  {
+    "id": 400256,
+    "serviceId": 256,
+    "networkId": 4,
+    "name": "ディズニーｃｈ",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS23_0"
+    }
+  },
+  {
+    "id": 400260,
+    "serviceId": 260,
+    "networkId": 4,
+    "name": "ＢＳ松竹東急",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS23_3"
+    }
+  },
+  {
+    "id": 400263,
+    "serviceId": 263,
+    "networkId": 4,
+    "name": "ＢＳＪａｐａｎｅｘｔ",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS23_2"
+    }
+  },
+  {
+    "id": 400265,
+    "serviceId": 265,
+    "networkId": 4,
+    "name": "ＢＳよしもと",
+    "type": 1,
+    "channel": {
+      "type": "BS",
+      "channel": "BS23_1"
+    }
+  },
+  {
+    "id": 400700,
+    "serviceId": 700,
+    "networkId": 4,
+    "name": "ＮＨＫデータ１",
+    "type": 192,
+    "channel": {
+      "type": "BS",
+      "channel": "BS15_0"
+    }
+  },
+  {
+    "id": 400701,
+    "serviceId": 701,
+    "networkId": 4,
+    "name": "ＮＨＫデータ２",
+    "type": 192,
+    "channel": {
+      "type": "BS",
+      "channel": "BS15_0"
+    }
+  },
+  {
+    "id": 400707,
+    "serviceId": 707,
+    "networkId": 4,
+    "name": "７０７チャンネル",
+    "type": 192,
+    "channel": {
+      "type": "BS",
+      "channel": "BS15_0"
+    }
+  },
+  {
+    "id": 400744,
+    "serviceId": 744,
+    "networkId": 4,
+    "name": "　",
+    "type": 192,
+    "channel": {
+      "type": "BS",
+      "channel": "BS13_0"
+    }
+  },
+  {
+    "id": 400745,
+    "serviceId": 745,
+    "networkId": 4,
+    "name": "　",
+    "type": 192,
+    "channel": {
+      "type": "BS",
+      "channel": "BS13_0"
+    }
+  },
+  {
+    "id": 400746,
+    "serviceId": 746,
+    "networkId": 4,
+    "name": "　",
+    "type": 192,
+    "channel": {
+      "type": "BS",
+      "channel": "BS13_0"
+    }
+  },
+  {
+    "id": 400766,
+    "serviceId": 766,
+    "networkId": 4,
+    "name": "ＢＳ－ＴＢＳ",
+    "type": 192,
+    "channel": {
+      "type": "BS",
+      "channel": "BS01_1"
+    }
+  },
+  {
+    "id": 400768,
+    "serviceId": 768,
+    "networkId": 4,
+    "name": "Ｇガイド",
+    "type": 192,
+    "channel": {
+      "type": "BS",
+      "channel": "BS01_1"
+    }
+  },
+  {
+    "id": 400777,
+    "serviceId": 777,
+    "networkId": 4,
+    "name": "株価情報",
+    "type": 192,
+    "channel": {
+      "type": "BS",
+      "channel": "BS01_2"
+    }
+  },
+  {
+    "id": 400791,
+    "serviceId": 791,
+    "networkId": 4,
+    "name": "ご案内チャンネル",
+    "type": 192,
+    "channel": {
+      "type": "BS",
+      "channel": "BS03_0"
+    }
+  },
+  {
+    "id": 400792,
+    "serviceId": 792,
+    "networkId": 4,
+    "name": "プレミアムナビ",
+    "type": 192,
+    "channel": {
+      "type": "BS",
+      "channel": "BS03_0"
+    }
+  },
+  {
+    "id": 400800,
+    "serviceId": 800,
+    "networkId": 4,
+    "name": "スターチャンネル",
+    "type": 192,
+    "channel": {
+      "type": "BS",
+      "channel": "BS09_1"
+    }
+  },
+  {
+    "id": 400849,
+    "serviceId": 849,
+    "networkId": 4,
+    "name": "スカパー！ガイド",
+    "type": 192,
+    "channel": {
+      "type": "BS",
+      "channel": "BS19_0"
+    }
+  },
+  {
+    "id": 400929,
+    "serviceId": 929,
+    "networkId": 4,
+    "name": "Ｄｐａダウンロード",
+    "type": 164,
+    "channel": {
+      "type": "BS",
+      "channel": "BS15_0"
+    }
+  },
+  {
+    "id": 600055,
+    "serviceId": 55,
+    "networkId": 6,
+    "name": "ショップチャンネル",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS8"
+    }
+  },
+  {
+    "id": 600101,
+    "serviceId": 101,
+    "networkId": 6,
+    "name": "スカパー！インフォ",
+    "type": 192,
+    "channel": {
+      "type": "CS",
+      "channel": "CS10"
+    }
+  },
+  {
+    "id": 700161,
+    "serviceId": 161,
+    "networkId": 7,
+    "name": "ＱＶＣ",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS22"
+    }
+  },
+  {
+    "id": 600218,
+    "serviceId": 218,
+    "networkId": 6,
+    "name": "東映チャンネル",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS8"
+    }
+  },
+  {
+    "id": 600219,
+    "serviceId": 219,
+    "networkId": 6,
+    "name": "衛星劇場",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS10"
+    }
+  },
+  {
+    "id": 700223,
+    "serviceId": 223,
+    "networkId": 7,
+    "name": "映画・ｃｈＮＥＣＯ",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS24"
+    }
+  },
+  {
+    "id": 700227,
+    "serviceId": 227,
+    "networkId": 7,
+    "name": "ザ・シネマ",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS14"
+    }
+  },
+  {
+    "id": 700240,
+    "serviceId": 240,
+    "networkId": 7,
+    "name": "ムービープラス",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS18"
+    }
+  },
+  {
+    "id": 700250,
+    "serviceId": 250,
+    "networkId": 7,
+    "name": "スカイＡ",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS4"
+    }
+  },
+  {
+    "id": 700254,
+    "serviceId": 254,
+    "networkId": 7,
+    "name": "ＧＡＯＲＡ",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS12"
+    }
+  },
+  {
+    "id": 700257,
+    "serviceId": 257,
+    "networkId": 7,
+    "name": "日テレジータス",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS24"
+    }
+  },
+  {
+    "id": 700262,
+    "serviceId": 262,
+    "networkId": 7,
+    "name": "ゴルフネットワーク",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS18"
+    }
+  },
+  {
+    "id": 700290,
+    "serviceId": 290,
+    "networkId": 7,
+    "name": "ＳＫＹ　ＳＴＡＧＥ",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS16"
+    }
+  },
+  {
+    "id": 700292,
+    "serviceId": 292,
+    "networkId": 7,
+    "name": "時代劇専門ｃｈ",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS4"
+    }
+  },
+  {
+    "id": 700293,
+    "serviceId": 293,
+    "networkId": 7,
+    "name": "ファミリー劇場",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS14"
+    }
+  },
+  {
+    "id": 700294,
+    "serviceId": 294,
+    "networkId": 7,
+    "name": "ホームドラマＣＨ",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS6"
+    }
+  },
+  {
+    "id": 700295,
+    "serviceId": 295,
+    "networkId": 7,
+    "name": "ＭＯＮＤＯ　ＴＶ",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS24"
+    }
+  },
+  {
+    "id": 600296,
+    "serviceId": 296,
+    "networkId": 6,
+    "name": "ＴＢＳチャンネル１",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS2"
+    }
+  },
+  {
+    "id": 700297,
+    "serviceId": 297,
+    "networkId": 7,
+    "name": "ＴＢＳチャンネル２",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS22"
+    }
+  },
+  {
+    "id": 600298,
+    "serviceId": 298,
+    "networkId": 6,
+    "name": "テレ朝チャンネル１",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS2"
+    }
+  },
+  {
+    "id": 600299,
+    "serviceId": 299,
+    "networkId": 6,
+    "name": "テレ朝チャンネル２",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS2"
+    }
+  },
+  {
+    "id": 700300,
+    "serviceId": 300,
+    "networkId": 7,
+    "name": "日テレプラス",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS24"
+    }
+  },
+  {
+    "id": 700301,
+    "serviceId": 301,
+    "networkId": 7,
+    "name": "エンタメ～テレ",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS4"
+    }
+  },
+  {
+    "id": 700305,
+    "serviceId": 305,
+    "networkId": 7,
+    "name": "チャンネル銀河",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS18"
+    }
+  },
+  {
+    "id": 700307,
+    "serviceId": 307,
+    "networkId": 7,
+    "name": "フジテレビＯＮＥ",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS20"
+    }
+  },
+  {
+    "id": 700308,
+    "serviceId": 308,
+    "networkId": 7,
+    "name": "フジテレビＴＷＯ",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS20"
+    }
+  },
+  {
+    "id": 700309,
+    "serviceId": 309,
+    "networkId": 7,
+    "name": "フジテレビＮＥＸＴ",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS20"
+    }
+  },
+  {
+    "id": 700310,
+    "serviceId": 310,
+    "networkId": 7,
+    "name": "スーパー！ドラマＴＶ",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS14"
+    }
+  },
+  {
+    "id": 700311,
+    "serviceId": 311,
+    "networkId": 7,
+    "name": "ＡＸＮ　海外ドラマ",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS16"
+    }
+  },
+  {
+    "id": 700312,
+    "serviceId": 312,
+    "networkId": 7,
+    "name": "ＦＯＸ",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS22"
+    }
+  },
+  {
+    "id": 700314,
+    "serviceId": 314,
+    "networkId": 7,
+    "name": "ＬａＬａＴＶ",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS18"
+    }
+  },
+  {
+    "id": 700316,
+    "serviceId": 316,
+    "networkId": 7,
+    "name": "ＡＸＮミステリー",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS16"
+    }
+  },
+  {
+    "id": 600317,
+    "serviceId": 317,
+    "networkId": 6,
+    "name": "ＫＢＳ　Ｗｏｒｌｄ",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS10"
+    }
+  },
+  {
+    "id": 600318,
+    "serviceId": 318,
+    "networkId": 6,
+    "name": "Ｍｎｅｔ",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS8"
+    }
+  },
+  {
+    "id": 700321,
+    "serviceId": 321,
+    "networkId": 7,
+    "name": "スペシャプラス",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS16"
+    }
+  },
+  {
+    "id": 700322,
+    "serviceId": 322,
+    "networkId": 7,
+    "name": "スペースシャワーＴＶ",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS20"
+    }
+  },
+  {
+    "id": 700323,
+    "serviceId": 323,
+    "networkId": 7,
+    "name": "ＭＴＶ",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS4"
+    }
+  },
+  {
+    "id": 700324,
+    "serviceId": 324,
+    "networkId": 7,
+    "name": "ミュージック・エア",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS6"
+    }
+  },
+  {
+    "id": 700325,
+    "serviceId": 325,
+    "networkId": 7,
+    "name": "エムオン！",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS12"
+    }
+  },
+  {
+    "id": 700329,
+    "serviceId": 329,
+    "networkId": 7,
+    "name": "歌謡ポップス",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS6"
+    }
+  },
+  {
+    "id": 700330,
+    "serviceId": 330,
+    "networkId": 7,
+    "name": "キッズステーション",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS12"
+    }
+  },
+  {
+    "id": 700331,
+    "serviceId": 331,
+    "networkId": 7,
+    "name": "カートゥーン",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS6"
+    }
+  },
+  {
+    "id": 700333,
+    "serviceId": 333,
+    "networkId": 7,
+    "name": "ＡＴ－Ｘ",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS16"
+    }
+  },
+  {
+    "id": 600339,
+    "serviceId": 339,
+    "networkId": 6,
+    "name": "ディズニージュニア",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS2"
+    }
+  },
+  {
+    "id": 700340,
+    "serviceId": 340,
+    "networkId": 7,
+    "name": "ディスカバリー",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS6"
+    }
+  },
+  {
+    "id": 700341,
+    "serviceId": 341,
+    "networkId": 7,
+    "name": "アニマルプラネット",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS6"
+    }
+  },
+  {
+    "id": 700342,
+    "serviceId": 342,
+    "networkId": 7,
+    "name": "ヒストリーチャンネル",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS14"
+    }
+  },
+  {
+    "id": 700343,
+    "serviceId": 343,
+    "networkId": 7,
+    "name": "ナショジオ",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS12"
+    }
+  },
+  {
+    "id": 600349,
+    "serviceId": 349,
+    "networkId": 6,
+    "name": "日テレＮＥＷＳ２４",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS8"
+    }
+  },
+  {
+    "id": 700351,
+    "serviceId": 351,
+    "networkId": 7,
+    "name": "ＴＢＳ　ＮＥＷＳ",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS22"
+    }
+  },
+  {
+    "id": 700353,
+    "serviceId": 353,
+    "networkId": 7,
+    "name": "ＢＢＣニュース",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS16"
+    }
+  },
+  {
+    "id": 700354,
+    "serviceId": 354,
+    "networkId": 7,
+    "name": "ＣＮＮｊ",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS6"
+    }
+  },
+  {
+    "id": 700363,
+    "serviceId": 363,
+    "networkId": 7,
+    "name": "囲碁・将棋チャンネル",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS6"
+    }
+  },
+  {
+    "id": 600800,
+    "serviceId": 800,
+    "networkId": 6,
+    "name": "スポーツライブ＋",
+    "type": 1,
+    "channel": {
+      "type": "CS",
+      "channel": "CS10"
+    }
+  }
+]

@@ -401,7 +401,7 @@ export const EPGS_META = {
   id: EPGS_ID,
   name: "EPGStation",
   author: "ci7lus",
-  version: "0.2.2",
+  version: "0.3.0",
   description: "EPGStationの録画を再生するためのプラグインです。",
   authorUrl: "https://github.com/ci7lus",
   url: "https://github.com/ci7lus/miraktest-plugins/tree/master/src/miraktest-epgs",

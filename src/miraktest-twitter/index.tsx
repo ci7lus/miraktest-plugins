@@ -1,5 +1,5 @@
-import { InitPlugin } from "../@types/plugin"
 import { TWITTER_META, TWITTER_TWEET_WINDOW_ID } from "./constants"
+import { InitPlugin } from "../@types/plugin"
 
 /**
  * MirakTest Twitter Plugin

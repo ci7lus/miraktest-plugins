@@ -1,10 +1,11 @@
 import clsx from "clsx"
-import React, { useEffect } from "react"
+import React, { useEffect, useMemo } from "react"
 import { useRecoilValue, useSetRecoilState } from "recoil"
-import { ContentPlayerPlayingContent, InitPlugin } from "../@types/plugin"
-import tailwind from "../tailwind.scss"
 import { FileSelector } from "./components/FileSelector"
 import { LOCAL_META, Local_RECORDS_WINDOW_ID } from "./constants"
+import { ContentPlayerPlayingContent, InitPlugin } from "../@types/plugin"
+import { DEFAULT_SERVICES } from "../shared/services"
+import tailwind from "../tailwind.scss"
 
 export const LocalRenderer: InitPlugin["renderer"] = ({
   appInfo,
@@ -33,6 +34,10 @@ export const LocalRenderer: InitPlugin["renderer"] = ({
           atoms.globalContentPlayerPlayingContentFamily(activeId ?? 0)
         )
         const services = useRecoilValue(atoms.mirakurunServicesSelector)
+        const filledServices = useMemo(
+          () => services || DEFAULT_SERVICES,
+          [services]
+        )
         useEffect(() => {
           rpc.setWindowTitle(`ローカル - ${appInfo.name}`)
         }, [])
@@ -50,34 +55,18 @@ export const LocalRenderer: InitPlugin["renderer"] = ({
                 "leading-loose"
               )}
             >
-              {services ? (
-                <FileSelector
-                  services={services}
-                  setPlayingContent={setPlayingContent}
-                  openContentPlayer={(
-                    playingContent: ContentPlayerPlayingContent
-                  ) => {
-                    return functions.openContentPlayerWindow({
-                      playingContent,
-                    })
-                  }}
-                  requestDialog={rpc.requestDialog}
-                />
-              ) : (
-                <div
-                  className={clsx(
-                    "w-full",
-                    "h-full",
-                    "flex",
-                    "items-center",
-                    "justify-center"
-                  )}
-                >
-                  <div className={clsx("text-gray-600", "px-4", "text-center")}>
-                    <p>読み込み中</p>
-                  </div>
-                </div>
-              )}
+              <FileSelector
+                services={filledServices}
+                setPlayingContent={setPlayingContent}
+                openContentPlayer={(
+                  playingContent: ContentPlayerPlayingContent
+                ) => {
+                  return functions.openContentPlayerWindow({
+                    playingContent,
+                  })
+                }}
+                requestDialog={rpc.requestDialog}
+              />
             </div>
           </>
         )

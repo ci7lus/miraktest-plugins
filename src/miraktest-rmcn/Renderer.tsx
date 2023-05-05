@@ -3,9 +3,6 @@ import clsx from "clsx"
 import React, { useEffect, useState } from "react"
 import { atom, useRecoilValue, useRecoilState, useSetRecoilState } from "recoil"
 import { syncEffect } from "recoil-sync"
-import { InitPlugin } from "../@types/plugin"
-import { useRefFromState } from "../shared/utils"
-import tailwind from "../tailwind.scss"
 import {
   RMCN_GET_PORT,
   RMCN_META,
@@ -14,6 +11,9 @@ import {
   RMCN_SET_CP_STATE,
   RMCN_SET_SERVICES,
 } from "./constants"
+import { InitPlugin } from "../@types/plugin"
+import { useRefFromState } from "../shared/utils"
+import tailwind from "../tailwind.scss"
 
 const refine = $.withDefault($.object({ idealPort: $.number() }), {
   idealPort: 10170,

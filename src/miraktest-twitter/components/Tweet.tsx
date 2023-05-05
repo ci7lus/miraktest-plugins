@@ -203,7 +203,7 @@ export const TweetComponent: React.FC<{
         .reduce((arr, status) => {
           arr.set(status.user.id_str, status)
           return arr
-        }, new Map<string, typeof statuses[0]>())
+        }, new Map<string, (typeof statuses)[0]>())
         .values()
     )
     const sortedHashtags = Object.entries(

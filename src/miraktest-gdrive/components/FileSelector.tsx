@@ -1,9 +1,9 @@
 import clsx from "clsx"
 import React, { useState } from "react"
 import { RotateCw, Search } from "react-feather"
-import { ContentPlayerPlayingContent, Service } from "../../@types/plugin"
 import { FileDetail } from "./FileDetail"
 import { FileList } from "./FileList"
+import { ContentPlayerPlayingContent, Service } from "../../@types/plugin"
 
 export const FileSelector: React.FC<{
   api: typeof gapi.client.drive

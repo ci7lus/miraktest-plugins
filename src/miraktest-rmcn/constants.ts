@@ -4,7 +4,7 @@ export const RMCN_META = {
   id: RMCN_ID,
   name: "rmcn",
   author: "ci7lus",
-  version: "0.1.0",
+  version: "0.1.1",
   description: "リモコン用のAPIを生やすプラグイン",
   authorUrl: "https://github.com/ci7lus",
   url: "https://github.com/ci7lus/miraktest-plugins/tree/master/src/miraktest-rmcn",

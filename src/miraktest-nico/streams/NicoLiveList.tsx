@@ -1,6 +1,7 @@
 import dayjs from "dayjs"
 import React, { useEffect, useState } from "react"
 import { useThrottleFn } from "react-use"
+import { NicoLiveStream } from "./NicoLive"
 import { Program, Service } from "../../@types/plugin"
 import {
   SayaDefinition,
@@ -10,7 +11,6 @@ import { assertFulfilled } from "../../shared/utils"
 import { getCommunityOnAir, getLivePrograms } from "../casAPI"
 import { NicoSetting } from "../types"
 import { PartialLiveProgram } from "../types/cas"
-import { NicoLiveStream } from "./NicoLive"
 
 export const NicoLiveList = ({
   sayaDefinition,

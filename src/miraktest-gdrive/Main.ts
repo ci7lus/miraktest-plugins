@@ -6,7 +6,6 @@ import Router from "@koa/router"
 import axios from "axios"
 import getPort from "get-port"
 import Koa from "koa"
-import { InitPlugin } from "../@types/plugin"
 import {
   GDRIVE_CALC_S256,
   GDRIVE_GET_PORT,
@@ -15,6 +14,7 @@ import {
   GDRIVE_SET_CRED,
   GDRIVE_WINDOW_ID,
 } from "./constants"
+import { InitPlugin } from "../@types/plugin"
 
 type OAuth2Cred = {
   clientId: string
@@ -123,11 +123,18 @@ export const Main: InitPlugin["main"] = async ({ packages, functions }) => {
         }
         const targetUrl = `https://www.googleapis.com/drive/v3/files/${id}?alt=media`
         const cancelToken = axios.CancelToken.source()
+        const userAgent = ctx.request.headers["user-agent"]
+        const range = ctx.request.headers.range
+        if (!userAgent || !range) {
+          console.warn("[gdrive] userAgent or range is null")
+          ctx.status = 500
+          return
+        }
         const req = await axios.get<IncomingMessage>(targetUrl, {
           headers: {
-            "user-agent": ctx.request.headers["user-agent"],
+            "user-agent": userAgent,
             accept: "*/*",
-            range: ctx.request.headers.range,
+            range,
             authorization: `Bearer ${oauth2AccessToken}`,
           },
           validateStatus: () => true,

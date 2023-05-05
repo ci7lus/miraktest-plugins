@@ -1,7 +1,7 @@
-import { InitPlugin } from "../@types/plugin"
-import { wait } from "../shared/utils"
 import { DRPC_ACTIVITY_EVENT_ID, DRPC_META } from "./constants"
 import { RPC } from "./rpcLoader"
+import { InitPlugin } from "../@types/plugin"
+import { wait } from "../shared/utils"
 
 export const DrpcMain: InitPlugin["main"] = async ({ packages }) => {
   let rpc: RPC.Client | undefined

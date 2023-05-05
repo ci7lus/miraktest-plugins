@@ -1,5 +1,5 @@
-import { InitPlugin } from "../@types/plugin"
 import { EPGS_META, EPGS_RECORDS_WINDOW_ID } from "./constants"
+import { InitPlugin } from "../@types/plugin"
 
 /**
  * MirakTest EPGStation Plugin

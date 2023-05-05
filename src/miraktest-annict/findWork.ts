@@ -1,12 +1,12 @@
 import dayjs from "dayjs"
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter"
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore"
-import { Program } from "../@types/plugin"
-import { SayaDefinitionChannel } from "../miraktest-saya/types"
-import { wait } from "../shared/utils"
 import { AnnictRESTAPI } from "./annictAPI"
 import { SyobocalAPI } from "./syobocalAPI"
 import { ARM } from "./types"
+import { Program } from "../@types/plugin"
+import { SayaDefinitionChannel } from "../miraktest-saya/types"
+import { wait } from "../shared/utils"
 
 dayjs.extend(isSameOrAfter)
 dayjs.extend(isSameOrBefore)

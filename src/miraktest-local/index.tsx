@@ -1,5 +1,5 @@
-import { InitPlugin } from "../@types/plugin"
 import { LOCAL_META, Local_RECORDS_WINDOW_ID } from "./constants"
+import { InitPlugin } from "../@types/plugin"
 
 /**
  * MirakTest Local

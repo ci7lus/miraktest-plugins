@@ -1,5 +1,5 @@
-import { InitPlugin } from "../@types/plugin"
 import { ANNICT_META, ANNICT_TRACK_WINDOW_ID } from "./constants"
+import { InitPlugin } from "../@types/plugin"
 
 /**
  * MirakTest Annict Plugin

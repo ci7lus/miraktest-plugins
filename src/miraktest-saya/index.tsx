@@ -13,14 +13,14 @@ import {
 import { syncEffect } from "recoil-sync"
 import ReconnectingWebSocket from "reconnecting-websocket"
 import urlJoin from "url-join"
+import { classfySource, trimCommentForFlow } from "./comment"
+import { SayaSetting } from "./types"
 import { InitPlugin } from "../@types/plugin"
 import { DPLAYER_COMMENT_EVENT } from "../miraktest-dplayer/constants"
 import { DPlayerCommentPayload } from "../miraktest-dplayer/types"
 import { ChatInput, PECORE_ID } from "../pecore"
 import { useRefFromState } from "../shared/utils"
 import tailwind from "../tailwind.scss"
-import { classfySource, trimCommentForFlow } from "./comment"
-import { SayaSetting } from "./types"
 
 /**
  * MirakTest Saya Plugin
@@ -34,7 +34,7 @@ const meta = {
   id: _id,
   name: "Saya",
   author: "ci7lus",
-  version: "0.3.3",
+  version: "0.3.4",
   description:
     "Sayaからコメントを取得するプラグインです。対応するコメントレンダラープラグインが必要です。",
   authorUrl: "https://github.com/ci7lus",

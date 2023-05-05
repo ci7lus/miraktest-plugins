@@ -1,5 +1,5 @@
-import { Program, Service } from "../@types/plugin"
 import { EPGSChannel, EPGSProgramRecord } from "./types"
+import { Program, Service } from "../@types/plugin"
 
 export const convertProgramRecordToProgram = (
   record: EPGSProgramRecord,

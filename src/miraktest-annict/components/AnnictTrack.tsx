@@ -2,6 +2,7 @@ import clsx from "clsx"
 import React, { useEffect, useState } from "react"
 import { Link } from "react-feather"
 import Recoil, { useRecoilState } from "recoil"
+import { SearchWorkForm } from "./SeachWorkForm"
 import { ContentPlayerPlayingContent } from "../../@types/plugin"
 import { SayaDefinition } from "../../miraktest-saya/types"
 import { AnnictRESTAPI, generateGqlClient } from "../annictAPI"
@@ -14,7 +15,6 @@ import {
 import { detectProgramInfo } from "../findWork"
 import { RatingState, StatusState, WorkFragment } from "../gql"
 import { ARM } from "../types"
-import { SearchWorkForm } from "./SeachWorkForm"
 
 export const AnnictTrack: React.FC<{
   accessToken: string

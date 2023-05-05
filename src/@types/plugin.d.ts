@@ -322,14 +322,14 @@ declare const ChannelPolarityEnum: {
   readonly V: "V"
 }
 declare type ChannelPolarityEnum =
-  typeof ChannelPolarityEnum[keyof typeof ChannelPolarityEnum]
+  (typeof ChannelPolarityEnum)[keyof typeof ChannelPolarityEnum]
 declare const ChannelType: {
   readonly Gr: "GR"
   readonly Bs: "BS"
   readonly Cs: "CS"
   readonly Sky: "SKY"
 }
-declare type ChannelType = typeof ChannelType[keyof typeof ChannelType]
+declare type ChannelType = (typeof ChannelType)[keyof typeof ChannelType]
 /**
  *
  * @export
@@ -436,7 +436,7 @@ declare const ProgramAudioSamplingRate: {
   readonly NUMBER_48000: 48000
 }
 declare type ProgramAudioSamplingRate =
-  typeof ProgramAudioSamplingRate[keyof typeof ProgramAudioSamplingRate]
+  (typeof ProgramAudioSamplingRate)[keyof typeof ProgramAudioSamplingRate]
 interface ProgramAudios {
   /**
    *
@@ -482,7 +482,7 @@ declare const ProgramAudiosLangsEnum: {
   readonly Etc: "etc"
 }
 declare type ProgramAudiosLangsEnum =
-  typeof ProgramAudiosLangsEnum[keyof typeof ProgramAudiosLangsEnum]
+  (typeof ProgramAudiosLangsEnum)[keyof typeof ProgramAudiosLangsEnum]
 interface ProgramGenre {
   /**
    *
@@ -590,14 +590,14 @@ declare const ProgramVideoResolution: {
   readonly _4320p: "4320p"
 }
 declare type ProgramVideoResolution =
-  typeof ProgramVideoResolution[keyof typeof ProgramVideoResolution]
+  (typeof ProgramVideoResolution)[keyof typeof ProgramVideoResolution]
 declare const ProgramVideoType: {
   readonly Mpeg2: "mpeg2"
   readonly H264: "h.264"
   readonly H265: "h.265"
 }
 declare type ProgramVideoType =
-  typeof ProgramVideoType[keyof typeof ProgramVideoType]
+  (typeof ProgramVideoType)[keyof typeof ProgramVideoType]
 interface RelatedItem {
   /**
    *
@@ -630,7 +630,7 @@ declare const RelatedItemTypeEnum: {
   readonly Movement: "movement"
 }
 declare type RelatedItemTypeEnum =
-  typeof RelatedItemTypeEnum[keyof typeof RelatedItemTypeEnum]
+  (typeof RelatedItemTypeEnum)[keyof typeof RelatedItemTypeEnum]
 /**
  *
  * @export
@@ -22353,7 +22353,7 @@ declare type OpenWindowArg = {
   playingContent?: ContentPlayerPlayingContent
 }
 declare type OpenBuiltinWindowArg = {
-  name: Omit<keyof typeof ROUTES, typeof ROUTES["ContentPlayer"]>
+  name: Omit<keyof typeof ROUTES, (typeof ROUTES)["ContentPlayer"]>
 }
 declare type OpenContentPlayerWindowArgs = {
   playingContent?: ContentPlayerPlayingContent

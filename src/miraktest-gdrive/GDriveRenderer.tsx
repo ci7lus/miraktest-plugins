@@ -1,10 +1,8 @@
 import $ from "@recoiljs/refine"
 import clsx from "clsx"
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { atom, useRecoilState, useRecoilValue, useSetRecoilState } from "recoil"
 import { syncEffect } from "recoil-sync"
-import { ContentPlayerPlayingContent, InitPlugin } from "../@types/plugin"
-import tailwind from "../tailwind.scss"
 import { FileSelector } from "./components/FileSelector"
 import {
   GDRIVE_CALC_S256,
@@ -17,6 +15,9 @@ import {
 } from "./constants"
 import { GDRIVE_CLIENT_ID, GDRIVE_CLIENT_SECRET } from "./cred"
 import { generateRandomString } from "./utils"
+import { ContentPlayerPlayingContent, InitPlugin } from "../@types/plugin"
+import { DEFAULT_SERVICES } from "../shared/services"
+import tailwind from "../tailwind.scss"
 
 const INSUFFICIENT_MESSAGE =
   "認証に必要な情報が不足しています。本体アプリケーションはv2.0.0-rc.2以上が必要です。"
@@ -335,6 +336,10 @@ export const GDriveRenderer: InitPlugin["renderer"] = ({
           atoms.globalContentPlayerPlayingContentFamily(activeId ?? 0)
         )
         const services = useRecoilValue(atoms.mirakurunServicesSelector)
+        const filledServices = useMemo(
+          () => services || DEFAULT_SERVICES,
+          [services]
+        )
         useEffect(() => {
           rpc.setWindowTitle(`Google Drive - ${appInfo.name}`)
         }, [])
@@ -479,11 +484,11 @@ export const GDriveRenderer: InitPlugin["renderer"] = ({
                 "leading-loose"
               )}
             >
-              {services && port ? (
+              {port ? (
                 isReady && driveClient ? (
                   <FileSelector
                     api={driveClient}
-                    services={services}
+                    services={filledServices}
                     setPlayingContent={setPlayingContent}
                     openContentPlayer={(
                       playingContent: ContentPlayerPlayingContent
