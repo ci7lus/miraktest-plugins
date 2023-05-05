@@ -6,9 +6,6 @@ import { useThrottleFn } from "react-use"
 import { atom, useRecoilValue, useRecoilState, useSetRecoilState } from "recoil"
 import { syncEffect } from "recoil-sync"
 import YAML from "yaml"
-import { InitPlugin } from "../@types/plugin"
-import { SayaDefinition } from "../miraktest-saya/types"
-import tailwind from "../tailwind.scss"
 import { AnnictTrack } from "./components/AnnictTrack"
 import {
   ANNICT_META,
@@ -16,6 +13,9 @@ import {
   ANNICT_TRACK_WINDOW_ID,
 } from "./constants"
 import { AnnictSetting, ARM } from "./types"
+import { InitPlugin } from "../@types/plugin"
+import { SayaDefinition } from "../miraktest-saya/types"
+import tailwind from "../tailwind.scss"
 
 /**
  * MirakTest Annict Plugin
@@ -219,7 +219,6 @@ export const AnnictRenderer: InitPlugin["renderer"] = ({
           atoms.globalContentPlayerPlayingContentFamily(activeId ?? 0)
         )
         const time = useRecoilValue(timeAtom)
-        const services = useRecoilValue(atoms.mirakurunServicesSelector)
         useEffect(() => {
           rpc.setWindowTitle(`Annict - ${appInfo.name}`)
         }, [])
@@ -259,7 +258,7 @@ export const AnnictRenderer: InitPlugin["renderer"] = ({
                 "leading-loose"
               )}
             >
-              {setting.accessToken && services && sayaDefinition && arm ? (
+              {setting.accessToken && sayaDefinition && arm ? (
                 <AnnictTrack
                   accessToken={setting.accessToken}
                   playingContent={playingContent}
