@@ -15,7 +15,7 @@ const meta = {
   id: _id,
   name: "Gyazo",
   author: "ci7lus",
-  version: "0.1.4",
+  version: "0.1.5",
   description: "スクリーンショットをGyazoにアップロードするプラグインです。",
   authorUrl: "https://github.com/ci7lus",
   url: "https://github.com/ci7lus/miraktest-plugins/tree/master/src/miraktest-gyazo",
@@ -95,9 +95,7 @@ const main: InitPlugin = {
                 return
               }
               ;(async () => {
-                const bin = await axios.get<ArrayBuffer>(url, {
-                  responseType: "arraybuffer",
-                })
+                const bin = await fetch(url)
                 const form = new FormData()
                 form.append("access_token", token)
                 const title = playingContent?.program?.name
@@ -108,7 +106,7 @@ const main: InitPlugin = {
                 if (desc) {
                   form.append("title", desc)
                 }
-                const blob = new Blob([bin.data], { type: "image/png" })
+                const blob = await bin.blob()
                 form.append("imagedata", blob, url.split("/").pop())
                 if (setting.collectionId) {
                   form.append("collection_id", setting.collectionId)
