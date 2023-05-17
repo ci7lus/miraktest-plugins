@@ -25,6 +25,8 @@ export const PresenceAliases: { [key: number]: number } = {
   531: 231, // 放送大学ラジオ
 }
 
+const CSNetworkIds = [6, 7]
+
 export const getServiceLogoForPresence = (service: Service) => {
   if (service.name.includes("ＮＨＫ総合") || service.name.includes("NHK総合")) {
     return "gr_nhkg"
@@ -40,14 +42,21 @@ export const getServiceLogoForPresence = (service: Service) => {
     // +4までサブチャンネルとする
     const serviceId =
       PresenceAliases[service.serviceId - sub] ?? service.serviceId - sub
-    if (PresenceRegisteredGRLogos.includes(serviceId)) {
-      return `gr_${serviceId}`
-    }
-    if (PresenceRegisteredBSLogos.includes(serviceId)) {
+
+    if (
+      service.networkId === 4 &&
+      PresenceRegisteredBSLogos.includes(serviceId)
+    ) {
       return `bs_${serviceId}`
     }
-    if (PresenceRegisteredCSLogos.includes(serviceId)) {
+    if (
+      CSNetworkIds.includes(service.networkId) &&
+      PresenceRegisteredCSLogos.includes(serviceId)
+    ) {
       return `cs_${serviceId}`
+    }
+    if (PresenceRegisteredGRLogos.includes(serviceId)) {
+      return `gr_${serviceId}`
     }
   }
   return false
